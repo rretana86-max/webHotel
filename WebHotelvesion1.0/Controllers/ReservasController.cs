@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebHotel_vesion1._0.Models;
+using WebHotel_vesion1._0.Repositories.Interfaces;
 
 namespace WebHotel_vesion1._0.Controllers
 {
@@ -7,17 +9,20 @@ namespace WebHotel_vesion1._0.Controllers
     {
         // GET: ReservasController
 
-       
+        private readonly IReserva _ireserva;
+
+        public ReservasController(IReserva ireserva) {
+
+
+            _ireserva = ireserva;
+        }
         public ActionResult GetReservas()
         {
             return View();
         }
 
         // GET: ReservasController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+      
 
         // GET: ReservasController/Create
        
@@ -25,11 +30,30 @@ namespace WebHotel_vesion1._0.Controllers
         // POST: ReservasController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EfectuarReservacion(IFormCollection collection)
+        public async Task<ActionResult> EfectuarReservacion(int Id,DateTime ckeck_in,DateTime ckeck_out )
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+
+              String UsuarioId_ =Convert.ToString(User.FindFirst("IdUsuario").Value);// almacenamos el id del usuario que esta con sesion activa 
+               
+                Reserva reserva = new Reserva() { 
+                
+                HabitacionId=Id,
+                UsuarioId=UsuarioId_,
+                FechadIngreso=ckeck_in,
+                FechaSalida=ckeck_out,
+                MetodoPago="Efectivo",
+                Confirmado=true  
+                
+       
+               };
+                
+               await _ireserva.CrearReserva(reserva);
+
+
+                // llamamos al metodo para guardar la reservacion del usuario
+                return RedirectToAction("index","Home");
             }
             catch
             {

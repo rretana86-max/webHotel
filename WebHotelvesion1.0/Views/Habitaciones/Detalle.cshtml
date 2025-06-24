@@ -1,43 +1,37 @@
 ﻿<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- jQuery UI -->
+@* <!-- jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-@using System.Security.Claims
-@{
+@* <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script> *@
+@using System.Security.Claims 
 
     @model WebHotel_vesion1._0.Models.Habitacion;
-    ViewData["Title"] = "Detalle";
+ 
+@{
+ 
+        // string cedula = User.FindFirstValue("IdUsuario");
+
 }
 
-<div class="container">
 
-   <h2>@User.Identity.Name</h2>
-    @{
-        string cedula = User.FindFirstValue("IdUsuario");
-
-      }
-    <label>@cedula</label>
-
-</div>
-
-    <div class="container "style="padding-left:12%">
     <div class="row">
 
-        <div class="col col-md-8">
+        <div class="col col-md-10">
             <div class="row row-no-gutters justify-content-center mt-4  contenedor-fechas">
 
 
                 <div class="col col-md-6 col-fecha">
+                <p class="text-center text-uppercase"><label for="FechaInicio" class="text-success ">Ckeck-in</label></p>
 
-                    <input type="date" id="FechaInicio" name="FechaInicio" required />
+                <input type="date" id="FechaInicio" name="FechaInicio" required />
 
 
                 </div>
                 <div class=" col col-md-6 col-fecha">
+                <p class="text-center text-uppercase"><label for="FechaFin" class="text-danger text-md-center">Check-out</label></p>
 
-                    <input type="date" id="FechaFin" name="FechaFin" required />
+                <input type="date" id="FechaFin" name="FechaFin" required />
 
 
                 </div>
@@ -50,7 +44,7 @@
 
         </div>
     
-    </div>
+   
 
 
 
@@ -61,9 +55,9 @@
 
 <div class="col col-md-8">
 
-    <div class=" card  shadow-lg border-0  bg-primary">
+    <div class=" card  shadow-lg border-0  bg-secondary">
 
-        <h2 class="card-header bg-black text-center">Detalles</h2>
+        <h2 class="card-header bg-black text-center">Detalle habitacion</h2>
         <div class="card-body">
                   
 
@@ -113,16 +107,30 @@
                                     </div>
 
 
-                                    <input type="text" id="_ckeck-in" name="ckeck-in"/>
-                                    <input  type="date" id="check-out" name="ckeck-out"/>
+                                    
+                                
                                 </div>
                                 @* campos de las fechas *@
+                               <div class="form-group">
+
+                                <input type="date" id="ckeck_in" name="ckeck_in" hidden/>
+
+                               </div>
+                               <div class="form-group">
+
+                                <input type="date" id="ckeck_out" name="ckeck_out" hidden />
+
+                               </div>
+                            <div class="form-group">
+
                                
 
-                                <div class="row justify-content-center mt-5 mb-2">
+                            </div>
+
+                                <div class="row justify-content-center mt-2 mb-2">
 
                                     <div class="col col-md-6">
-                                        <input type="submit" value="Reservar" class="btn  btn-warning w-100 text-white" />
+                                        <input type="submit" value="Reservar" class="btn  btn-primary w-100 text-white rounded 3"/>
 
 
 
@@ -167,32 +175,52 @@
 
 
 </div>
-</div>
+
 
 
 <style>
 
     body{background-color:darkslategray}
-    #FechaInicio ,#FechaFin{
-    cursor:pointer;
-   color:white;
-  background-color:black;
-    font-weight:700
-    
-    }
+   
 
     .contenedor-fechas{
 
       
         background-color:black;
-        justify-content:center;
-       border:2px  solid whitesmoke;
+      
+      
         margin-left:15%
     
     }
-    
 
 
+            input[type=date] {
+                height: 55px;
+                margin: 0 auto;
+                width: 100%;
+                font-family: arial, sans-serif;
+                font-size: 18px;
+                font-weight: bold;
+                text-transform: uppercase;
+                background-color: lighten(#2f2f2f,40%);
+                outline: none;
+                border: 0;
+                border-radius: 3px;
+                padding-bottom: 4px;
+                color: #fff;
+                &::-webkit-datetime-edit-month-field
+
+            {
+                color: red;
+            }
+
+            &::-webkit-datetime-edit-day-field {
+                color: green;
+            }
+
+            &::-webkit-datetime-edit-year-field {
+                color: blue;
+            }
 
 
 </style>
@@ -205,7 +233,11 @@
         const inputFechaInicio = new Date(document.getElementById("FechaInicio").value);
 
         const inputFechaFinal = new Date(document.getElementById("FechaFin").value);
-        document.getElementById("ckeck-in").value = inputFechaInicio;
+
+        // cargamos las fechas en los inputs para enviarlas al controlador
+        alert(inputFechaFinal);
+        document.getElementById("ckeck_in").value = document.getElementById("FechaInicio").value;
+        document.getElementById("ckeck_out").value = document.getElementById("FechaFin").value;
         
         if (inputFechaInicio>inputFechaFinal) {
             alert("Invalidate dates retry againt")
@@ -214,7 +246,7 @@
           
         
         }
-        e.preventDefault();
+       
 
     
     });

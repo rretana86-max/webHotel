@@ -23,12 +23,20 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<Reserva> CrearReserva(Reserva  nuevareserva)
+        public async Task<Reserva> CrearReserva(Reserva  nuevareserva)
+        {
+        
+            _context.Tb_Reservas.Add(nuevareserva);
+            _context.SaveChanges();
+            return nuevareserva;
+        }
+
+        public Task<bool> EliminarReservacion(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> EliminarReservacion(int id)
+        public Task<Habitacion> GetHabitacion(int id)
         {
             throw new NotImplementedException();
         }
