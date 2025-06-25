@@ -24,7 +24,7 @@ namespace WebHotel_vesion1._0.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-
+            ViewBag.Mensaje = "";
             return View();
 
 
@@ -73,7 +73,7 @@ namespace WebHotel_vesion1._0.Controllers
                 }
 
             }
-            ViewBag.Mensaje = "Usuario no encontrado";
+            ViewBag.Mensaje = "Usuario o contrasenia incorrectos";
 
             return View("Login");
 

@@ -24,14 +24,14 @@
                 <div class="col col-md-6 col-fecha">
                 <p class="text-center text-uppercase"><label for="FechaInicio" class="text-success ">Ckeck-in</label></p>
 
-                <input type="date" id="FechaInicio" name="FechaInicio" required />
+                <input type="date" id="FechaInicio" name="FechaInicio"  min="" required />
 
 
                 </div>
                 <div class=" col col-md-6 col-fecha">
                 <p class="text-center text-uppercase"><label for="FechaFin" class="text-danger text-md-center">Check-out</label></p>
 
-                <input type="date" id="FechaFin" name="FechaFin" required />
+                <input type="date" id="FechaFin" name="FechaFin" min="" required />
 
 
                 </div>
@@ -226,6 +226,11 @@
 </style>
 
 <script>
+
+    // funcionalidad para  no seleccionar fechas <a href="#"></a>
+    // const hoy = new Date().toISOString.Split("T")[0];
+    //     document.getElementById("FechaInicio").setAttribute("min", hoy);
+
     const formReserva = document.getElementById("form-Reserva");
 
     formReserva, addEventListener('submit', function (e) {
@@ -240,7 +245,12 @@
         document.getElementById("ckeck_out").value = document.getElementById("FechaFin").value;
         
         if (inputFechaInicio>inputFechaFinal) {
-            alert("Invalidate dates retry againt")
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error rango de fechas invalido"
+                   
+                });
         
             e.preventDefault();
           

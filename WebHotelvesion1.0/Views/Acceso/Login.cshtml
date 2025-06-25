@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/AdmindLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/AdmindLTE/dist/css/adminlte.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="hold-transition login-page bg-dark">
     <div class="login-box">
@@ -63,8 +64,29 @@
                 <!-- /.social-auth-links -->
 
                
+            <input type="text"  id="message"value="@ViewBag.Mensaje" hidden/>
 
+                @if (ViewBag.Mensaje != null && ViewBag.Mensaje!="")
                 
+                {
+                    
+                
+                    <script>
+
+                        // Swal.fire("error ",);
+                        Swal.fire({
+
+                            text: "@ViewBag.Mensaje",
+                            icon: "error"
+                        });
+
+
+                    </script>
+                
+                
+                
+                }
+
             </div>
             <!-- /.login-card-body -->
         </div>
@@ -76,5 +98,9 @@
     <script src="/AdmindLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/AdmindLTE/dist/js/adminlte.min.js"></script>
+
+
+    
+
 </body>
 </html>

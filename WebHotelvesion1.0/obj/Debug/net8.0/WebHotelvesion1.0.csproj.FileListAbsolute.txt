@@ -288,6 +288,7 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotel'vesion1.0\obj\Debug\net8.0\WebHotelvesi
 C:\CursosWeb\WebHotel'vesion1.0\WebHotel'vesion1.0\obj\Debug\net8.0\ref\WebHotelvesion1.0.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\appsettings.Development.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\appsettings.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Controllers\Properties\launchSettings.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\WebHotelvesion1.0.staticwebassets.runtime.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\WebHotelvesion1.0.exe
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\WebHotelvesion1.0.deps.json
@@ -574,4 +575,3 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\refint\WebHot
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.pdb
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.genruntimeconfig.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\ref\WebHotelvesion1.0.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Controllers\Properties\launchSettings.json
