@@ -4,236 +4,328 @@
 @* <!-- jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 @* <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script> *@
-@using System.Security.Claims 
+@using System.Security.Claims
 
     @model WebHotel_vesion1._0.Models.Habitacion;
- 
+
 @{
- 
-        // string cedula = User.FindFirstValue("IdUsuario");
+
+    // string cedula = User.FindFirstValue("IdUsuario");
 
 }
 
 
-    <div class="row">
+<div class="row justify-content-center p-2  mb-4">
+    <div class="col-12">
+        <div class="card shadow-lg">
+            <div class="card-body">
 
-        <div class="col col-md-10">
-            <div class="row row-no-gutters justify-content-center mt-4  contenedor-fechas">
+                <!-- Fila para Check-in y Check-out -->
+                <div class="row">
 
+                    <div class="col-12 col-md-6 col-fecha">
+                        <p class="text-center text-uppercase">
+                            <label for="FechaInicio" class="text-success">Check-in</label>
+                        </p>
+                        <input type="date" id="FechaInicio" name="FechaInicio"
+                               min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                               required class="form-control " />
+                    </div>
 
-                <div class="col col-md-6 col-fecha">
-                <p class="text-center text-uppercase"><label for="FechaInicio" class="text-success ">Ckeck-in</label></p>
-
-                <input type="date" id="FechaInicio" name="FechaInicio"  min="" required />
-
-
+                    <div class="col-12 col-md-6 col-fecha">
+                        <p class="text-center text-uppercase">
+                            <label for="FechaFin" class="text-success">Check-out</label>
+                        </p>
+                        <input type="date" id="FechaFin" name="FechaFin"
+                               min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                               required class="form-control "/>
+                    </div>
+                    <h4 class="pt-2  mb-2 text-success"><span id="totalPagar" style="cursor:pointer; border-bottom:2px solid gray">Total a pagar:$ </span></h4>
                 </div>
-                <div class=" col col-md-6 col-fecha">
-                <p class="text-center text-uppercase"><label for="FechaFin" class="text-danger text-md-center">Check-out</label></p>
-
-                <input type="date" id="FechaFin" name="FechaFin" min="" required />
-
-
-                </div>
-
-
-
+                <!-- fin fila -->
 
             </div>
         </div>
+    </div>
+</div>
 
-        </div>
+
+
+
+
+
+
+
+    <div class="row justyfy-content-center">
+
+        <div class="col-12  ">
+
+            <div class=" card shadow-lg border-0">
+
+                <h2 class="card-header  bg-gray text-center">Detalle habitacion</h2>
+                <div class="card-body">
+
+
+                    <div class="row justify-content-center mb-1">
+
+                        <div class="col-md-6 pt-3   h-25 shadow-lg border-0">
+                            <p>
+                                @Model.Descripcion<br />
+                            </p>
+                            <p>
+                            
+                        <p>   Precio por noche:   @Model.PrecioPorNoche</p>
+                            <input type="hidden" id="PrecioPorNoche" value="@Model.PrecioPorNoche" />
+                            </p>
+
+                        <button type="button" id="btnPagar"class="btn btn-warning mb-2"data-bs-toggle="modal" data-bs-target="#cardModal"style="display:none">Pagar</button>
+
+
+                        <div class="row mt-2 border-0 mb-0">
+
+
+                            <form asp-action="EfectuarReservacion" asp-controller="Reservas" method="post" id="form-Reserva">
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+
+                                            <input type="hidden" value="@Model.Id" name="Id">
+                                        </div>
     
-   
+                                    </div>
+                                    @* campos de las fechas *@
+                                    <div class="form-group">
+
+                                        <input type="date" id="ckeck_in" name="ckeck_in" hidden />
+
+                                    </div>
+                                    <div class="form-group">
+
+                                        <input type="date" id="ckeck_out" name="ckeck_out" hidden />
+
+                                    </div>
+
+                                    </div>
+
+                               
+                            </form>
+
+                        </div>
+                            
+
+                        </div>
+                        <div class="col-md-6 p-2">
+
+                            <div class="card shadow-lg border-0">
+                                <div class="card-body">
+
+                                <img src="@Url.Content("~/"+Model.imageUrl)" class="w-100 card-img-top" style="border-radius:2%" />
+                                <h4 class="card-title">habitacion matrimonial</h4>
+
+                                <p class="card-text">habitacion  hermosa de gran espacio y relax</p>
 
 
+                                </div>
+                            
 
+                            </div>
 
-<div class="container container-fluid">
+                          
+                        </div>
+                    </div>
 
-    <div class="row justify-content-center mt-5">
-
-<div class="col col-md-8">
-
-    <div class=" card  shadow-lg border-0  bg-secondary">
-
-        <h2 class="card-header bg-black text-center">Detalle habitacion</h2>
-        <div class="card-body">
                   
 
 
+                    @if (ViewBag.Mensaje != null)
+
+                    {
+                        <script>
+
+
+                            Swal.fire({
+                                title: "@ViewBag.Mensaje.Value"
+                                ,
+                                icon: "success"
 
 
 
-            </div>
-
-            <div class="row justify-content-center">
-                
-                <div class="col col-md-5">
+                            });
 
 
 
-                            <label><strong>Id : </strong>@Model.Id</label>
+                        </script>
+
+
+
+                    }
                 </div>
 
-                        <div class="col col-md-5">
-                            <label><strong>Descripcion:</strong> @Model.Descripcion</label>
-                        </div>
-            </div>
-
-
-            <div class="row justify-content-center">
-
-                <div class="col-md-8">
 
 
 
-                    <img  src="@Url.Content("~/"+Model.imageUrl)" class="w-100"/>
-                </div>
-                    </div>
-                
-
-            <div class="row mt-2 border-0 mb-0">
-
-
-                        <form asp-action="EfectuarReservacion" asp-controller="Reservas" method="post" id="form-Reserva">
-
-                            <div class="row justify-content-center">
-                                <div class="col-md-6">
-
-                                    <div class="form-group">
-
-                                      <input type="hidden" value="@Model.Id" name="Id">
-                                    </div>
-
-
-                                    
-                                
-                                </div>
-                                @* campos de las fechas *@
-                               <div class="form-group">
-
-                                <input type="date" id="ckeck_in" name="ckeck_in" hidden/>
-
-                               </div>
-                               <div class="form-group">
-
-                                <input type="date" id="ckeck_out" name="ckeck_out" hidden />
-
-                               </div>
-                            <div class="form-group">
-
-                               
-
-                            </div>
-
-                                <div class="row justify-content-center mt-2 mb-2">
-
-                                    <div class="col col-md-6">
-                                        <input type="submit" value="Reservar" class="btn  btn-primary w-100 text-white rounded 3"/>
 
 
 
-                                    </div>
-
-
-                                </div>
+                @* inputs para las fechas *@
 
 
 
-                            </div>
 
-
-
-                            
-
-
-
-                        </form>
 
             </div>
-                          
-                   
-            @* inputs para las fechas *@
-
-
-           
 
 
         </div>
+
+
+
+
+
+
+
+
 
 
     </div>
 
-
-
-       
-    
-
-
-
-
-
+<!-- Modal simple -->
+<!-- Modal Bootstrap -->
+<div class="modal fade " id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content " style="border-bottom:2px solid blue !important">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cardModalLabel">Ingresar tarjeta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <label>Nombre</label>
+                <input id="cardHolder" type="text" class="form-control mb-2" />
+                <label>Número</label>
+                <input id="cardNumber" type="text" maxlength="19" class="form-control mb-2" />
+                <div class="row">
+                    <div class="col-6">
+                        <label>MM</label>
+                        <input id="expMonth" type="number" min="1" max="12" class="form-control" />
+                    </div>
+                    <div class="col-6">
+                        <label>YYYY</label>
+                        <input id="expYear" type="number" min="2024" class="form-control" />
+                    </div>
+                </div>
+                <label class="mt-2">CVV</label>
+                <input id="cvv" type="text" maxlength="4" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="saveCardBtn" onclick="EnviarDatos()">Guardar y pagar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 
 
 <style>
 
-    body{background-color:darkslategray}
-   
-
-    .contenedor-fechas{
-
-      
-        background-color:black;
-      
-      
-        margin-left:15%
-    
+    body {
+        background-color: white
     }
 
+    p {
+        cursor: pointer;
+        font-weight: 600;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    }
 
-            input[type=date] {
-                height: 55px;
-                margin: 0 auto;
-                width: 100%;
-                font-family: arial, sans-serif;
-                font-size: 18px;
-                font-weight: bold;
-                text-transform: uppercase;
-                background-color: lighten(#2f2f2f,40%);
-                outline: none;
-                border: 0;
-                border-radius: 3px;
-                padding-bottom: 4px;
-                color: #fff;
-                &::-webkit-datetime-edit-month-field
+    .contenedor-fechas {
+        background-color: whitesmoke;
+        padding: 2%;
+        cursor: pointer
+    }
+    /* personalizacion de los colores para dia mes y anio */
 
-            {
-                color: red;
-            }
+    input[type=date] {
+        height: 55px;
+        margin: 0 auto;
+        width: 100%;
+        font-family: arial, sans-serif;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: lighten(#2f2f2f,40%);
+        outline: none;
+        border-radius: 3px;
+        padding-bottom: 4px solid blue;
+        color: #fff;
+       
+        &::-webkit-datetime-edit-month-field{
+        color: red;
+    }
 
-            &::-webkit-datetime-edit-day-field {
-                color: green;
-            }
+    &::-webkit-datetime-edit-day-field {
+        color: green;
+    }
 
-            &::-webkit-datetime-edit-year-field {
-                color: blue;
-            }
-
+    &::-webkit-datetime-edit-year-field {
+        color: blue;
+    }
 
 </style>
 
 <script>
 
-    // funcionalidad para  no seleccionar fechas <a href="#"></a>
-    // const hoy = new Date().toISOString.Split("T")[0];
-    //     document.getElementById("FechaInicio").setAttribute("min", hoy);
+   // obtenemos referencia  de los campos del html 
+    const valorInputFechaIni = document.getElementById("FechaInicio");
+    const valorInputFechaFin = document.getElementById("FechaFin");
+   
 
+    function calcularTotal() {
+       
+
+        const fechaInicial = new Date(valorInputFechaIni.value);
+        const fechafinal = new Date(valorInputFechaFin.value);
+
+        if ((!isNaN(fechaInicial) && !isNaN(fechafinal)) && (fechafinal > fechaInicial)) {
+            var precioPorNoche = (document.getElementById("PrecioPorNoche").value)
+            console.log("hola hola");
+            const btndisplay = document.getElementById("btnPagar");
+            btndisplay.style.display = "block";
+
+            const dias = (fechafinal - fechaInicial) / (1000 * 60 * 60 * 24);
+            const preciototal = precioPorNoche * dias
+            document.getElementById("totalPagar").innerHTML+preciototal
+        }
+    }
+    //llamamos la funcion para detectar  cuando  el usuario selecciona una fecha 
+
+    valorInputFechaIni.addEventListener("change",calcularTotal);
+    console.log(valorInputFechaIni);
+    valorInputFechaFin.addEventListener("change",calcularTotal);
     const formReserva = document.getElementById("form-Reserva");
 
     formReserva, addEventListener('submit', function (e) {
+
+      console.log("hola mundo")
+
+        if (!valorInputFechaIni || !valorInputFechaFin) {
+
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error debe selecionar las fechas "
+
+            });
+
+            e.preventDefault();
+
+
+
+        }
+
 
         const inputFechaInicio = new Date(document.getElementById("FechaInicio").value);
 
@@ -243,24 +335,32 @@
         alert(inputFechaFinal);
         document.getElementById("ckeck_in").value = document.getElementById("FechaInicio").value;
         document.getElementById("ckeck_out").value = document.getElementById("FechaFin").value;
-        
-        if (inputFechaInicio>inputFechaFinal) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Error rango de fechas invalido"
-                   
-                });
-        
-            e.preventDefault();
-          
-        
-        }
-       
 
-    
+        if (inputFechaInicio >= inputFechaFinal) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error rango de fechas invalido"
+
+            });
+
+            e.preventDefault();
+
+
+        }
+
+
+
     });
 
+    // funciion para procesar los datos de la tarjeta
+    function EnviarDatos() { 
     
+    // validamos los datos de los campos del modal 
+    }
+
+
+
+
 
 </script>

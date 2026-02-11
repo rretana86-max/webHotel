@@ -1,4 +1,5 @@
 ﻿using AppLogin.Data;
+using System.Data.Common;
 using WebHotel_vesion1._0.Controllers;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
@@ -23,11 +24,17 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             throw new NotImplementedException();
         }
 
-        public async Task<Reserva> CrearReserva(Reserva  nuevareserva)
-        {
-        
-            _context.Tb_Reservas.Add(nuevareserva);
-            _context.SaveChanges();
+        public async Task<Reserva> CrearReserva(Reserva  nuevareserva){
+            try {
+
+                _context.Tb_Reservas.AddAsync(nuevareserva);
+                _context.SaveChangesAsync();
+
+            } catch (DbException EX) {
+                Console.WriteLine("error al insertar registro");
+            
+            }
+          
             return nuevareserva;
         }
 

@@ -66,7 +66,7 @@ namespace WebHotel_vesion1._0.Controllers
                 return View();
             }
         }
-             public async Task<ActionResult>  VerRol(int id){
+             public async Task<ActionResult>  VdoterRol(int id){
 
 
              Rol rolinfo= await _irol.SearchRol(id);

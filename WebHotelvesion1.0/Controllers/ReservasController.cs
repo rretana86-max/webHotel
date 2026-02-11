@@ -34,22 +34,30 @@ namespace WebHotel_vesion1._0.Controllers
         {
             try
             {
-
+                // validaciones de seguridad extras
               String UsuarioId_ =Convert.ToString(User.FindFirst("IdUsuario").Value);// almacenamos el id del usuario que esta con sesion activa 
-               
-                Reserva reserva = new Reserva() { 
-                
-                HabitacionId=Id,
-                UsuarioId=UsuarioId_,
-                FechadIngreso=ckeck_in,
-                FechaSalida=ckeck_out,
-                MetodoPago="Efectivo",
-                Confirmado=true  
-                
-       
-               };
-                
-               await _ireserva.CrearReserva(reserva);
+
+                if ((ckeck_in!=null &&ckeck_out!=null) && (UsuarioId_ != null)&&(Id!=0)) { 
+
+                  // creamos la reserva
+                    Reserva reserva = new Reserva()
+                    {
+
+                        HabitacionId = Id,
+                        UsuarioId = UsuarioId_,
+                        FechadIngreso = ckeck_in,
+                        FechaSalida = ckeck_out,
+                        MetodoPago = "Efectivo",
+                        Confirmado = true
+
+
+                    };
+
+                    await _ireserva.CrearReserva(reserva);
+
+
+
+                }
 
 
                 // llamamos al metodo para guardar la reservacion del usuario

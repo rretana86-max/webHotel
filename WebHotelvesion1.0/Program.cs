@@ -1,6 +1,7 @@
 using AppLogin.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Implementation;
 using WebHotel_vesion1._0.Repositories.Interfaces;
@@ -43,7 +44,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:Secretkey").Get<String>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

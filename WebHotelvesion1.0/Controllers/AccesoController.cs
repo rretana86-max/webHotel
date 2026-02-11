@@ -40,7 +40,7 @@ namespace WebHotel_vesion1._0.Controllers
             var user = new Usuario();
             user = await _iusuario.getUserInitSesion(Clave, Correo);
             if (user != null)
-            {
+            {  // se codifica lo relacionado con el usario para obtener datos que utilizaremos mas adelante para hacer validaciones 
                 var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name,user.NombreCompleto),
                        new Claim("Correo",user.Correo),
@@ -58,7 +58,7 @@ namespace WebHotel_vesion1._0.Controllers
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                //if rol is Administrador rediect to  action ModuloMaestro
+                // se redirecciona al controlador dependiendo del rol 
                 if (Rol.Equals("Administrador") || Rol.Equals("Empleado"))
                 {
 

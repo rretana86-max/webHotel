@@ -352,7 +352,6 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.Vis
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\NuGet.Common.dll
@@ -373,7 +372,6 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Compos
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Composition.TypedParts.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Drawing.Common.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Formats.Asn1.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.IO.Packaging.dll
@@ -382,10 +380,8 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Memory
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Runtime.Caching.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Security.Permissions.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Text.Json.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\System.Windows.Extensions.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\af\Humanizer.resources.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\ar\Humanizer.resources.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\az\Humanizer.resources.dll
@@ -544,12 +540,8 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.csproj.AssemblyReference.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.GeneratedMSBuildEditorConfig.editorconfig
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.AssemblyInfoInputs.cache
@@ -561,11 +553,6 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesio
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.sourcelink.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.development.json
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets\msbuild.WebHotelvesion1.0.Microsoft.AspNetCore.StaticWebAssets.props
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets\msbuild.build.WebHotelvesion1.0.props
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.WebHotelvesion1.0.props
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.WebHotelvesion1.0.props
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.pack.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\scopedcss\bundle\WebHotelvesion1.0.styles.css
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\scopedcss\projectbundle\WebHotelvesion1.0.bundle.scp.css
@@ -575,3 +562,12 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\refint\WebHot
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.pdb
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.genruntimeconfig.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\ref\WebHotelvesion1.0.dll
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\WebHotelvesion1.0.staticwebassets.endpoints.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Stripe.net.dll
