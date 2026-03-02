@@ -14,15 +14,18 @@ namespace WebHotel_vesion1._0.Controllers
     [Authorize]
     public class HabitacionesController : Controller
     {
+        private readonly IConfiguration _iconfiguration;
         private readonly IHabitacion _ihabitacion;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public HabitacionesController(IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion) {
+        public HabitacionesController(IConfiguration iconfigiuration,IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion) {
 
 
 
             _hostingEnvironment = hostingEnvironment;
-            _ihabitacion= ihabitacion;  
+            _iconfiguration = iconfigiuration;
+            _ihabitacion = ihabitacion; 
+           
 
 
 
@@ -210,6 +213,9 @@ namespace WebHotel_vesion1._0.Controllers
 
         // metodo para ver mas informacion relacionada con la habitacion 
         public async Task<IActionResult> Detalle(int id) {
+            var stripePublicKey = _iconfiguration["Stripe:PublicKey"];
+
+            ViewBag.StripePublicKey = stripePublicKey;
       
             Habitacion habitacionDetalle = await _ihabitacion.getHabitacion(id);
             return View(habitacionDetalle);

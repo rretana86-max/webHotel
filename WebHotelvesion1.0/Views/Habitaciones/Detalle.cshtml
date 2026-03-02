@@ -4,6 +4,7 @@
 @* <!-- jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 @* <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script> *@
+<script src="https://js.stripe.com/v3/"></script>
 @using System.Security.Claims
 
     @model WebHotel_vesion1._0.Models.Habitacion;
@@ -58,7 +59,7 @@
 
     <div class="row justyfy-content-center">
 
-        <div class="col-12  ">
+        <div class="col-12"> 
 
             <div class=" card shadow-lg border-0">
 
@@ -193,40 +194,42 @@
 
 <!-- Modal simple -->
 <!-- Modal Bootstrap -->
-<div class="modal fade " id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+
+
+
+<div class="modal fade" id="cardModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content " style="border-bottom:2px solid blue !important">
+        <div class="modal-content">
+
             <div class="modal-header">
-                <h5 class="modal-title" id="cardModalLabel">Ingresar tarjeta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <h5 class="modal-title">Pago con tarjeta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+
             <div class="modal-body">
-                <label>Nombre</label>
-                <input id="cardHolder" type="text" class="form-control mb-2" />
-                <label>Número</label>
-                <input id="cardNumber" type="text" maxlength="19" class="form-control mb-2" />
-                <div class="row">
-                    <div class="col-6">
-                        <label>MM</label>
-                        <input id="expMonth" type="number" min="1" max="12" class="form-control" />
-                    </div>
-                    <div class="col-6">
-                        <label>YYYY</label>
-                        <input id="expYear" type="number" min="2024" class="form-control" />
-                    </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre del titular</label>
+                    <input type="text" id="cardHolder" class="form-control" placeholder="Nombre como aparece en la tarjeta">
                 </div>
-                <label class="mt-2">CVV</label>
-                <input id="cvv" type="text" maxlength="4" class="form-control" />
+
+                <div class="mb-3">
+                    <label class="form-label">Datos de la tarjeta</label>
+                    <div id="card-element" class="form-control p-3"></div>
+                </div>
+
+                <div id="card-errors" class="text-danger small"></div>
+
             </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="saveCardBtn" onclick="EnviarDatos()">Guardar y pagar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmarPago">Pagar</button>
             </div>
+
         </div>
     </div>
 </div>
-
-
 
 
 <style>
@@ -248,119 +251,164 @@
     }
     /* personalizacion de los colores para dia mes y anio */
 
-    input[type=date] {
-        height: 55px;
-        margin: 0 auto;
-        width: 100%;
-        font-family: arial, sans-serif;
-        font-size: 18px;
-        font-weight: bold;
-        text-transform: uppercase;
-        background-color: lighten(#2f2f2f,40%);
-        outline: none;
-        border-radius: 3px;
-        padding-bottom: 4px solid blue;
-        color: #fff;
-       
-        &::-webkit-datetime-edit-month-field{
+    input[type=date]::-webkit-datetime-edit-month-field {
         color: red;
     }
 
-    &::-webkit-datetime-edit-day-field {
+    input[type=date]::-webkit-datetime-edit-day-field {
         color: green;
     }
 
-    &::-webkit-datetime-edit-year-field {
+    input[type=date]::-webkit-datetime-edit-year-field {
         color: blue;
     }
 
-</style>
 
+</style>
 <script>
 
-   // obtenemos referencia  de los campos del html 
-    const valorInputFechaIni = document.getElementById("FechaInicio");
-    const valorInputFechaFin = document.getElementById("FechaFin");
-   
+    document.addEventListener("DOMContentLoaded", function () {
 
-    function calcularTotal() {
-       
-
-        const fechaInicial = new Date(valorInputFechaIni.value);
-        const fechafinal = new Date(valorInputFechaFin.value);
-
-        if ((!isNaN(fechaInicial) && !isNaN(fechafinal)) && (fechafinal > fechaInicial)) {
-            var precioPorNoche = (document.getElementById("PrecioPorNoche").value)
-            console.log("hola hola");
-            const btndisplay = document.getElementById("btnPagar");
-            btndisplay.style.display = "block";
-
-            const dias = (fechafinal - fechaInicial) / (1000 * 60 * 60 * 24);
-            const preciototal = precioPorNoche * dias
-            document.getElementById("totalPagar").innerHTML+preciototal
-        }
-    }
-    //llamamos la funcion para detectar  cuando  el usuario selecciona una fecha 
-
-    valorInputFechaIni.addEventListener("change",calcularTotal);
-    console.log(valorInputFechaIni);
-    valorInputFechaFin.addEventListener("change",calcularTotal);
-    const formReserva = document.getElementById("form-Reserva");
-
-    formReserva, addEventListener('submit', function (e) {
-
-      console.log("hola mundo")
-
-        if (!valorInputFechaIni || !valorInputFechaFin) {
-
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Error debe selecionar las fechas "
-
-            });
-
-            e.preventDefault();
+        console.log("DOM cargado correctamente");
 
 
+        const valorInputFechaIni = document.getElementById("FechaInicio");
+        const valorInputFechaFin = document.getElementById("FechaFin");
+        const btnPagar = document.getElementById("btnPagar");
+        const formReserva = document.getElementById("form-Reserva");
+        const confirmarpago=document.getElementById("confirmarPago");
 
+        confirmarpago.addEventListener("click",EnviarDatos);
+
+        function calcularTotal() {
+
+            
+           
+
+            const fechaInicial = new Date(valorInputFechaIni.value);
+            const fechaFinal = new Date(valorInputFechaFin.value);
+
+            if (valorInputFechaIni.value && valorInputFechaFin.value && fechaFinal > fechaInicial) {
+
+                const precioPorNoche = parseFloat(document.getElementById("PrecioPorNoche").value);
+                const dias = (fechaFinal - fechaInicial) / (1000 * 60 * 60 * 24);
+                const precioTotal = precioPorNoche * dias;
+
+                document.getElementById("totalPagar").innerHTML =
+                    "Total a pagar: $ " + precioTotal;
+
+                btnPagar.style.display = "block";
+            }
+            else {
+                btnPagar.style.display = "none";
+            }
         }
 
-
-        const inputFechaInicio = new Date(document.getElementById("FechaInicio").value);
-
-        const inputFechaFinal = new Date(document.getElementById("FechaFin").value);
-
-        // cargamos las fechas en los inputs para enviarlas al controlador
-        alert(inputFechaFinal);
-        document.getElementById("ckeck_in").value = document.getElementById("FechaInicio").value;
-        document.getElementById("ckeck_out").value = document.getElementById("FechaFin").value;
-
-        if (inputFechaInicio >= inputFechaFinal) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Error rango de fechas invalido"
-
-            });
-
-            e.preventDefault();
+        valorInputFechaIni.addEventListener("input", calcularTotal);
+        valorInputFechaFin.addEventListener("input", calcularTotal);
 
 
+      formReserva.addEventListener("submit", function (e) {
+
+            if (!valorInputFechaIni.value || !valorInputFechaFin.value) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Debe seleccionar las fechas"
+                });
+
+                e.preventDefault();
+                return;
+            }
+
+            const inputFechaInicio = new Date(valorInputFechaIni.value);
+            const inputFechaFinal = new Date(valorInputFechaFin.value);
+
+            if (inputFechaInicio >= inputFechaFinal) {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Rango de fechas inválido"
+                });
+
+                e.preventDefault();
+                return;
+            }
+
+
+            
+
+            document.getElementById("ckeck_in").value = valorInputFechaIni.value;
+            document.getElementById("ckeck_out").value = valorInputFechaFin.value;
+        });
+
+
+
+
+
+    //logica para el manejo de stripePublicKey
+    const stripe = Stripe("@ViewBag.StripePublicKey");
+
+    const elements = stripe.elements();
+
+    const card = elements.create("card", {
+        style: {
+            base: {
+                fontSize: "16px",
+                color: "#32325d"
+            }
         }
-
-
-
     });
 
-    // funciion para procesar los datos de la tarjeta
-    function EnviarDatos() { 
-    
-    // validamos los datos de los campos del modal 
+    card.mount("#card-element");
+
+   async function EnviarDatos() {
+        console.log("public key",stripe);
+
+        const cardHolder = document.getElementById("cardHolder").value.trim();
+        
+          
+
+        const { paymentMethod, error } = await stripe.createPaymentMethod({
+            type: "card",
+            card: card,
+            billing_details: {
+                name: cardHolder
+            }
+        });
+
+        if (error) {
+            document.getElementById("card-errors").textContent = error.message;
+            return;
+        }
+
+        fetch("/Pagos/ProcesarPago", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                paymentMethodId: paymentMethod.id,
+                reservaId: 1
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Pago exitoso");
+                location.reload();
+            } else {
+                alert("Error procesando pago");
+            }
+        });
     }
 
+    });
 
 
 
 
 </script>
+

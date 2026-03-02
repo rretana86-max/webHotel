@@ -550,7 +550,6 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesio
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.MvcApplicationPartsAssemblyInfo.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.RazorAssemblyInfo.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.RazorAssemblyInfo.cs
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.sourcelink.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.development.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
@@ -569,5 +568,4 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rjsmrazor.dsw
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Stripe.net.dll

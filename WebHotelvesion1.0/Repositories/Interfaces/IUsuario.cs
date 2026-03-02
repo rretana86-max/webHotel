@@ -1,5 +1,5 @@
-                                     using Microsoft.AspNetCore.Mvc;
-using WebHotel_vesion1._0.Enum;
+using Microsoft.AspNetCore.Mvc;
+using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
 
 namespace WebHotel_vesion1._0.Repositories.Interfaces

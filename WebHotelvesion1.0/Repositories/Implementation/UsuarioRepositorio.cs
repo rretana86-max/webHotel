@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
-using WebHotel_vesion1._0.Enum;
+using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
 
@@ -33,6 +33,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
       
 
             try {
+                //valida que el usuario o correo no exista en la base de datos antes de guardar el usuario 
 
                 if (_context.Usuarios.Any(x => x.IdUsuario.Equals(usuario.IdUsuario) || x.Correo == usuario.Correo))
                 {
