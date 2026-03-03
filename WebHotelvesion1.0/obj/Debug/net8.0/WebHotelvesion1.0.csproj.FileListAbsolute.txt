@@ -569,3 +569,5 @@ C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\rjsmcshtml.ds
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\Stripe.net.dll
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\CursosWeb\WebHotel'vesion1.0\WebHotelvesion1.0\bin\Debug\net8.0\BCrypt.Net-Next.dll

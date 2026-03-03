@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Models.ViewModel;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-
+using   BC =BCrypt.Net.BCrypt;
 namespace WebHotel_vesion1._0.Controllers
 {
     [Authorize]
@@ -101,7 +101,7 @@ namespace WebHotel_vesion1._0.Controllers
                 await Imagen.CopyToAsync(filestream);   
                 
                 }
-
+            
 
 
                usuario  = new Usuario
@@ -110,7 +110,7 @@ namespace WebHotel_vesion1._0.Controllers
                     IdUsuario = user.IdUsuario,
                     NombreCompleto = user.NombreCompleto,
                     Correo = user.Correo,
-                    Clave = user.Clave,
+                    Clave = BC.HashPassword(user.Clave),//encripta la clave
                     ImageUrl = Path.Combine("profile", filename).Replace("\\", "/")
 
                };
@@ -155,11 +155,11 @@ namespace WebHotel_vesion1._0.Controllers
             var usuariorol = new UsuarioViewModel
             {
                 IdUsuario = user.IdUsuario,
-                NombreCompleto = user.NombreCompleto, 
-                Correo = user.Correo, 
-                Clave=user.Clave,
-                imageUrl=user.ImageUrl,
-                Roles =listroles
+                NombreCompleto = user.NombreCompleto,
+                Correo = user.Correo,
+                Clave = "",
+                imageUrl = user.ImageUrl,
+                Roles = listroles
 
             };
             return View(usuariorol);
@@ -234,7 +234,7 @@ namespace WebHotel_vesion1._0.Controllers
                   IdUsuario = userviewmodel.IdUsuario,
                     NombreCompleto = userviewmodel.NombreCompleto,
                     Correo = userviewmodel.Correo,
-                    Clave = userviewmodel.Clave,
+                    Clave =  BC.HashPassword( userviewmodel.Clave),
                     ImageUrl = olduser.ImageUrl
 
                 };

@@ -9,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using BC = BCrypt.Net.BCrypt;
 
 namespace WebHotel_vesion1._0.Repositories.Implementation
 {
@@ -116,9 +117,9 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
             try {
                
-                var user_ =  _context.Usuarios.Include(e => e.UsuarioRoles).ThenInclude(ur => ur.Rol) .FirstOrDefault(u =>  u.Correo == email&& u.Clave==clave);
+                var user_ =  _context.Usuarios.Include(e => e.UsuarioRoles).ThenInclude(ur => ur.Rol) .FirstOrDefault(u =>  u.Correo == email);
 
-                
+               // bool isValid = BC.Verify(email,user_.Clave);
                 return  user_;
                 // validamos la contrasenia 
                         }
