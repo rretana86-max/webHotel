@@ -29,7 +29,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             
         }
         public async  Task<UserCreationStatus> Create(Usuario usuario)
-        { // initial validation by prevent repeat username or password in database
+        {
            
       
 
@@ -85,7 +85,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             try
             {
                 if (String.IsNullOrEmpty(id)) {
-                   _logger.LogError("the id don't be  empty or null");
+                   _logger.LogError("El id no  debe estar vacio");
                     return null;
                 }
                 var  user = _context.Usuarios.Include(e => e.UsuarioRoles).ThenInclude(ur => ur.Rol).Where(u => u.IdUsuario == id).FirstOrDefault();
@@ -97,7 +97,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             catch {
 
 
-                _logger.LogError ("Error in database query");
+                _logger.LogError ("Error en la consulta de la base de datos ");
             
            
             }

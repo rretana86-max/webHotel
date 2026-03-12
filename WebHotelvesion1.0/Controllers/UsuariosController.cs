@@ -234,7 +234,7 @@ namespace WebHotel_vesion1._0.Controllers
                   IdUsuario = userviewmodel.IdUsuario,
                     NombreCompleto = userviewmodel.NombreCompleto,
                     Correo = userviewmodel.Correo,
-                    Clave =  BC.HashPassword( userviewmodel.Clave),
+                    Clave =  BC.HashPassword( userviewmodel.Clave),// se encripta la clave
                     ImageUrl = olduser.ImageUrl
 
                 };

@@ -5,6 +5,7 @@ using Stripe;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Implementation;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.Repositories.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IRol,RolRepositorio>();
 builder.Services.AddScoped<IUsuarioRol,UsuarioRolRepositorio>();
 builder.Services.AddScoped<IHabitacion, HabitacionRepositorio>();
 builder.Services.AddScoped<IReserva,ReservaRepositorio>();
+builder.Services.AddScoped<IAuth, AuthService>();
 
 var app = builder.Build();
 

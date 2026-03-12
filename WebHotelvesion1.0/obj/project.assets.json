@@ -7836,11 +7836,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\CursosWeb\\WebHotel'vesion1.0\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
+      "projectUniqueName": "C:\\CursosWeb\\webhotel\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
       "projectName": "WebHotelvesion1.0",
-      "projectPath": "C:\\CursosWeb\\WebHotel'vesion1.0\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
+      "projectPath": "C:\\CursosWeb\\webhotel\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
       "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\CursosWeb\\WebHotel'vesion1.0\\WebHotelvesion1.0\\obj\\",
+      "outputPath": "C:\\CursosWeb\\webhotel\\WebHotelvesion1.0\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

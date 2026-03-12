@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.Repositories.Service;
 
 namespace WebHotel_vesion1._0.Controllers
 {
     public class AccesoController : Controller
     {
-        private readonly IUsuario _iusuario;
+        private readonly IAuth _auth;
      
 
-        public AccesoController(IUsuario isuario)
+        public AccesoController(IAuth auth)
         {
-            _iusuario = isuario;    
+            _auth = auth;    
             
         }
 
@@ -38,9 +39,8 @@ namespace WebHotel_vesion1._0.Controllers
 
             
             var user = new Usuario();
-            user = await _iusuario.getUserInitSesion(Clave, Correo);
-            if (user != null)
-            {  // se codifica lo relacionado con el usario para obtener datos que utilizaremos mas adelante para hacer validaciones 
+            user = await _auth.Login(Correo, Clave);
+            if (user != null) {// se codifica lo relacionado con el usario para obtener datos que utilizaremos mas adelante para hacer validaciones 
                 var claims = new List<Claim> {
                     new Claim(ClaimTypes.Name,user.NombreCompleto),
                        new Claim("Correo",user.Correo),
@@ -75,7 +75,7 @@ namespace WebHotel_vesion1._0.Controllers
             }
             ViewBag.Mensaje = "Usuario o contrasenia incorrectos";
 
-            return View("Login");
+            return  RedirectToAction("Login");
 
 
         }

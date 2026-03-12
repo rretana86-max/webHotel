@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+LQ6P7kkMTw=",
+  "dgSpecHash": "ok+yaKpy7YA=",
   "success": true,
-  "projectFilePath": "C:\\CursosWeb\\WebHotel'vesion1.0\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
+  "projectFilePath": "C:\\CursosWeb\\webhotel\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
