@@ -16,7 +16,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
     public class UsuarioRepositorio : IUsuario
     {    // variable of AppDbContext
         private readonly AppDbContext _context;
-        // instancia que almacenara el usuario que  se actualizara 
+       
         private  readonly Usuario usuario_;
         private readonly ILogger<UsuarioRepositorio> _logger;
 
@@ -104,34 +104,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             return null;
         }
         //metodo para verificar email y contrasenia al iniciar sesion 
-        public async Task<Usuario> getUserInitSesion(string clave, string email)
-        {   
-            if (String.IsNullOrEmpty(clave) || String.IsNullOrEmpty(email))
-            {
-
-
-                _logger.LogError("The key  or  email is null or empty");
-                return null;
-
-            }
-
-            try {
-               
-                var user_ =  _context.Usuarios.Include(e => e.UsuarioRoles).ThenInclude(ur => ur.Rol) .FirstOrDefault(u =>  u.Correo == email);
-
-               // bool isValid = BC.Verify(email,user_.Clave);
-                return  user_;
-                // validamos la contrasenia 
-                        }
-            catch (DbUpdateException ex) {
-
-                _logger.LogError("Error in database ");
-            
-            
-            }
-            return null;
-           
-        }
+       
 
         public  async Task<bool> UserUpdate(Usuario usuario)
         { 
@@ -149,11 +122,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
               int resultado = await  _context.SaveChangesAsync();
 
                 _logger.LogInformation("Actualizacion exitosa");
-                // await  _context.SaveChangesAsync();
-
-                //_context.Entry(habitacionExistente).CurrentValues.SetValues(habitacionExistente);
-
-                //await _context.SaveChangesAsync()
+               
 
 
             }
