@@ -61,6 +61,7 @@ namespace WebHotel_vesion1._0.Controllers
                 // se redirecciona al controlador dependiendo del rol 
                 if (Rol.Equals("Administrador") || Rol.Equals("Empleado"))
                 {
+                    TempData["WelcomeMessage"] = $"Bienvenido {user.NombreCompleto}";
 
                     return RedirectToAction("Dasboard", "Home");
 
@@ -75,12 +76,12 @@ namespace WebHotel_vesion1._0.Controllers
             }
             ViewBag.Mensaje = "Usuario o contrasenia incorrectos";
 
-            return  RedirectToAction("Login");
+            return  View("Login");
 
 
         }
 
-
+        //cierra la sesion del usuario
         public async Task<IActionResult> Logout()
         {
 

@@ -10,6 +10,9 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
+    <PackageReference Include="FastReport.OpenSource" Version="2026.2.0" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2026.2.0" />
+    <PackageReference Include="FastReport.OpenSource.Web" Version="2026.2.0" />
     <PackageReference Include="jQuery.UI.Widgets.Datepicker" Version="1.8.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">

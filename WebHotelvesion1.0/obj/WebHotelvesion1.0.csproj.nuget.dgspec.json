@@ -58,6 +58,18 @@
               "target": "Package",
               "version": "[3.2.0, )"
             },
+            "FastReport.OpenSource": {
+              "target": "Package",
+              "version": "[2026.2.0, )"
+            },
+            "FastReport.OpenSource.Export.PdfSimple": {
+              "target": "Package",
+              "version": "[2026.2.0, )"
+            },
+            "FastReport.OpenSource.Web": {
+              "target": "Package",
+              "version": "[2026.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.0, )"

@@ -50,8 +50,24 @@
  
     @await RenderSectionAsync("Scripts", required: false)
 
+<script>
+document.addEventListener('click', function (e) {
+    var sidebar = document.getElementById('sidebarCollapse'); // id del elemento .collapse
+    var toggle = document.getElementById('sidebarToggle');
 
+    if (!sidebar) return;
 
-  
+    var isShown = sidebar.classList.contains('show');
+    if (isShown && !sidebar.contains(e.target) && !(toggle && toggle.contains(e.target))) {
+        // Usa la API de Bootstrap si está disponible
+        if (window.bootstrap && bootstrap.Collapse) {
+            var bs = bootstrap.Collapse.getInstance(sidebar) || new bootstrap.Collapse(sidebar, {toggle:false});
+            bs.hide();
+        } else {
+            sidebar.classList.remove('show');
+        }
+    }
+});
+</script>
 </body>
 </html>

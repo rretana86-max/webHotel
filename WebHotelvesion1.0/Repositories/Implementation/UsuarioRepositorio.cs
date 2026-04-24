@@ -1,11 +1,9 @@
 ﻿using AppLogin.Data;
 using DocumentFormat.OpenXml.Drawing;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
 using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
@@ -45,7 +43,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
                 usuario.FechaRegistro = DateTime.Now;
                 usuario.FechaActualizacion = null;
                 _context.Usuarios.Add(usuario);
-                _context.SaveChanges();
+               await  _context.SaveChangesAsync();
 
                 //return UserCreationStatus.Success;
 

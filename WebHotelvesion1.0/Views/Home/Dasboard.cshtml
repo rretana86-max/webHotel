@@ -1,8 +1,7 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "ModuloMaestro";
 }
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <body>
 
 <center><h1 class="  text-white">Hotel  Admind </h1></center>
@@ -100,11 +99,6 @@
         </div>
      
     
-@* </div> *@
-
-
-
-
 </body>
 
 
@@ -168,19 +162,51 @@
 
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+@* SweetAlert2: mostrar TempData["WelcomeMessage"] con una barra de progreso más llamativa *@
+@if (TempData["WelcomeMessage"] != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                            @* prueba swetalert *@
+    <style>
+        /* Color llamativo (gradiente) para la barra de progreso del temporizador */
+        .swal2-popup {
+            /* variable soportada por SweetAlert2 para personalizar la barra */
+            --swal2-timer-progress-bar-background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd56b 100%);
+            --swal2-timer-progress-bar-height: 6px;
+        }
 
+        /* Compatibilidad por si la clase directa de la barra existe en tu versión */
+        .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd56b 100%) !important;
+            height: 6px !important;
+            border-radius: 4px !important;
+        }
 
-                    <script>
+        /* Mejor contraste del icono success en la alerta */
+        .swal2-icon.swal2-success .swal2-success-ring,
+        .swal2-icon.swal2-success .swal2-success-line-tip,
+        .swal2-icon.swal2-success .swal2-success-line-long {
+            stroke: #ffffff;
+        }
+    </style>
 
-    // Swal.fire("Bienvenido al sistema  gestion de hoteles ",);
-    Swal.fire({
-  
-        text: "Biemvenido a hotel Admind 1.0",
-        icon: "success"
-    });
-
-
-                    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Serializamos el mensaje en el servidor para evitar problemas de comillas/escape
+            var message = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["WelcomeMessage"]));
+            Swal.fire({
+                title: 'Bienvenido',
+                text: message,
+                icon: 'success',
+                iconColor: '#ffffff',
+                background: '#141420', // opcional: fondo oscuro para destacar el gradiente
+                color: '#fff',
+                timer: 4000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        });
+    </script>
+}

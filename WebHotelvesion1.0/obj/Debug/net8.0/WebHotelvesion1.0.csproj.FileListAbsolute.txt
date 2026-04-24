@@ -586,6 +586,10 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Azure.Identity.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\FastReport.Compat.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\FastReport.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\FastReport.OpenSource.Export.PdfSimple.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\FastReport.OpenSource.Web.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Humanizer.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
@@ -601,6 +605,7 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.Features.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.Scripting.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.VisualBasic.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
@@ -639,6 +644,7 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\NuGet.Common.dll
@@ -660,6 +666,7 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.Composition.Runt
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.Composition.TypedParts.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.Drawing.Common.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.Formats.Asn1.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\System.IO.Packaging.dll
@@ -796,6 +803,19 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\ru\Microsoft.CodeAnalys
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.VisualBasic.resources.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.VisualBasic.resources.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
@@ -828,6 +848,9 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-arm\native
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.csproj.AssemblyReference.cache
@@ -836,6 +859,7 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.Gener
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.AssemblyInfoInputs.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.AssemblyInfo.cs
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.csproj.CoreCompileInputs.cache
+C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.MvcApplicationPartsAssemblyInfo.cs
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.MvcApplicationPartsAssemblyInfo.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.RazorAssemblyInfo.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.RazorAssemblyInfo.cs
@@ -850,10 +874,10 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.j
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.development.json
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotel.FFE7DCED.Up2Date
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\refint\WebHotelvesion1.0.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.pdb
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.genruntimeconfig.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\ref\WebHotelvesion1.0.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

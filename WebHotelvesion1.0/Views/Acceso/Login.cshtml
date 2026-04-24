@@ -69,21 +69,20 @@
                 @if (ViewBag.Mensaje != null && ViewBag.Mensaje!="")
                 
                 {
-                    
-                
+
+
                     <script>
-
-                        // Swal.fire("error ",);
                         Swal.fire({
-
+                            title: "¡Error!",
                             text: "@ViewBag.Mensaje",
-                            icon: "error"
+                            icon: "error",
+                            confirmButtonColor: "#e74c3c",
+                            confirmButtonText: "Intentar de nuevo",
+                            background: "#fff0f0",
+                            color: "#333333",
+                            iconColor: "#e74c3c"
                         });
-
-
                     </script>
-                
-                
                 
                 }
 

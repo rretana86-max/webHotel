@@ -56,6 +56,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaXRhY2lvbmVzXGxpc3RhckhhYml0YWNpb25lcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/Habitaciones/ReporteHabitaciones.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFiaXRhY2lvbmVzXFJlcG9ydGVIYWJpdGFjaW9uZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/Home/Dasboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

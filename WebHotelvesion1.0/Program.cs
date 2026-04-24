@@ -1,4 +1,6 @@
 using AppLogin.Data;
+using FastReport.Utils;
+using FastReport;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
@@ -6,6 +8,8 @@ using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Implementation;
 using WebHotel_vesion1._0.Repositories.Interfaces;
 using WebHotel_vesion1._0.Repositories.Service;
+using System.Linq;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +37,35 @@ builder.Services.AddScoped<IUsuarioRol,UsuarioRolRepositorio>();
 builder.Services.AddScoped<IHabitacion, HabitacionRepositorio>();
 builder.Services.AddScoped<IReserva,ReservaRepositorio>();
 builder.Services.AddScoped<IAuth, AuthService>();
+builder.Services.AddFastReport();
+
+// Registrar proveedores de conexión de FastReport de forma robusta:
+// antes se llamaba RegisteredObjects.AddConnection(typeof(FastReport.Data.MsSqlDataConnection));
+// ese tipo puede no existir en todas las versiones/paquetes; usamos reflexión para localizarlo.
+var msSqlType = AppDomain.CurrentDomain.GetAssemblies()
+    .SelectMany(a =>
+    {
+        try { return a.GetTypes(); }
+        catch (ReflectionTypeLoadException ex) { return ex.Types.Where(t => t != null)!; }
+        catch { return Array.Empty<Type>(); }
+    })
+    .FirstOrDefault(t => t.FullName == "FastReport.Data.MsSqlDataConnection"
+                      || t.FullName == "FastReport.Data.MSSqlDataConnection"
+                      || t.Name == "MsSqlDataConnection"
+                      || t.Name == "MSSqlDataConnection");
+
+if (msSqlType != null)
+{
+    RegisteredObjects.AddConnection(msSqlType);
+}
+else
+{
+    // opcional: registrar otras conexiones o loggear
+    // Console.WriteLine("FastReport MsSql data connection type not found. Install data provider package if needed.");
+}
 
 var app = builder.Build();
+app.UseFastReport();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

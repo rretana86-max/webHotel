@@ -1,123 +1,132 @@
-﻿@using WebHotel_vesion1._0.Models
-@* @model WebHotel_vesion1._0.Models.ViewModel.UsuarioViewModel *@
+﻿@model WebHotel_vesion1._0.Models.Usuario
 
-@{
-    ViewData["Title"] = "MostrarDatosUsuario";
-}
-<style>
+@{ ViewData["Title"] = "Datos del Usuario"; }
 
+<div class="container user-details mt-5">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Usuarios" asp-action="listar_Empleados">Usuarios</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ver usuario</li>
+        </ol>
+    </nav>
 
-    body{background-color:whitesmoke
-</style>
+    @if (Model == null)
+    {
+        <div class="alert alert-warning" role="alert">Usuario no encontrado.</div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="row g-0">
+                <aside class="col-12 col-md-4 d-flex justify-content-center align-items-start p-4">
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="~/@(Model.ImageUrl)" asp-append-version="true"
+                             alt="Foto de @Model.NombreCompleto"
+                             class="img-fluid rounded-circle shadow"
+                             style="max-width:260px; width:100%; height:auto; object-fit:cover;" loading="lazy" decoding="async" />
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/260x260?text=Usuario"
+                             alt="Sin imagen"
+                             class="img-fluid rounded-circle shadow"
+                             style="max-width:260px; width:100%; height:auto; object-fit:cover;" loading="lazy" decoding="async" />
+                    }
+                </aside>
 
-
-<div class="container   mt-4 pt-4">
-    <div class="row justify-content-center mt-4">
-        <div class="col-12 col-md-6">
-            <div class="card shadow-lg border-0 ">
-    
-            
-            <div class="card-body">
-        <div class="row">
-
-           <div class="col-12 col-md-6">
-
-
-                            <div class="form-group">
-                                <label>Id</label>
-                                <p>@Model.IdUsuario</p>
-
+                <section class="col-12 col-md-8">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start mb-3 gap-3">
+                            <div>
+                                <h2 class="h4 mb-1">@Model.NombreCompleto</h2>
+                                <p class="text-muted mb-0"><small>ID: @Model.IdUsuario</small></p>
                             </div>
+                            <div class="d-flex gap-2">
+                                <a asp-controller="Usuarios" asp-action="listar_Empleados" class="btn btn-outline-secondary" aria-label="Volver al listado">Volver</a>
+                                <a asp-controller="Usuarios" asp-action="Edit" asp-route-id="@Model.IdUsuario" class="btn btn-primary" aria-label="Editar usuario">Editar</a>
 
-
-           </div>
-                        <div class="col-12 col-md-6">
-
-
-                            <div class="form-group">
-                                <label>Nombre</label>
-                                <p>@Model.NombreCompleto</p>
-
+                                @* Formulario para eliminar (POST con antiforgery) *@
+                                <form id="form-delete-user" asp-controller="Usuarios" asp-action="DeleteUser" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="IdUsuario" value="@Model.IdUsuario" />
+                                    <button type="button" id="btn-delete-user" class="btn btn-danger" aria-label="Eliminar usuario">Eliminar</button>
+                                </form>
                             </div>
-
-
                         </div>
 
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Correo</dt>
+                            <dd class="col-sm-8">@Model.Correo</dd>
 
-        </div>
-       
-        <div class="row">
+                            <dt class="col-sm-4">Roles</dt>
+                            <dd class="col-sm-8">
+                                @if (Model.UsuarioRoles != null && Model.UsuarioRoles.Any())
+                                {
+                                    foreach (var ur in Model.UsuarioRoles)
+                                    {
+                                        <span class="badge bg-primary me-1" aria-label="rol">@ur?.Rol?.Nombre</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Sin roles asignados</span>
+                                }
+                            </dd>
 
-        <div class="col-12 col-md-6">
-        <div class="form-group">
-         <label>Contrasenia</label>
-         <p>@Model.Clave</p>
-        </div>
-        
-        </div>
-            <div class="col-12 col-md-6">
+                            <dt class="col-sm-4">Registrado</dt>
+                            <dd class="col-sm-8">@Model.FechaRegistro.ToString("g")</dd>
 
-                <div class="form-group">
-                    <label>Correo</label>
-                    <p>@Model.Correo</p>
-
-
-
-
-                </div>
-                  </div>
-
-               @if(Model.UsuarioRoles!=null){
-                <div class="col-12 col-md-4">
-                    <div class="form-group">
-                        <label>Rol</label>
-                                        @foreach (var rol in Model.UsuarioRoles)
-                                        {
-
-                                        <strong class="text-blue">@rol.Rol.Nombre</strong>
-
-
-
-                                        }
+                            @if (Model.FechaActualizacion.HasValue)
+                            {
+                                <dt class="col-sm-4">Última actualización</dt>
+                                <dd class="col-sm-8">@Model.FechaActualizacion.Value.ToString("g")</dd>
+                            }
+                        </dl>
                     </div>
-
-                </div>
-
-                }
-
-            </div>
-
-              <div class="row justify-content-center mt-2">
-              
-               <div class="col-md-6"><strong>Fecha de registro</strong><br /> @Model.FechaRegistro</div>
-                        <div class="col-md-6 "><strong>Fecha Actualizacion</strong><br />@Model.FechaActualizacion</div>
-               
-               </div>
-            <div class="row justify-content-center">
-            
-            <div class="col-12 col-md-6 mt-4">
-                    <img id="imagenPrevisualizacion" src="@Url.Content("~/"+Model.ImageUrl)" class="card-image " style="width:200px;height:200px; border:1px solid whiteSmoke;border-radius:50% ">
-
-                        </div>
-                    </div>
-
-
-                    <div class=" row justify-content-center shawdow-lg mt-2">
-                        <div class="col-6 col-md-4">
-                            <a asp-action="listar_Empleados" class="btn btn-warning">Regresar</a>
-
-                        </div>
-
-                    </div>
-        </div>
-
-
-
-    </div>
+                </section>
             </div>
         </div>
-   
+    }
 </div>
 
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
- 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var btnDelete = document.getElementById('btn-delete-user');
+            var formDelete = document.getElementById('form-delete-user');
+
+            if (btnDelete && formDelete) {
+                btnDelete.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Eliminar usuario?',
+                        text: 'Esta acción no se puede deshacer.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar',
+                        reverseButtons: true,
+                        focusCancel: true
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            formDelete.submit();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+}
+
+<style>
+    /* Uso de utilidades Bootstrap para espaciado; estilos mínimos locales */
+    .user-details { max-width: 1100px; }
+
+    .card-body h2 { letter-spacing: 0.2px; }
+
+    /* Si se quiere más control, mover a un archivo CSS en wwwroot/css/ */
+</style>
+

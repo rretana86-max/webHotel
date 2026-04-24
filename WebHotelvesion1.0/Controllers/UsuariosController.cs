@@ -69,79 +69,49 @@ namespace WebHotel_vesion1._0.Controllers
         // POST: EmpleadosController/Create
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UsuarioViewModel user,IFormFile Imagen)
+        public async Task<IActionResult> Create(UsuarioViewModel user, IFormFile Imagen)
         {
-            Usuario usuario =null;
-            IFormFile file = null;
-            //     Success = 1,
-            // DuplicateEmailOrPassword = 2,
-            //ErrorConexionString = 3,
-            // UpdateError = 4,
-            // DeleteSuccess = 5,
-            // DeleteError = 6
-
-            // initialize properties
-
-            if (user!=null && Imagen != null) {
-                file = Imagen;
-
-                var profile = Path.Combine(_hostingEnvironment.WebRootPath, "profile");
-
-                if (!Directory.Exists(profile)) {
-                
-                Directory.CreateDirectory(profile); 
-                
-                }
-                //obtenemos el numero de archivos en el directorio 
-                int cont=Directory.GetFiles(profile).Length;
-                string filename = $"{cont:D2}.jpeg";// asignamos el nombre
-                var filepath = Path.Combine(profile, filename);//ruta donde se guardara la foto
-
-                using (var  filestream= new FileStream(filepath,FileMode.Create)) {
-                await Imagen.CopyToAsync(filestream);   
-                
-                }
-            
-
-
-               usuario  = new Usuario
-                {
-
-                    IdUsuario = user.IdUsuario,
-                    NombreCompleto = user.NombreCompleto,
-                    Correo = user.Correo,
-                    Clave = BC.HashPassword(user.Clave),//encripta la clave
-                    ImageUrl = Path.Combine("profile", filename).Replace("\\", "/")
-
-               };
+            if (user == null || Imagen == null)
+            {
+                TempData["Status"] = 0;
+                return RedirectToAction("Create");
             }
 
-            var status= _iusuario.Create(usuario);
-            int valor = (int) await status;
+            var profile = Path.Combine(_hostingEnvironment.WebRootPath, "profile");
+            if (!Directory.Exists(profile))
+            {
+                Directory.CreateDirectory(profile);
+            }
 
-            TempData["Status"] = (int)await status;
+            var fileExtension = Path.GetExtension(Imagen.FileName);
+            if (string.IsNullOrEmpty(fileExtension)) fileExtension = ".jpg";
+            var filename = Guid.NewGuid().ToString() + fileExtension;
+            var filepath = Path.Combine(profile, filename);
 
-            //initialization object usuariorol
+            using (var filestream = new FileStream(filepath, FileMode.Create))
+            {
+                await Imagen.CopyToAsync(filestream);
+            }
 
+            var usuario = new Usuario
+            {
+                IdUsuario = user.IdUsuario,
+                NombreCompleto = user.NombreCompleto,
+                Correo = user.Correo,
+                Clave = BC.HashPassword(user.Clave),
+                ImageUrl = Path.Combine("profile", filename).Replace("\\", "/")
+            };
 
+            int valor = (int)await _iusuario.Create(usuario);
+            TempData["Status"] = valor;
 
             if (valor == 1)
             {
-
-                var userrol = new UsuarioRol
-                {
-                    IdUsuario = user.IdUsuario,
-                    IdRol = user.IdRol,  
-                };
-                var status_ = await _usuarioRol.InsertUserRol(userrol);
-
+                var userrol = new UsuarioRol { IdUsuario = user.IdUsuario, IdRol = user.IdRol };
+                await _usuarioRol.InsertUserRol(userrol);
             }
 
-            
-
             return RedirectToAction("Create");
-
-
         }
 
         // GET: EmpleadosController/Edit/5
