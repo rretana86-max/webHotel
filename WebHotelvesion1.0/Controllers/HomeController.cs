@@ -36,8 +36,8 @@ namespace WebHotel_vesion1._0.Controllers
             List<Habitacion> listhabitaciones = await _habitacion.ListarHabitaciones();
 
             totalUsuarios_ = listusuarios.Count;
-            habitacionesDisponibles_ = listhabitaciones.Count(h => h.EstaDisponible == true);
-            habitacionesOcupadas_ = listhabitaciones.Count(h => h.EstaDisponible == false);
+            //habitacionesDisponibles_ = listhabitaciones.Count(h => h.EstaDisponible == true);
+            //habitacionesOcupadas_ = listhabitaciones.Count(h => h.EstaDisponible == false);
             ViewBag.totalUsuarios = totalUsuarios_;
             ViewBag.habitacionesOcupadas = habitacionesOcupadas_;
             ViewBag.habitacionesDisponibles = habitacionesDisponibles_;
@@ -57,8 +57,8 @@ namespace WebHotel_vesion1._0.Controllers
          
             var totalUsuarios = listusuarios.Count;
            
-            var habitacionesDisponibles = listhabitaciones.Count(h => h.EstaDisponible == true);
-            var habitacionesOcupadas = listhabitaciones.Count(h => h.EstaDisponible == false);
+            //var habitacionesDisponibles = listhabitaciones.Count(h => h.EstaDisponible == true);
+            //var habitacionesOcupadas = listhabitaciones.Count(h => h.EstaDisponible == false);
             //*********************************************************************************
             //  totalUsuarios_ = listusuarios.Count;
             // habitacionesDisponibles_= listhabitaciones.Count(h => h.EstaDisponible == true);
@@ -69,7 +69,7 @@ namespace WebHotel_vesion1._0.Controllers
             var datos = new
             {
                 etiquetas = new[] { "Usuarios", "Hab. Disponibles", "Hab. Ocupadas" },
-                valores = new[] { totalUsuarios, habitacionesDisponibles, habitacionesOcupadas }
+                //valores = new[] { totalUsuarios, habitacionesDisponibles, habitacionesOcupadas }
             };
             return  Json(datos);
 

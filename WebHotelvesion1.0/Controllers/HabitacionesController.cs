@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
-using FastReport;
-using FastReport.Export.PdfSimple;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,10 @@ using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Models.ViewModel;
 using WebHotel_vesion1._0.Repositories.Interfaces;
 
+
 namespace WebHotel_vesion1._0.Controllers
 {
-    
+
     [Authorize]
     public class HabitacionesController : Controller
     {
@@ -20,33 +22,35 @@ namespace WebHotel_vesion1._0.Controllers
         private readonly IHabitacion _ihabitacion;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public HabitacionesController(IConfiguration iconfigiuration,IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion) {
+        public HabitacionesController(IConfiguration iconfigiuration, IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion)
+        {
 
 
 
             _hostingEnvironment = hostingEnvironment;
             _iconfiguration = iconfigiuration;
-            _ihabitacion = ihabitacion; 
-           
+            _ihabitacion = ihabitacion;
+
 
 
 
         }
         // GET: HabitacionesController
         [Authorize(Roles = "Administrador,Empleado")]
-        public async Task<IActionResult> listarHabitaciones() {
-            
-            var habitaciones=_ihabitacion.ListarHabitaciones();  
+        public async Task<IActionResult> listarHabitaciones()
+        {
+
+            var habitaciones = _ihabitacion.ListarHabitaciones();
             return View(await habitaciones);
-        
+
         }
 
 
         // GET: HabitacionesController/Details/5
-        [Authorize(Roles ="Administrador,Empleado")]
-        public  async Task<ActionResult> Details(int id)
+        [Authorize(Roles = "Administrador,Empleado")]
+        public async Task<ActionResult> Details(int id)
         {
-            Habitacion  habitaciondetalles = await  _ihabitacion.getHabitacion(id);
+            Habitacion habitaciondetalles = await _ihabitacion.getHabitacion(id);
 
 
             return View(habitaciondetalles);
@@ -55,7 +59,7 @@ namespace WebHotel_vesion1._0.Controllers
 
 
         // GET: HabitacionesController/Create
-        [Authorize(Roles ="Administrador")]
+        [Authorize(Roles = "Administrador")]
         public ActionResult Create()
         {
             return View();
@@ -64,13 +68,14 @@ namespace WebHotel_vesion1._0.Controllers
         // POST: HabitacionesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  async Task<ActionResult> Create(HabitacionViewModel habitacion,IFormFile Imagen)
-           {
-            IFormFile file =null;
+        public async Task<ActionResult> Create(HabitacionViewModel habitacion, IFormFile Imagen)
+        {
+            IFormFile file = null;
 
-            try 
+            try
             {
-                if (habitacion != null && Imagen != null) {
+                if (habitacion != null && Imagen != null)
+                {
 
 
 
@@ -82,20 +87,21 @@ namespace WebHotel_vesion1._0.Controllers
                     var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
 
 
-                    if (!Directory.Exists(uploads)) {
+                    if (!Directory.Exists(uploads))
+                    {
 
 
                         Directory.CreateDirectory(uploads);
-                    
+
                     }
-                    int cont =Directory.GetFiles(uploads).Length;
+                    int cont = Directory.GetFiles(uploads).Length;
                     // cambiamos el nombre de la imagen 
-                    String filename= $"{ cont:D2}.jpeg";     
+                    String filename = $"{cont:D2}.jpeg";
 
 
                     //var filePath = Path.Combine(uploads, file.FileName);
                     //combinamos la ruta con el nuevo nombre
-                    var filePath=Path.Combine(uploads, filename);
+                    var filePath = Path.Combine(uploads, filename);
 
 
                     //guardamos el archivo
@@ -116,8 +122,8 @@ namespace WebHotel_vesion1._0.Controllers
                         PrecioPorNoche = habitacion.PrecioPorNoche,
                         imageUrl = Path.Combine("uploads", filename).Replace("\\", "/").Trim()
 
-                };
-                   _ihabitacion.CrearHabitacion(_habitacion);   
+                    };
+                    _ihabitacion.CrearHabitacion(_habitacion);
 
                 }
             }
@@ -127,14 +133,15 @@ namespace WebHotel_vesion1._0.Controllers
             }
 
 
-            return  RedirectToAction("Create");
+            return RedirectToAction("Create");
         }
 
 
         // GET: HabitacionesController/Edit/5
-        [Authorize(Roles ="Administrador,Empleado")]
-        public async Task< ActionResult> Edit(int  id)
-        { Habitacion  habitacionupdate = await _ihabitacion.getHabitacion(id);
+        [Authorize(Roles = "Administrador,Empleado")]
+        public async Task<ActionResult> Edit(int id)
+        {
+            Habitacion habitacionupdate = await _ihabitacion.getHabitacion(id);
             return View(habitacionupdate);
 
         }
@@ -143,7 +150,7 @@ namespace WebHotel_vesion1._0.Controllers
         // POST: HabitacionesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task < ActionResult> Edit(Habitacion habitacion, IFormFile Imagen)
+        public async Task<ActionResult> Edit(Habitacion habitacion, IFormFile Imagen)
         {
             if (habitacion == null)
             {
@@ -164,10 +171,10 @@ namespace WebHotel_vesion1._0.Controllers
                     string FileNameExtension = Path.GetExtension(Imagen.FileName);// obtenemos la extension del archivo
 
                     string NewImageName = Guid.NewGuid().ToString() + FileNameExtension;//creamos un nuevo nombre 
-                  
+
                     var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");  //obtiene la  Ruta completa de la carpeta uploads
 
-                
+
                     if (!string.IsNullOrEmpty(habitacionExistente.imageUrl))    // Eliminar imagen anterior si existe
                     {
                         var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, habitacionExistente.imageUrl);
@@ -175,12 +182,12 @@ namespace WebHotel_vesion1._0.Controllers
                         oldImagePath = oldImagePath.Replace("\\", "/");
                         if (System.IO.File.Exists(oldImagePath))
                         {
-                           System.IO.File.Delete(oldImagePath);
-                            
+                            System.IO.File.Delete(oldImagePath);
+
                         }
                     }
-                   
-                  
+
+
                     var filePath = Path.Combine(uploads, NewImageName);
 
                     // Guardar la nueva imagen
@@ -194,13 +201,13 @@ namespace WebHotel_vesion1._0.Controllers
                 }
 
                 // Actualizar otros datos de la habitación
-               
+
                 habitacionExistente.Numero = habitacion.Numero;
                 habitacionExistente.Descripcion = habitacion.Descripcion;
                 habitacionExistente.Tipo = habitacion.Tipo;
                 habitacionExistente.PrecioPorNoche = habitacion.PrecioPorNoche;
-                habitacionExistente.EstaDisponible = habitacion.EstaDisponible;
-             
+            
+
 
                 await _ihabitacion.ActualizarHabitacion(habitacionExistente);
 
@@ -214,36 +221,37 @@ namespace WebHotel_vesion1._0.Controllers
         }
 
         // metodo para ver mas informacion relacionada con la habitacion 
-        public async Task<IActionResult> Detalle(int id) {
+        public async Task<IActionResult> Detalle(int id)
+        {
             var stripePublicKey = _iconfiguration["Stripe:PublicKey"];
 
             ViewBag.StripePublicKey = stripePublicKey;
-      
+
             Habitacion habitacionDetalle = await _ihabitacion.getHabitacion(id);
             return View(habitacionDetalle);
-        
+
         }
 
 
 
 
         // GET: HabitacionesController/Delete/5
-        [Authorize(Roles ="Administrador")]
-        public async Task<IActionResult>  Delete(int  id)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Delete(int id)
         {
-            Habitacion habitacion= new Habitacion();
-            habitacion= await _ihabitacion.getHabitacion(id);
-            
+            Habitacion habitacion = new Habitacion();
+            habitacion = await _ihabitacion.getHabitacion(id);
+
             return View(habitacion);
         }
 
-       
-      
-        
+
+
+
         // POST: HabitacionesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteHabitacion(int id )
+        public ActionResult DeleteHabitacion(int id)
         {
             try
             {
@@ -257,7 +265,7 @@ namespace WebHotel_vesion1._0.Controllers
                 return View();
             }
 
-            
+
         }
 
         public async Task<IActionResult> ReporteHabitaciones()
@@ -267,98 +275,100 @@ namespace WebHotel_vesion1._0.Controllers
         }
 
 
-
-        // accion para exportar el reporte de habitaciones a PDF utilizando FastReport  
+//  crear exportar  reporte  pdf con QuestPDF
         public async Task<IActionResult> ExportarPDF()
         {
             var habitaciones = await _ihabitacion.ListarHabitaciones();
-            using var report = new FastReport.Report();
 
-            var dataTable = new System.Data.DataTable("Habitaciones");
-            dataTable.Columns.Add("Numero");
-            dataTable.Columns.Add("Tipo");
-            dataTable.Columns.Add("PrecioPorNoche");
-            dataTable.Columns.Add("Disponibilidad");
-            dataTable.Columns.Add("Descripcion");
-
-            foreach (var h in habitaciones)
+            var pdf = QuestPDF.Fluent.Document.Create(container =>
             {
-                dataTable.Rows.Add(
-                    h.Numero,
-                    h.Tipo,
-                    h.PrecioPorNoche.ToString("N2"),
-                    h.EstaDisponible ? "Disponible" : "No Disponible",
-                    h.Descripcion
-                );
-            }
+                container.Page(page =>
+                {
+                    page.Margin(30);
 
-            var dataSet = new System.Data.DataSet();
-            dataSet.Tables.Add(dataTable);
-            report.RegisterData(dataSet, "Habitaciones");
+                    //  TÍTULO
+                    page.Header().Column(col =>
+                    {
+                        col.Item().Text("Reporte de Habitaciones - WebHotel")
+                            .FontSize(18)
+                            .Bold()
+                            .AlignCenter();
 
-            // Página
-            var page = new FastReport.ReportPage();
-            page.Name = "Page1";
-            report.Pages.Add(page);
+                        col.Item().LineHorizontal(1);
+                    });
 
-            // Título
-            var titleBand = new FastReport.ReportTitleBand();
-            titleBand.Name = "ReportTitle1";
-            titleBand.Height = FastReport.Utils.Units.Centimeters * 2;
-            page.Bands.Add(titleBand);
+                    // 🔹 TABLA
+                    page.Content().PaddingTop(10).Table(table =>
+                    {
+                        // COLUMNAS
+                        table.ColumnsDefinition(columns =>
+                        {
+                            columns.ConstantColumn(60);
+                            columns.RelativeColumn();
+                            columns.ConstantColumn(90);
+                            columns.ConstantColumn(110);
+                            columns.RelativeColumn();
+                        });
 
-            var titleText = new FastReport.TextObject();
-            titleText.Name = "Title";
-            titleText.Bounds = new System.Drawing.RectangleF(0, 0,
-                FastReport.Utils.Units.Centimeters * 19, FastReport.Utils.Units.Centimeters * 1.5f);
-            titleText.Text = "Reporte de Habitaciones - WebHotel";
-            titleText.HorzAlign = FastReport.HorzAlign.Center;
-            titleText.Font = new System.Drawing.Font("Arial", 14, System.Drawing.FontStyle.Bold);
-            titleBand.Objects.Add(titleText);
+                        // 🔥 HEADER NEGRO (ESTILO WEB)
+                        table.Header(header =>
+                        {
+                            header.Cell().Element(CellHeaderDark).Text("Número");
+                            header.Cell().Element(CellHeaderDark).Text("Tipo");
+                            header.Cell().Element(CellHeaderDark).Text("Precio");
+                            header.Cell().Element(CellHeaderDark).Text("Disponibilidad");
+                            header.Cell().Element(CellHeaderDark).Text("Descripción");
+                        });
 
-            // Banda de datos
-            var dataBand = new FastReport.DataBand();
-            dataBand.Name = "Data1";
-            dataBand.Height = FastReport.Utils.Units.Centimeters * 1;
-            dataBand.DataSource = report.GetDataSource("Habitaciones");
-            page.Bands.Add(dataBand);
+                        // 🔹 DATOS
+                        int index = 0;
 
-            // Columnas
-            float[] widths = { 3, 3, 3, 3, 7 };
-            string[] fields = { "Numero", "Tipo", "PrecioPorNoche", "Disponibilidad", "Descripcion" };
-            float x = 0;
+                        foreach (var h in habitaciones)
+                        {
+                            var bgColor = index % 2 == 0 ? Colors.Grey.Lighten4 : Colors.White;
 
-            foreach (var i in Enumerable.Range(0, fields.Length))
-            {
-                var col = new FastReport.TextObject();
-                col.Name = $"Col{fields[i]}";
-                col.Bounds = new System.Drawing.RectangleF(
-                    FastReport.Utils.Units.Centimeters * x, 0,
-                    FastReport.Utils.Units.Centimeters * widths[i],
-                    FastReport.Utils.Units.Centimeters * 1);
-                col.Text = $"[Habitaciones.{fields[i]}]";
-                col.Font = new System.Drawing.Font("Arial", 9);
-                dataBand.Objects.Add(col);
-                x += widths[i];
-            }
+                            table.Cell().Element(c => CellBody(c).Background(bgColor)).Text(h.Numero);
+                            table.Cell().Element(c => CellBody(c).Background(bgColor)).Text(h.Tipo);
+                            table.Cell().Element(c => CellBody(c).Background(bgColor))
+                                .Text($"₡ {h.PrecioPorNoche:N2}");
 
-            report.GetDataSource("Habitaciones").Enabled = true;
-            report.Prepare();
+                           
+                            index++;
+                        }
+                    });
 
-            System.Diagnostics.Debug.WriteLine($"Páginas generadas: {report.PreparedPages.Count}");
+                    // 🔹 FOOTER
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(x =>
+                        {
+                            x.Span("Página ");
+                            x.CurrentPageNumber();
+                        });
+                });
+            });
 
-            using var ms = new MemoryStream();
-            var pdfExport = new FastReport.Export.PdfSimple.PDFSimpleExport();
-            report.Export(pdfExport, ms);
-            ms.Position = 0;
+            var stream = new MemoryStream();
+            pdf.GeneratePdf(stream);
 
-            var bytes = ms.ToArray();
-            if (bytes.Length == 0)
-            {
-                return Content("El PDF está vacío - problema en el reporte");
-            }
+            return File(stream.ToArray(), "application/pdf", "ReporteHabitaciones.pdf");
+        }
 
-            return File(bytes, "application/pdf", "ReporteHabitaciones.pdf");
+        // 🔹 ESTILO HEADER
+        static IContainer CellHeaderDark(IContainer container)
+        {
+            return container
+                .Background(Colors.Black)
+                .Padding(6)
+                .AlignCenter()
+                .DefaultTextStyle(x => x.FontColor(Colors.White).Bold());
+        }
+        // 🔹 ESTILO BODY
+        static IContainer CellBody(IContainer container)
+        {
+            return container
+                .Padding(5)
+                .AlignCenter();
         }
     }
 }

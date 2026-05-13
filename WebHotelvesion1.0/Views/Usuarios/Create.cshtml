@@ -1,323 +1,142 @@
 ﻿@model WebHotel_vesion1._0.Models.ViewModel.UsuarioViewModel;
 
-
 @using WebHotel_vesion1._0.Enums
 
-
-@if (TempData["Status"] != null)
-{
-    // Serializamos el valor del status para pasarlo de forma segura a JavaScript
-    var statusValue = Convert.ToInt32(TempData["Status"]);
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var status = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(statusValue));
-
-            // Configuración común para SweetAlert
-            var swalConfigTimer = {
-                timer: 3500,
-                timerProgressBar: true,
-                showConfirmButton: false
-            };
-
-            switch (status) {
-                case 1: // UserCreationStatus.Success
-                    Swal.fire(Object.assign({
-                        title: 'Usuario creado',
-                        text: 'El usuario se ha creado correctamente.',
-                        icon: 'success',
-                        background: 'green',
-                        color: '#fff',
-                        iconColor: '#ffffff'
-                    }, swalConfigTimer)).then(function () {
-                        // Si existe el formulario, lo reseteamos
-                        var form = document.getElementById("formulario_registro");
-                        if (form) form.reset();
-                    });
-                    break;
-
-                case 2: // UserCreationStatus.DuplicateEmailOrPassword
-                    Swal.fire(Object.assign({
-                        title: 'Error',
-                        text: 'El correo o la contraseña ya están en uso.',
-                        icon: 'error',
-                        background: 'red',
-                        color: '#fff'
-                    }, swalConfigTimer));
-                    break;
-
-                case 3: // UserCreationStatus.ErrorConexionString
-                    Swal.fire(Object.assign({
-                        title: 'Error de conexión',
-                        text: 'Ocurrió un problema de conexión con la base de datos. Inténtalo más tarde.',
-                        icon: 'error',
-                        background: '#141420',
-                        color: '#fff'
-                    }, swalConfigTimer));
-                    break;
-
-                case 4: // UserCreationStatus.UpdateError
-                    Swal.fire(Object.assign({
-                        title: 'Fallo al actualizar',
-                        text: 'No se pudo actualizar el registro.',
-                        icon: 'error',
-                        background: '#141420',
-                        color: '#fff'
-                    }, swalConfigTimer));
-                    break;
-
-                case 5: // UserCreationStatus.DeleteSuccess
-                    Swal.fire(Object.assign({
-                        title: 'Eliminado',
-                        text: 'El registro se eliminó correctamente.',
-                        icon: 'success',
-                        background: '#141420',
-                        color: '#fff'
-                    }, swalConfigTimer));
-                    break;
-
-                case 6: // UserCreationStatus.DeleteError
-                    Swal.fire(Object.assign({
-                        title: 'Error al eliminar',
-                        text: 'No se pudo eliminar el registro.',
-                        icon: 'error',
-                        background: '#141420',
-                        color: '#fff'
-                    }, swalConfigTimer));
-                    break;
-
-                default:
-                    // Opcional: manejar valores inesperados
-                    break;
-            }
-        });
-    </script>
-
-    <style>
-        /* Personalización similar a la vista Dasboard para la barra de progreso */
-        .swal2-popup {
-            --swal2-timer-progress-bar-background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd56b 100%);
-            --swal2-timer-progress-bar-height: 6px;
-        }
-        .swal2-timer-progress-bar {
-            background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd56b 100%) !important;
-            height: 6px !important;
-            border-radius: 4px !important;
-        }
-        .swal2-icon.swal2-success .swal2-success-ring,
-        .swal2-icon.swal2-success .swal2-success-line-tip,
-        .swal2-icon.swal2-success .swal2-success-line-long {
-            stroke: #ffffff;
-        }
-    </style>
+@{
+    ViewData["Title"] = "Crear Usuario";
 }
 
-<!DOCTYPE html>
+<div class="container py-4">
+    <div class="row justify-content-center" style="margin-top:2rem">
+        <div class="col-12 col-md-6">
+            <div class="card shadow-lg border-0">
+                <h4 class="card-header text-center bg-success text-white">Registro de Usuarios</h4>
+                <div class="card-body">
+                    <form asp-controller="Usuarios" asp-action="Create" method="post" id="form-usuario" enctype="multipart/form-data" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
+                        <div class="mb-2">
+                            <label asp-for="IdUsuario" class="form-label"></label>
+                            <input asp-for="IdUsuario" class="form-control" required />
+                            <span asp-validation-for="IdUsuario" class="text-danger"></span>
+                        </div>
 
-        <div class="row justify-content-center" style="margin-top:100px">
-            <div class="col-12 col-md-6">
-            <div class="card  shadow-lg border-0">
-                    <h4 class="text-center  bg-success">Modulo de registro de Usuarios</h4>
-                    <div class="card-body">
+                        <div class="mb-2">
+                            <label asp-for="NombreCompleto" class="form-label"></label>
+                            <input asp-for="NombreCompleto" class="form-control" required />
+                            <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                        </div>
 
+                        <div class="mb-2">
+                            <label asp-for="Correo" class="form-label"></label>
+                            <input asp-for="Correo" class="form-control" type="email" required />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
 
-                        <form asp-controller="Usuarios" asp-action="Create" method="post" id="formulario_registro" class="bg-white" enctype="multipart/form-data">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-2">
+                            <label asp-for="Clave" class="form-label"></label>
+                            <input asp-for="Clave" class="form-control" type="password" required />
+                            <span asp-validation-for="Clave" class="text-danger"></span>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="IdRol">Rol</label>
+                            <select id="IdRol" name="IdRol" class="form-control" required>
+                                <option value="" disabled selected>Seleccione un rol</option>
+                                @foreach (var rol in Model.Roles)
+                                {
+                                    <option value="@rol.IdRol">@rol.Nombre</option>
+                                }
+                            </select>
+                        </div>
 
-                            <div class="row justify-content-center mt-1">
-                                <div class="col-12">
+                        <div class="mb-3 d-flex gap-2 align-items-center">
+                            <img id="imagenPrevisualizacion" class="card-image" style="width:80px;height:80px;border-radius:50%;object-fit:cover;background:#f5f5f5;" />
+                            <input id="Imagen" name="Imagen" type="file" accept="image/*" onchange="CargarImagen(event)" />
+                        </div>
 
-                                    <div class="form-group">
-
-                                        <label asp-for="IdUsuario" class="control-label"></label>
-                                        <div class="input-group bg-white">
-                                            <div class="input-group-prepend w-100">
-                                                <span><i class="fas fa-id-card"></i></span>
-                                                <input asp-for="IdUsuario" class="form-control" required placeholder="IdUsuario" />
-                                                <span asp-validation-for="IdUsuario" class="text-danger"></span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                            <div class="row justify-content-center mt-1 ">
-                                <div class=" col-12">
-                                    <div class="form-group">
-                                        <label asp-for="NombreCompleto" class="control-label"></label>
-                                        <div class="input-group bg-white">
-                                            <div class="input-group-prepend w-100">
-                                                <span><i class="fa-solid fa-user"></i></span>
-                                                <input asp-for="NombreCompleto" class="form-control" required placeholder="Nombre Completo" />
-                                                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
-                                            </div>
-
-
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                            <div class="row justify-content-center mt-1">
-                                <div class="col-12">
-
-
-                                    <div class="form-group">
-                                        <label asp-for="Correo" class="control-label"></label>
-                                        <div class="input-group bg-white">
-                                            <div class="input-group-prepend w-100 ">
-                                                <span><i class="fa-solid fa-envelope"></i></span>
-                                                <input asp-for="Correo" class="form-control" required placeholder="Correo" />
-                                                <span asp-validation-for="Correo" class="text-danger"></span>
-                                            </div>
-
-
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-8 ">
-                                    <div class="form-group">
-                                        <label asp-for="Clave" class="control-label"></label>
-                                        <div class="input-group bg-white">
-                                            <div class="input-group-prepend w-100">
-                                            <span><i class="fa-solid fa-key"></i></span>
-                                            <input asp-for="Clave" class="form-control" required placeholder="Clave" />
-                                            <span asp-validation-for="Clave" class="text-danger"></span>
-                                        </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="IdRol" class="control-label">Rol</label>
-                                        <select name="IdRol" class="form-control bg-light text-dark" required>
-                                        <option value="" disabled selected>Seleccione un rol</option>  @*obliga selecionar una opcion  *@
-                                            @foreach (var rol in Model.Roles)
-                                            {
-                                                <option value="@rol.IdRol">@rol.Nombre</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                          <div class="row">
-                             <div class="col-12 col-md-8">
-
-                                <div class="form-group ">
-                                    <img id="imagenPrevisualizacion" class="card-image" style="width:200px;height:200px; ">
-                                    <input id="Imagen" name="Imagen" type="file" accept="image/*" required="solo imagenes " onchange="CargarImagen(event)" />
-                                </div>
-                            </div>
-
-
-
-                             
-
-
-                          </div>
-
-                            <div class="row justify-content-center">
-                                <div class="col-12 col-md-4" style="margin-bottom:2px">
-                                    <a asp-action="listar_Empleados" class="btn   bg-warning btn-outline">Atras</a>
-                                </div>
-
-                                <div class="col-12 col-md-4">
-
-                                    <input type="submit" value="Agregar registro" class="btn btn-success" />
-
-                                </div>
-
-
-
-                            </div>
-                        </form>
-
-
-                    </div>
-
-                   
+                        <div class="d-flex gap-2">
+                            <a asp-action="listar_Empleados" class="btn btn-outline-secondary">Volver</a>
+                            <input type="submit" value="Agregar registro" class="btn btn-success ms-auto" id="btn-submit-usuario" />
+                        </div>
+                    </form>
                 </div>
+            </div>
         </div>
     </div>
 
-</body>
 
-<script>
+    @{
+        int status = Convert.ToInt32(TempData["Status"]);
 
-    var CargarImagen = function (event) {
-
-        var result = document.getElementById("imagenPrevisualizacion");
-        result.src = URL.createObjectURL(event.target.files[0]);
-
+        Console.WriteLine("Estatus :",status);
     }
+</div>
 
-</script>
-<style>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('form-usuario');
+            var btnSubmit = document.getElementById('btn-submit-usuario');
 
-    #IdUsuario, #NombreCompleto, #Correo ,#Clave, #IdRol {
-      
-        border:none;
-    
-    
-     
+            if (!form) return;
 
+            // No usar attachFormSubmitPreventDouble aquí antes del submit diferido
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // prevenimos el submit inmediato
 
- font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-   
+                // mostrar modal/overlay profesional
+                if (window.Swal) {
+                    Swal.fire({
+                        title: 'Procesando datos',
+                        html: '<div style="display:flex;flex-direction:column;align-items:center;gap:10px;">' +
+                              '<div class="spinner-border text-light" role="status" style="width:3rem;height:3rem"><span class="visually-hidden">Loading...</span></div>' +
+                              '<div style="font-size:0.95rem;color:#e6e6e6">Por favor espere...</div>' +
+                              '</div>',
+                        background: '#141420',
+                        color: '#fff',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        didOpen: function () {
+                            try { Swal.showLoading(); } catch (err) { /* ignore */ }
+                        }
+                    });
+                } else if (window.AppAlerts && typeof AppAlerts.showLoading === 'function') {
+                    AppAlerts.showLoading('Procesando datos...');
+                } else {
+                    if (btnSubmit) {
+                        btnSubmit.disabled = true;
+                        if (btnSubmit.tagName.toLowerCase() === 'input') btnSubmit.value = 'Procesando...';
+                        else btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+                    }
+                }
 
+                // pequeña pausa para que el usuario pueda ver la animación
+                var delayMs = 900; // ajustar si quieres más/menos tiempo
+                setTimeout(function () {
+                    // prevenir doble envío a partir de ahora
+                    if (window.AppAlerts && typeof AppAlerts.attachFormSubmitPreventDouble === 'function') {
+                        AppAlerts.attachFormSubmitPreventDouble(form);
+                    } else {
+                        // fallback: desactivar botón permanentemente
+                        if (btnSubmit) btnSubmit.disabled = true;
+                    }
 
-       }
-       .input-group-prepend{
-           padding-top:3px;
-          overflow:hidden;
-         padding-left:2%;
-       border :2px solid whiteSmoke !important;
-       border-radius:12px 
-       
-       }
-    
-   
+                    // realizar submit real
+                    form.submit();
+                }, delayMs);
+            });
+        });
 
-    body{
-       background-color:darkslategray
-    } 
-   
-    label{
-    
-    color:black;
-    
-    }
-
-    
-
-    .input-group{ 
-        color:crimson !important;
-    /* margin-left:4px !important; */
-  
-    /* width:99% */
-    }
-</style>
+        // preview imagen (preservado)
+        var CargarImagen = function (event) {
+            var result = document.getElementById("imagenPrevisualizacion");
+            if (event.target.files && event.target.files[0]) {
+                result.src = URL.createObjectURL(event.target.files[0]);
+            } else {
+                result.src = '';
+            }
+        }
+    </script>
+}

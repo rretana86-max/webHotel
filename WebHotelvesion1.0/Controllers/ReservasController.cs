@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
 
@@ -10,11 +11,13 @@ namespace WebHotel_vesion1._0.Controllers
         // GET: ReservasController
 
         private readonly IReserva _ireserva;
-
-        public ReservasController(IReserva ireserva) {
+  
+        public ReservasController(IReserva ireserva )
+        {
 
 
             _ireserva = ireserva;
+           
         }
         public ActionResult GetReservas()
         {
@@ -31,15 +34,16 @@ namespace WebHotel_vesion1._0.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EfectuarReservacion(int Id,DateTime ckeck_in,DateTime ckeck_out )
-        {
+        { Reserva r= new Reserva();
+           
             try
             {
                 // validaciones de seguridad extras
               String UsuarioId_ =Convert.ToString(User.FindFirst("IdUsuario").Value);// almacenamos el id del usuario que esta con sesion activa 
 
-                if ((ckeck_in!=null &&ckeck_out!=null) && (UsuarioId_ != null)&&(Id!=0)) { 
+                if ((ckeck_in!=null &&ckeck_out!=null) && (UsuarioId_ != null)&&(Id!=0)) {
 
-                  // creamos la reserva
+                    // creamos la reserva
                     Reserva reserva = new Reserva()
                     {
 
@@ -47,8 +51,8 @@ namespace WebHotel_vesion1._0.Controllers
                         UsuarioId = UsuarioId_,
                         FechadIngreso = ckeck_in,
                         FechaSalida = ckeck_out,
-                        MetodoPago = "Efectivo",
-                        Confirmado = true
+                        MetodoPago = "TARJETA",
+                        Estado = EstadoReserva.Pendiente
 
 
                     };

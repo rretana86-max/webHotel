@@ -35,9 +35,6 @@ namespace WebHotel_vesion1._0.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool>("EstaDisponible")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -68,10 +65,8 @@ namespace WebHotel_vesion1._0.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Confirmado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaSalida")
                         .HasColumnType("datetime2");

@@ -51,7 +51,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
             catch (SqlException ex)
             {
-                _logger.LogError("Duplicado de clave primaria");
+                _logger.LogError(" Error Duplicado de clave primaria");
 
                 return UserCreationStatus.ErrorConexionString;
             }

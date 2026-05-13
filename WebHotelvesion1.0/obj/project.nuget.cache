@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wrrB8dqcpGc=",
+  "dgSpecHash": "k/zYVqIOTvk=",
   "success": true,
   "projectFilePath": "C:\\CursosWeb\\webhotel\\WebHotelvesion1.0\\WebHotelvesion1.0.csproj",
   "expectedPackageFiles": [
@@ -137,6 +137,8 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\nuget.projectmodel\\6.11.0\\nuget.projectmodel.6.11.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\nuget.protocol\\6.11.0\\nuget.protocol.6.11.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\nuget.versioning\\6.11.0\\nuget.versioning.6.11.0.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\questpdf\\2026.2.4\\questpdf.2026.2.4.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\rotativa.aspnetcore\\1.4.0\\rotativa.aspnetcore.1.4.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\stripe.net\\50.3.0\\stripe.net.50.3.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",

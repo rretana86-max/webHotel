@@ -13,7 +13,7 @@
             <h4 class="card-header text-dark text-center bg-success">Registro habitaciones</h4>
             <div class="card-body">
 
-                <form asp-action="Create" enctype="multipart/form-data">
+                <form asp-action="Create" enctype="multipart/form-data" id="form-create-room">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row justify-content-center mb-2">
@@ -107,30 +107,45 @@
     </div>
 </div>
 
-
-
-
-
                             <style>
                                  body {
                                      background-color: whiteSmoke
                                  }</style>
 
-
-
-
 <script>
-
-   
-
-
-
     // permite visualizar la imagen
     var CargarImagen = function (event) {
-
         var result = document.getElementById("imagenPrevisualizacion");
         result.src = URL.createObjectURL(event.target.files[0]);
-
     }
+</script>
 
-</script>  
+@section Scripts {
+    @* Cargar library de alerts una sola vez por layout idealmente; si no está global, la incluimos aquí *@
+    <script src="~/js/alerts.js"></script>
+
+    <script>
+        // Integración de alerts.js en la vista:
+        // - Previene doble envío
+        // - Muestra un modal "Procesando..." al hacer submit
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('form-create-room');
+            if (!form || !window.AppAlerts) return;
+
+            // Prevenir doble submit y mostrar loading
+            AppAlerts.attachFormSubmitPreventDouble(form);
+
+            form.addEventListener('submit', function (e) {
+                // Mostrar loading (SweetAlert2 si está disponible; fallback overlay si no)
+                AppAlerts.showLoading('Registrando habitación...');
+
+                // Opcional: demo de "simulación" de procesamiento
+                // Si quieres retrasar el envío para mostrar el loader (solo para demo), descomenta:
+                e.preventDefault();
+                 setTimeout(function () { form.submit(); }, 800);
+
+                // Nota: con envío normal no hace falta hideLoading() porque la navegación recargará la página.
+            });
+        });
+    </script>
+}

@@ -1,105 +1,225 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Iniciar sesión</title>
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/AdmindLTE/plugins/fontawesome-free/css/all.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="/AdmindLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/AdmindLTE/dist/css/adminlte.min.css">
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600&display=fallback" />
+
+    <!-- Font Awesome / AdminLTE (ya en tu proyecto) -->
+    <link rel="stylesheet" href="/AdmindLTE/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/AdmindLTE/dist/css/adminlte.min.css" />
+
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --accent-1: #0d6efd; /* azul */
+            --accent-2: #6610f2; /* morado */
+            --card-radius: 14px;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(135deg, #0f172a 0%, #0b3d91 50%, #0b2b4f 100%);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-viewport {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 920px;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .login-left {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+        }
+
+        .brand-logo {
+            width: 140px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+            transition: transform .25s ease;
+        }
+
+        .brand-logo:hover { transform: translateY(-4px); }
+
+        .login-right {
+            padding: 2rem;
+            color: #0f172a;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), #fff);
+        }
+
+        .login-title {
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-sub {
+            font-size: .9rem;
+            color: #6b7280;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            height: 46px;
+        }
+
+        .btn-primary-cta {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            border: none;
+            box-shadow: 0 6px 18px rgba(11,37,88,0.25);
+            border-radius: 8px;
+            height: 46px;
+            font-weight: 600;
+        }
+
+        .helper-links {
+            font-size: .9rem;
+            color: #6b7280;
+        }
+
+        @@media (max-width: 767.98px) {
+            .login-card { max-width: 420px; }
+            .brand-logo { width: 120px; }
+            .login-left { padding: 1.25rem; }
+            .login-right { padding: 1.25rem; }
+        }
+    </style>
 </head>
-<body class="hold-transition login-page bg-dark">
-    <div class="login-box">
-        
-        <!-- /.login-logo -->
-        <div class="card  card-outline card-primary shadow-lg borde-0">
-            <div class="card-body login-card-body">
-               <div class="row justify-content-center pb-2"style="margin-bottom:2px ;border-bottom:1px solid gray">
+<body>
+    <div class="login-viewport">
+        <div class="login-card d-flex flex-row">
+            <!-- LEFT: marca / mensaje -->
+            <div class="login-left col-md-5 d-none d-md-flex">
+                <img src="/AdmindLTE/dist/img/hotel.png" alt="logo" class="brand-logo mb-3" />
+                <h4 class="mb-2">WebHotel</h4>
+                <p class="text-center" style="max-width:220px; color: #cbd5e1;">
+                    Panel de administración — administra usuarios, habitaciones y reportes.
+                </p>
+            </div>
 
-                    <img src="/AdmindLTE/dist/img/hotel.png" style="width:150px;height:100px" />
-               </div> 
+            <!-- RIGHT: formulario -->
+            <div class="login-right col-12 col-md-7">
+                <h3 class="login-title">Iniciar sesión</h3>
+                <p class="login-sub">Ingresa con tu correo y contraseña para acceder al panel.</p>
 
-                <p class="login-box-msg"><strong>Iniciar sesion</strong></p>
-
-                <form asp-controller=  "Acceso" asp-action="Login" method="post">
-                    <div class="input-group mb-3" style="border-radius:8px">
-                        <input type="email" class="form-control" placeholder="Email" name="Correo" >
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
+                <form asp-controller="Acceso" asp-action="Login" method="post" id="login-form" autocomplete="on" novalidate>
+                    <div class="mb-3">
+                        <label for="Correo" class="form-label visually-hidden">Correo</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fas fa-envelope"></i></span>
+                            <input id="Correo" name="Correo" type="email" class="form-control border-start-0" placeholder="Correo electrónico" required autocomplete="username" />
                         </div>
                     </div>
-                    <div class="input-group mb-3" style="border-radius:8px">
-                        <input type="password" class="form-control" placeholder="Password" name="Clave">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
+
+                    <div class="mb-3">
+                        <label for="Clave" class="form-label visually-hidden">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fas fa-lock"></i></span>
+                            <input id="Clave" name="Clave" type="password" class="form-control border-start-0" placeholder="Contraseña" required autocomplete="current-password" />
                         </div>
                     </div>
-                    <div class="row justyfy-content-center"style="padding-left:19%">
-                       
-                        <!-- /.col -->
-                        <div class="col-12 col-md-8 w-100">
-                            <input type="submit" class="btn btn-outline btn-success btn-lg" value="Iniciar Sesion"></>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remember" name="Remember" />
+                            <label class="form-check-label helper-links" for="remember">Recuérdame</label>
                         </div>
-                        <!-- /.col -->
+                        <a href="#" class="helper-links">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" id="btnLogin" class="btn btn-primary-cta">Iniciar sesión</button>
+                    </div>
+
+                    <div class="text-center helper-links">
+                        <small>¿No tienes una cuenta? <a href="#" class="text-decoration-none">Contáctanos</a></small>
                     </div>
                 </form>
 
-              
-                <!-- /.social-auth-links -->
-
-               
-            <input type="text"  id="message"value="@ViewBag.Mensaje" hidden/>
-
-                @if (ViewBag.Mensaje != null && ViewBag.Mensaje!="")
-                
+                @* Mensajes de error desde servidor (SweetAlert ya cargado) *@
+                @if (ViewBag.Mensaje != null && ViewBag.Mensaje != "")
                 {
-
-
                     <script>
-                        Swal.fire({
-                            title: "¡Error!",
-                            text: "@ViewBag.Mensaje",
-                            icon: "error",
-                            confirmButtonColor: "#e74c3c",
-                            confirmButtonText: "Intentar de nuevo",
-                            background: "#fff0f0",
-                            color: "#333333",
-                            iconColor: "#e74c3c"
+                        document.addEventListener('DOMContentLoaded', function () {
+                            Swal.fire({
+                                title: "¡Error!",
+                                text: "@ViewBag.Mensaje",
+                                icon: "error",
+                                confirmButtonColor: "#e74c3c",
+                                confirmButtonText: "Intentar de nuevo",
+                                background: "#fff",
+                                color: "#333"
+                            });
                         });
                     </script>
-                
                 }
-
             </div>
-            <!-- /.login-card-body -->
         </div>
     </div>
-    <!-- /.login-box -->
-    <!-- jQuery -->
+
+    <!-- Scripts -->
     <script src="/AdmindLTE/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
     <script src="/AdmindLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
     <script src="/AdmindLTE/dist/js/adminlte.min.js"></script>
 
+    <!-- Optional global alerts helper (fallback overlay) -->
+    <script src="~/js/alerts.js"></script>
 
-    
+    <script>
+        (function () {
+            var form = document.getElementById('login-form');
+            var btn = document.getElementById('btnLogin');
 
+            if (!form) return;
+
+            // Evitar doble envío y mostrar indicador de procesamiento
+            form.addEventListener('submit', function (e) {
+                // Prevención solo si AppAlerts está disponible; de lo contrario, desactivar botón y mostrar texto.
+                if (window.AppAlerts) {
+                    AppAlerts.attachFormSubmitPreventDouble(form);
+                    AppAlerts.showLoading('Iniciando sesión...');
+                    // No evitar submit: navegación seguirá y el loading se mostrará hasta que cambie la página.
+                    return;
+                }
+
+                // Fallback minimal: desactivar botón para evitar doble click y mostrar texto
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Iniciando...';
+            });
+        })();
+    </script>
 </body>
 </html>

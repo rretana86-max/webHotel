@@ -94,6 +94,14 @@
               "target": "Package",
               "version": "[8.0.7, )"
             },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2026.2.4, )"
+            },
+            "Rotativa.AspNetCore": {
+              "target": "Package",
+              "version": "[1.4.0, )"
+            },
             "Stripe.net": {
               "target": "Package",
               "version": "[50.3.0, )"

@@ -33,16 +33,7 @@
                             <td>@h.Numero</td>
                             <td>@h.Tipo</td>
                             <td>₡@h.PrecioPorNoche.ToString("N2")</td>
-                            <td>
-                                @if (h.EstaDisponible)
-                                {
-                                    <span class="badge badge-success">Disponible</span>
-                                }
-                                else
-                                {
-                                    <span class="badge badge-danger">No Disponible</span>
-                                }
-                            </td>
+                        
                             <td>@h.Descripcion</td>
                         </tr>
                     }

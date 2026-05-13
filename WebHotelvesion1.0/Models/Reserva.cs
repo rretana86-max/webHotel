@@ -1,4 +1,6 @@
-﻿namespace WebHotel_vesion1._0.Models
+﻿using WebHotel_vesion1._0.Enums;
+
+namespace WebHotel_vesion1._0.Models
 {
     public class Reserva
     {
@@ -11,6 +13,6 @@
         public int HabitacionId { get; set; } // Habitación reservada
         public Habitacion Habitacion { get; set; } // Relación con Habitación
         public string MetodoPago { get; set; } // Ejemplo: "Tarjeta" o "Físico"
-        public bool Confirmado { get; set; } // Estado de confirmación de la reserva
+        public EstadoReserva  Estado { get; set; } // Estado de confirmación de la reserva
     }
 }

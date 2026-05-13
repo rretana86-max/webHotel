@@ -110,8 +110,13 @@ namespace WebHotel_vesion1._0.Controllers
                 var userrol = new UsuarioRol { IdUsuario = user.IdUsuario, IdRol = user.IdRol };
                 await _usuarioRol.InsertUserRol(userrol);
             }
+            var usuariorol = new UsuarioViewModel
+            {
 
-            return RedirectToAction("Create");
+
+                Roles = await _irol.GetRols()
+            };
+            return View(usuariorol);
         }
 
         // GET: EmpleadosController/Edit/5

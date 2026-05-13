@@ -1,414 +1,278 @@
-﻿<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-@* <!-- jQuery UI -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-@* <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script> *@
-<script src="https://js.stripe.com/v3/"></script>
-@using System.Security.Claims
-
-    @model WebHotel_vesion1._0.Models.Habitacion;
+﻿@model WebHotel_vesion1._0.Models.Habitacion
 
 @{
-
-    // string cedula = User.FindFirstValue("IdUsuario");
-
+    ViewData["Title"] = "Detalle de Habitación";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<div class="row justify-content-center p-2  mb-4">
-    <div class="col-12">
-        <div class="card shadow-lg">
-            <div class="card-body">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="card shadow-sm overflow-hidden">
+                <div class="row g-0">
+                    <!-- IMAGEN -->
+                    <aside class="col-12 col-md-6 bg-light d-flex align-items-center justify-content-center p-3">
+                        <img src="@Url.Content("~/" + Model.imageUrl)" alt="Imagen @Model.Tipo" class="img-fluid rounded" style="max-height:420px; object-fit:cover; width:100%;"/>
+                    </aside>
 
-                <!-- Fila para Check-in y Check-out -->
-                <div class="row">
+                    <!-- CONTENIDO -->
+                    <section class="col-12 col-md-6 p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h1 class="h4 fw-bold mb-1">@Model.Tipo</h1>
+                                <p class="text-muted mb-0 small"><i class="fa-solid fa-hashtag me-1"></i>ID: @Model.Id</p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-success px-3 py-2">Disponible</span>
+                            </div>
+                        </div>
 
-                    <div class="col-12 col-md-6 col-fecha">
-                        <p class="text-center text-uppercase">
-                            <label for="FechaInicio" class="text-success">Check-in</label>
+                        <p class="mb-3 text-secondary" style="line-height:1.45;">
+                            @Model.Descripcion
                         </p>
-                        <input type="date" id="FechaInicio" name="FechaInicio"
-                               min="@DateTime.Now.ToString("yyyy-MM-dd")"
-                               required class="form-control " />
-                    </div>
 
-                    <div class="col-12 col-md-6 col-fecha">
-                        <p class="text-center text-uppercase">
-                            <label for="FechaFin" class="text-success">Check-out</label>
-                        </p>
-                        <input type="date" id="FechaFin" name="FechaFin"
-                               min="@DateTime.Now.ToString("yyyy-MM-dd")"
-                               required class="form-control "/>
-                    </div>
-                    <h4 class="pt-2  mb-2 text-success"><span id="totalPagar" style="cursor:pointer; border-bottom:2px solid gray">Total a pagar:$ </span></h4>
+                        <div class="mb-3 d-flex align-items-center gap-3">
+                            <div class="fs-5 fw-semibold text-primary">₡ @Model.PrecioPorNoche.ToString("N2") <small class="text-muted">por noche</small></div>
+                            <div class="text-muted small"><i class="fa-regular fa-calendar me-1"></i>Máx personas: 2</div>
+                        </div>
+
+                        <hr />
+
+                        <div class="mb-3">
+                            <label class="form-label small text-muted"><i class="fa-regular fa-calendar-days me-1"></i> Fechas</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input id="FechaInicio" name="FechaInicio" class="form-control form-control-lg" placeholder="Check-in" />
+                                </div>
+                                <div class="col-6">
+                                    <input id="FechaFin" name="FechaFin" class="form-control form-control-lg" placeholder="Check-out" />
+                                </div>
+                            </div>
+                            <div class="mt-2 small text-muted">Selecciona rango válido. Tarifas sujetas a disponibilidad.</div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between mt-3">
+                            <div>
+                                <div class="small text-muted">Total estimado</div>
+                                <div id="totalPagar" class="h5 fw-bold">₡ 0.00</div>
+                            </div>
+
+                            <div class="d-flex flex-column">
+                                <button id="btnReservar" class="btn btn-primary btn-lg mb-2" type="button" disabled>
+                                    <i class="fa-solid fa-bed me-2"></i>Reservar ahora
+                                </button>
+                                <button id="btnPagar" class="btn btn-outline-warning btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#cardModal" style="display:none">
+                                    <i class="fa-solid fa-credit-card me-2"></i>Pagar
+                                </button>
+                            </div>
+                        </div>
+
+                        <form asp-action="EfectuarReservacion" asp-controller="Reservas" method="post" id="form-Reserva" class="d-none">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" id="ckeck_in" name="ckeck_in" />
+                            <input type="hidden" id="ckeck_out" name="ckeck_out" />
+                        </form>
+                    </section>
                 </div>
-                <!-- fin fila -->
-
             </div>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-
-
-    <div class="row justyfy-content-center">
-
-        <div class="col-12"> 
-
-            <div class=" card shadow-lg border-0">
-
-                <h2 class="card-header  bg-gray text-center">Detalle habitacion</h2>
-                <div class="card-body">
-
-
-                    <div class="row justify-content-center mb-1">
-
-                        <div class="col-md-6 pt-3   h-25 shadow-lg border-0">
-                            <p>
-                                @Model.Descripcion<br />
-                            </p>
-                            <p>
-                            
-                        <p>   Precio por noche:   @Model.PrecioPorNoche</p>
-                            <input type="hidden" id="PrecioPorNoche" value="@Model.PrecioPorNoche" />
-                            </p>
-
-                        <button type="button" id="btnPagar"class="btn btn-warning mb-2"data-bs-toggle="modal" data-bs-target="#cardModal"style="display:none">Pagar</button>
-
-
-                        <div class="row mt-2 border-0 mb-0">
-
-
-                            <form asp-action="EfectuarReservacion" asp-controller="Reservas" method="post" id="form-Reserva">
-
-                                <div class="row justify-content-center">
-                                    <div class="col-md-6">
-
-                                        <div class="form-group">
-
-                                            <input type="hidden" value="@Model.Id" name="Id">
-                                        </div>
-    
-                                    </div>
-                                    @* campos de las fechas *@
-                                    <div class="form-group">
-
-                                        <input type="date" id="ckeck_in" name="ckeck_in" hidden />
-
-                                    </div>
-                                    <div class="form-group">
-
-                                        <input type="date" id="ckeck_out" name="ckeck_out" hidden />
-
-                                    </div>
-
-                                    </div>
-
-                               
-                            </form>
-
-                        </div>
-                            
-
-                        </div>
-                        <div class="col-md-6 p-2">
-
-                            <div class="card shadow-lg border-0">
-                                <div class="card-body">
-
-                                <img src="@Url.Content("~/"+Model.imageUrl)" class="w-100 card-img-top" style="border-radius:2%" />
-                                <h4 class="card-title">habitacion matrimonial</h4>
-
-                                <p class="card-text">habitacion  hermosa de gran espacio y relax</p>
-
-
-                                </div>
-                            
-
-                            </div>
-
-                          
-                        </div>
-                    </div>
-
-                  
-
-
-                    @if (ViewBag.Mensaje != null)
-
-                    {
-                        <script>
-
-
-                            Swal.fire({
-                                title: "@ViewBag.Mensaje.Value"
-                                ,
-                                icon: "success"
-
-
-
-                            });
-
-
-
-                        </script>
-
-
-
-                    }
-                </div>
-
-
-
-
-
-
-
-                @* inputs para las fechas *@
-
-
-
-
-
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-
-
-
-
-    </div>
-
-<!-- Modal simple -->
-<!-- Modal Bootstrap -->
-
-
-
-<div class="modal fade" id="cardModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Modal Tarjeta (se mantiene similar) -->
+<div class="modal fade" id="cardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-
             <div class="modal-header">
                 <h5 class="modal-title">Pago con tarjeta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-
             <div class="modal-body">
-
                 <div class="mb-3">
-                    <label class="form-label">Nombre del titular</label>
-                    <input type="text" id="cardHolder" class="form-control" placeholder="Nombre como aparece en la tarjeta">
+                    <label for="cardHolder" class="form-label">Nombre del titular</label>
+                    <input type="text" id="cardHolder" class="form-control" placeholder="Nombre como aparece en la tarjeta" />
                 </div>
-
                 <div class="mb-3">
                     <label class="form-label">Datos de la tarjeta</label>
                     <div id="card-element" class="form-control p-3"></div>
                 </div>
-
                 <div id="card-errors" class="text-danger small"></div>
-
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="confirmarPago">Pagar</button>
+                <button type="button" id="confirmarPago" class="btn btn-primary">Pagar</button>
             </div>
-
         </div>
     </div>
 </div>
 
-
 <style>
+    :root {
+        --accent: #0d6efd;
+        --muted: #6b7280;
+        --card-radius: 10px;
+        --bg-1: #e9f2ff;
+        --bg-2: #f7fbff;
+    }
 
+    /* Fondo nuevo: degradado suave + textura sutil mediante repeating-linear-gradient */
     body {
-        background-color: white
+        background-color: var(--bg-2);
+        background-image:
+            linear-gradient(180deg, rgba(13,110,253,0.03), rgba(102,16,242,0.02)),
+            repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0 10px, transparent 10px 20px);
+        background-attachment: fixed;
+        min-height: 100vh;
     }
 
-    p {
-        cursor: pointer;
-        font-weight: 600;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    /* Elevar la tarjeta sobre el fondo, aumentar contraste y profesionalismo */
+    .card {
+        border-radius: var(--card-radius);
+        background: rgba(255,255,255,0.98);
+        box-shadow: 0 12px 30px rgba(6, 30, 80, 0.12);
     }
 
-    .contenedor-fechas {
-        background-color: whitesmoke;
-        padding: 2%;
-        cursor: pointer
-    }
-    /* personalizacion de los colores para dia mes y anio */
+    /* Calendars and inputs */
+    .flatpickr-calendar { z-index: 20000; }
 
-    input[type=date]::-webkit-datetime-edit-month-field {
-        color: red;
-    }
+    /* Mejor legibilidad del precio */
+    #totalPagar { color: var(--accent); }
 
-    input[type=date]::-webkit-datetime-edit-day-field {
-        color: green;
+    /* Responsive tweaks (escapar @@media para Razor: @@media) */
+    @@media (max-width: 767.98px) {
+        .card { margin: 0 1rem; }
     }
 
-    input[type=date]::-webkit-datetime-edit-year-field {
-        color: blue;
+    /* Preferencias de usuario: reducir animaciones si es necesario */
+   @@media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; animation: none !important; }
     }
-
-
 </style>
-<script>
 
-    document.addEventListener("DOMContentLoaded", function () {
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
 
-        console.log("DOM cargado correctamente");
+    <script>
+        (() => {
+            const precio = parseFloat('@Model.PrecioPorNoche'.replace(',', '.')) || 0;
+            const fpOptions = {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                onChange: calculateTotal
+            };
 
+            // Initialize flatpickr
+            flatpickr("#FechaInicio", Object.assign({}, fpOptions));
+            flatpickr("#FechaFin", Object.assign({}, fpOptions));
 
-        const valorInputFechaIni = document.getElementById("FechaInicio");
-        const valorInputFechaFin = document.getElementById("FechaFin");
-        const btnPagar = document.getElementById("btnPagar");
-        const formReserva = document.getElementById("form-Reserva");
-        const confirmarpago=document.getElementById("confirmarPago");
+            const inputInicio = document.getElementById("FechaInicio");
+            const inputFin = document.getElementById("FechaFin");
+            const totalEl = document.getElementById("totalPagar");
+            const btnPagar = document.getElementById("btnPagar");
+            const btnReservar = document.getElementById("btnReservar");
+            const formReserva = document.getElementById("form-Reserva");
 
-        confirmarpago.addEventListener("click",EnviarDatos);
-
-        function calcularTotal() {
-
-            
-           
-
-            const fechaInicial = new Date(valorInputFechaIni.value);
-            const fechaFinal = new Date(valorInputFechaFin.value);
-
-            if (valorInputFechaIni.value && valorInputFechaFin.value && fechaFinal > fechaInicial) {
-
-                const precioPorNoche = parseFloat(document.getElementById("PrecioPorNoche").value);
-                const dias = (fechaFinal - fechaInicial) / (1000 * 60 * 60 * 24);
-                const precioTotal = precioPorNoche * dias;
-
-                document.getElementById("totalPagar").innerHTML =
-                    "Total a pagar: $ " + precioTotal;
-
-                btnPagar.style.display = "block";
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC', maximumFractionDigits: 2 }).format(value).replace('CRC', '₡');
             }
-            else {
-                btnPagar.style.display = "none";
+
+            function calculateTotal(selectedDates, dateStr, instance) {
+                const start = inputInicio.value ? new Date(inputInicio.value) : null;
+                const end = inputFin.value ? new Date(inputFin.value) : null;
+
+                if (!start || !end || end <= start) {
+                    totalEl.innerText = formatCurrency(0);
+                    btnPagar.style.display = 'none';
+                    btnReservar.disabled = true;
+                    return;
+                }
+
+                const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
+                const total = precio * days;
+                totalEl.innerText = formatCurrency(total);
+                btnPagar.style.display = 'inline-block';
+                btnReservar.disabled = false;
+
+                // populate hidden form for non-AJAX submit
+                document.getElementById('ckeck_in').value = inputInicio.value;
+                document.getElementById('ckeck_out').value = inputFin.value;
             }
-        }
 
-        valorInputFechaIni.addEventListener("input", calcularTotal);
-        valorInputFechaFin.addEventListener("input", calcularTotal);
+            // Reserva rápida: muestra processing y envía el form oculto (post)
+            btnReservar.addEventListener('click', function () {
+                if (window.Swal) {
+                    Swal.fire({
+                        title: 'Procesando reserva',
+                        html: '<div class="d-flex flex-column align-items-center gap-2"><div class="spinner-border text-light" role="status" style="width:3rem;height:3rem"></div><div class="text-muted">Espere por favor...</div></div>',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        background: '#141420',
+                        color: '#fff',
+                        didOpen: () => { try { Swal.showLoading(); } catch (e) {} }
+                    });
+                } else if (window.AppAlerts) {
+                    AppAlerts.showLoading('Procesando reserva...');
+                }
 
+                // submit formReserva after tiny delay so modal is visible
+                setTimeout(() => {
+                    formReserva.submit();
+                }, 600);
+            });
 
-      formReserva.addEventListener("submit", function (e) {
-
-            if (!valorInputFechaIni.value || !valorInputFechaFin.value) {
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Debe seleccionar las fechas"
+            // Stripe payment: keep existing flow but show polished errors/success
+            const stripeKey = "@ViewBag.StripePublicKey";
+            if (stripeKey && document.getElementById('card-element')) {
+                const stripe = Stripe(stripeKey);
+                const elements = stripe.elements();
+                const card = elements.create("card", {
+                    style: { base: { fontSize: "16px", color: "#32325d" } }
                 });
+                card.mount("#card-element");
 
-                e.preventDefault();
-                return;
-            }
+                document.getElementById('confirmarPago').addEventListener('click', async () => {
+                    const holder = document.getElementById('cardHolder').value.trim();
+                    if (!holder) {
+                        Swal.fire('Falta dato', 'Ingrese el nombre del titular.', 'warning');
+                        return;
+                    }
 
-            const inputFechaInicio = new Date(valorInputFechaIni.value);
-            const inputFechaFinal = new Date(valorInputFechaFin.value);
+                    const { paymentMethod, error } = await stripe.createPaymentMethod({
+                        type: "card",
+                        card,
+                        billing_details: { name: holder }
+                    });
 
-            if (inputFechaInicio >= inputFechaFinal) {
+                    if (error) {
+                        Swal.fire('Error de tarjeta', error.message, 'error');
+                        return;
+                    }
 
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Rango de fechas inválido"
+                    // call server endpoint
+                    try {
+                        if (window.AppAlerts) AppAlerts.showLoading('Procesando pago...');
+                        const resp = await fetch("/Pagos/ProcesarPago", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ paymentMethodId: paymentMethod.id, reservaId: 1 })
+                        });
+                        const data = await resp.json();
+                        if (data.success) {
+                            Swal.fire('Pago exitoso', 'Gracias por su compra.', 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Error', data.message || 'No se pudo procesar el pago.', 'error');
+                        }
+                    } catch (ex) {
+                        Swal.fire('Error', 'Falla en la comunicación con el servidor.', 'error');
+                    } finally {
+                        if (window.AppAlerts) AppAlerts.hideLoading();
+                    }
                 });
-
-                e.preventDefault();
-                return;
             }
 
-
-            
-
-            document.getElementById("ckeck_in").value = valorInputFechaIni.value;
-            document.getElementById("ckeck_out").value = valorInputFechaFin.value;
-        });
-
-
-
-
-
-    //logica para el manejo de stripePublicKey
-    const stripe = Stripe("@ViewBag.StripePublicKey");
-
-    const elements = stripe.elements();
-
-    const card = elements.create("card", {
-        style: {
-            base: {
-                fontSize: "16px",
-                color: "#32325d"
-            }
-        }
-    });
-
-    card.mount("#card-element");
-
-   async function EnviarDatos() {
-        console.log("public key",stripe);
-
-        const cardHolder = document.getElementById("cardHolder").value.trim();
-        
-          
-
-        const { paymentMethod, error } = await stripe.createPaymentMethod({
-            type: "card",
-            card: card,
-            billing_details: {
-                name: cardHolder
-            }
-        });
-
-        if (error) {
-            document.getElementById("card-errors").textContent = error.message;
-            return;
-        }
-
-        fetch("/Pagos/ProcesarPago", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                paymentMethodId: paymentMethod.id,
-                reservaId: 1
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert("Pago exitoso");
-                location.reload();
-            } else {
-                alert("Error procesando pago");
-            }
-        });
-    }
-
-    });
-
-
-
-
-</script>
+        })();
+    </script>
+}
 

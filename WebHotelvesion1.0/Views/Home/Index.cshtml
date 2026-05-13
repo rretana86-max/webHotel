@@ -1,143 +1,193 @@
 ﻿@model IEnumerable<WebHotel_vesion1._0.Models.Habitacion>
 
-
 @{
-   
-
-  
+    ViewData["Title"] = "Inicio - WebHotel";
 }
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-@* carrusel slides *@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<body>
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="/img/imghotel/02.jpg" class="d-block w-100  img-fluid" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/img/imghotel/03.jpg" class="d-block w-100   img-fluid" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/img/imghotel/01.jpg" class="d-block w-100   img-fluid" alt="...">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+<div class="container py-5">
 
-    @* end carrusel slide *@
-    <div class="row  bg-light mt-2 pt-2 pb-2">
-
-        <div class="col-md-8 p-1 rounded-1">
-
-
-            <div class="card-outline">
-                <div class="card-header  text-center border-0">
-
-                    <h3 id="resenia">Resenia</h3>
-
-                </div>
-
-
-
-
-                <div class="card-body">
-
-
-                    <div class="card-text">
-                        <p class=" mt-2">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime neque at voluptatem
-                            commodi esse? Iure autem aperiam atque tenetur architecto
-                            amet voluptatibus voluptate culpa, in ea nulla! Eligendi, quidem laudantium?
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime neque at voluptatem
-                            commodi esse? Iure autem aperiam atque tenetur architecto amet voluptatibus voluptate
-                            culpa, in ea nulla! Eligendi, quidem laudantium?
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime neque at voluptatem
-                            commodi esse? Iure autem aperiam atque tenetur architecto amet voluptatibus voluptate
-                            culpa, in ea nulla! Eligendi, quidem laudantium?
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime neque at voluptatem
-                            commodi esse? Iure autem aperiam atque tenetur architecto amet voluptatibus voluptate
-                            culpa, in ea nulla! Eligendi, quidem laudantium?
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime neque at voluptatem
-                            commodi esse? Iure autem aperiam atque tenetur architecto amet voluptatibus voluptate
-                            culpa, in ea nulla! Eligendi, quidem laudantium?
-                        </p>
+    <!-- HERO -->
+    <header class="position-relative mb-5 hero-block rounded-4 overflow-hidden">
+        <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel" aria-label="Imágenes destacadas">
+            <div class="carousel-inner rounded-4">
+                <div class="carousel-item active">
+                    <img src="/img/imghotel/02.jpg" class="d-block w-100 hero-img" alt="Hotel imagen 1" loading="lazy">
+                    <div class="carousel-caption d-md-block hero-caption text-start">
+                        <h1 class="display-5 fw-bold">Bienvenido a WebHotel</h1>
+                        <p class="lead">Habitaciones confortables, servicio atento y las mejores tarifas online.</p>
+                        <a href="#galeria" class="btn btn-lg btn-primary">Ver habitaciones</a>
                     </div>
+                </div>
 
+                <div class="carousel-item">
+                    <img src="/img/imghotel/03.jpg" class="d-block w-100 hero-img" alt="Hotel imagen 2" loading="lazy">
+                    <div class="carousel-caption d-md-block hero-caption text-start">
+                        <h2 class="display-6 fw-bold">Comodidad &amp; Diseño</h2>
+                        <p class="lead">Habitaciones modernas pensadas para tu descanso.</p>
+                        <a href="#galeria" class="btn btn-lg btn-outline-light">Explorar</a>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="/img/imghotel/01.jpg" class="d-block w-100 hero-img" alt="Hotel imagen 3" loading="lazy">
+                    <div class="carousel-caption d-md-block hero-caption text-start">
+                        <h2 class="display-6 fw-bold">Ofertas Especiales</h2>
+                        <p class="lead">Promociones exclusivas al reservar en línea.</p>
+                        <a href="#galeria" class="btn btn-lg btn-primary">Reservar ahora</a>
+                    </div>
                 </div>
             </div>
 
+            <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev" aria-label="Anterior">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next" aria-label="Siguiente">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
         </div>
+    </header>
+
+    <!-- SEARCH / INTRO -->
+    <div class="row align-items-center mb-4 gx-3">
+        <div class="col-md-8">
+            <h3 class="mb-1">Habitaciones destacadas</h3>
+            <p class="text-muted mb-0">Encuentra la habitación ideal: filtra por descripción, tipo o precio.</p>
+        </div>
+
         <div class="col-md-4">
-
-            <img src="/img/imghotel/01.jpg" class="d-block w-100 " alt="..." style="height:300px">
-
-
+            <div class="input-group shadow-sm">
+                <input id="searchBox" type="search" class="form-control" placeholder="Buscar por descripción, tipo o precio..." aria-label="Buscar habitaciones">
+                <button id="clearSearch" class="btn btn-outline-secondary" type="button" aria-label="Limpiar búsqueda"><i class="fa fa-times"></i></button>
+            </div>
         </div>
     </div>
-    
 
-</body>
+    <!-- GALLERY GRID -->
+    <section id="galeria" class="mb-5">
+        <div class="row g-4" id="roomsGrid">
+            @foreach (var habitacion in Model)
+            {
+                var priceText = String.Format("{0:N0}", habitacion.PrecioPorNoche);
+                <article class="col-12 col-sm-6 col-md-4 room-card" data-title="@Html.Raw(habitacion.Descripcion?.ToLower() ?? "")" data-type="@Html.Raw(habitacion.Tipo?.ToLower() ?? "")" data-price="@habitacion.PrecioPorNoche">
+                    <div class="card h-100 shadow-sm border-0 overflow-hidden">
+                        <div class="position-relative">
+                            <img src="@(Url.Content("~/" + habitacion.imageUrl))" class="card-img-top" alt="@habitacion.Descripcion" style="height:200px; object-fit:cover;" loading="lazy">
+                            <div class="badge-position">
+                                <span class="badge bg-primary">₡ @priceText</span>
+                            </div>
+                            <div class="card-hover-overlay d-flex align-items-end justify-content-center p-3">
+                                <a asp-action="Detalle" asp-controller="Habitaciones" asp-route-id="@habitacion.Id" class="btn btn-sm btn-light">Ver detalles</a>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title mb-1 text-truncate">@habitacion.Descripcion</h5>
+                            <p class="card-text text-muted small mb-3">@habitacion.Tipo</p>
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                               
+                              
+                                <a asp-action="Detalle" asp-controller="Habitaciones" asp-route-id="@habitacion.Id" class="btn btn-sm btn-outline-primary">Reservar</a>
+                           
+                                
+                            
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    </section>
+
+</div>
+
 <style>
-    .carousel-item img {
-        max-height: 400px; /* Adjust the height as needed */
-        object-fit: cover; /* Ensures the image scales proportionally */
+    :root {
+        --primary: #0d6efd;
+        --muted: #6c757d;
+        --card-radius: 12px;
     }
 
     body {
-        background-color: #ffffff; /* Pure white background */
-        background-image: radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px), radial-gradient(circle, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-        background-size: 20px 20px, 100px 100px; /* Creates a layered subtle texture */
-        background-position: 0 0, 10px 10px;
-        font-family: Arial, sans-serif; /* Optional for styling text */
+        background: linear-gradient(180deg, #f6fbff 0%, #f1f6fb 100%);
+        font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
+    /* HERO */
+    .hero-block { border-radius: 12px; overflow: hidden; position: relative; }
+    .hero-img { max-height: 460px; object-fit: cover; filter: saturate(1.02) contrast(1.02); }
+    .hero-caption {
+        position: absolute;
+        left: 3%;
+        bottom: 16%;
+        text-align: left;
+        color: #fff;
+        text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+        max-width: 60%;
+    }
+    .hero-caption h1 { font-size: 2rem; }
+    .hero-caption p { opacity: 0.95; }
+
+    /* Search */
+    .input-group { border-radius: 10px; overflow: hidden; }
+    #searchBox { box-shadow: 0 8px 24px rgba(11,37,88,0.06); border-radius: 8px; }
+
+    /* Cards */
+    .room-card .card { border-radius: var(--card-radius); transition: transform .25s ease, box-shadow .25s ease; }
+    .room-card .card:hover { transform: translateY(-8px); box-shadow: 0 22px 48px rgba(11,37,88,0.12); }
+    .badge-position { position: absolute; top: 12px; right: 12px; z-index: 5; }
+    .card-hover-overlay { position: absolute; inset: 0; opacity: 0; transition: opacity .18s ease; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.45) 100%); }
+    .room-card .card:hover .card-hover-overlay { opacity: 1; }
+
+    .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Responsive */
+    @@media (max-width: 767.98px) {
+        .hero-caption { max-width: 85%; left: 5%; bottom: 12%; }
+        .hero-img { max-height: 300px; }
+    }
 </style>
 
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
+    <script>
+        (function () {
+            const searchBox = document.getElementById('searchBox');
+            const clearBtn = document.getElementById('clearSearch');
+            const roomNodes = Array.from(document.querySelectorAll('#roomsGrid article'));
 
-<section id="galeria">
-    <h4 class="bg-secondary text-center">Galeria</h4>
+            function normalize(text) {
+                return (text || '').toString().toLowerCase();
+            }
 
+            function applyFilter(q) {
+                q = normalize(q);
+                roomNodes.forEach(node => {
+                    const title = normalize(node.dataset.title);
+                    const type = normalize(node.dataset.type);
+                    const price = normalize(node.dataset.price);
+                    const match = !q || title.includes(q) || type.includes(q) || price.includes(q);
+                    node.style.display = match ? '' : 'none';
+                });
+            }
 
-    <div class="row justify-content-center ">
-    @foreach (var habitacion in Model)
-    {
-       
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-lg border-0">
-                    <img src="@habitacion.imageUrl" class="card-img-top" alt="@habitacion.Descripcion"style="height:150px">
-                    <div class="card-body">
-                        <h5 class="card-title">@habitacion.Descripcion</h5>
-                        <p class="card-text">@habitacion.Descripcion</p>
-                        <p class="card-text"><strong>₡@habitacion.PrecioPorNoche</strong></p>
-                        @if (User.Identity.IsAuthenticated) { //validamos que el usuario este autenticado
-                        <a href="@Url.Action("Detalle", "Habitaciones", new { id = habitacion.Id })" class="btn btn-primary w-100">Ver detalles </a>
-                   
-                        }
-                    
-                    </div>
-                </div>
-            </div>
-       
-        
-    }
-    </div>
+            if (searchBox) {
+                searchBox.addEventListener('input', (e) => applyFilter(e.target.value));
+            }
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    searchBox.value = '';
+                    applyFilter('');
+                    searchBox.focus();
+                });
+            }
 
-</section>
-
-      
+            // improve carousel timing
+            const carouselEl = document.getElementById('homeCarousel');
+            if (carouselEl) {
+                const carousel = bootstrap.Carousel.getInstance(carouselEl) || new bootstrap.Carousel(carouselEl, { interval: 6000, pause: 'hover' });
+            }
+        })();
+    </script>
+}

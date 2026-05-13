@@ -84,7 +84,7 @@ namespace AppLogin.Data
                 tb.Property(r => r.MetodoPago).HasMaxLength(20).IsRequired();
                 tb.Property(r => r.FechadIngreso).IsRequired();
                 tb.Property(r => r.FechaSalida).IsRequired();
-                tb.Property(r => r.Confirmado).HasDefaultValue(false);
+                tb.Property(r => r.Estado).IsRequired();
 
                 tb.HasOne(r => r.Usuario)
                   .WithMany(u => u.Reservas)
@@ -104,14 +104,14 @@ namespace AppLogin.Data
                 tb.Property(h => h.Descripcion).HasMaxLength(200).IsRequired();
                 tb.Property(h => h.Numero).IsRequired();
                 tb.Property(h => h.Tipo).HasMaxLength(100).IsRequired();
-                tb.Property(h=>h.EstaDisponible).IsRequired();
+          
                 tb.Property(h => h.PrecioPorNoche).HasColumnType("decimal(18,2)").IsRequired();
                 tb.Property(h => h.imageUrl).HasMaxLength(200).IsRequired();
                 tb.ToTable("tb_Habitaciones");
             });
 
         }
-        public override int SaveChanges()
+        public override int SaveChanges()   
         {
             var entidadesModificadas = ChangeTracker.Entries<IFechas>()
                 .Where(e => e.State == EntityState.Modified);
