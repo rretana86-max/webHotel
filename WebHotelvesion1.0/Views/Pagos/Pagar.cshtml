@@ -1,0 +1,218 @@
+﻿@model WebHotel_vesion1._0.ViewModels.ReservaVM ;
+
+
+
+
+<div class="container  container-fluid mt-4">
+
+ 
+
+    <div class="card bg-dark shadow-sm border-0 text-muted">
+        <div class=" card-header text-secondary mb-4">Resumen de Reserva</div>
+        <div class="card-body">
+
+            <p><strong>Habitación:</strong> @Model.NombreHabitacion</p>
+            <p><strong>Cliente:</strong> @Model.NombreUsuario</p>
+            <p><strong>Email:</strong> @Model.EmailUsuario</p>
+            <p><strong>Fecha ingreso:</strong> @Model.FechaIngreso.ToShortDateString()</p>
+            <p><strong>Fecha salida:</strong> @Model.FechaSalida.ToShortDateString()</p>
+            <p><strong>Precio por noche:</strong> $@Model.PrecioPorNoche</p>
+
+            <hr />
+
+            <h4 class="text-end">Total: $@Model.Total</h4>
+
+            <div class="text-end mt-3">
+                <button class="btn btn-primary btn-glow" data-bs-toggle="modal" data-bs-target="#cardModal">
+                    Pagar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+    .btn {
+        transition: all 0.2s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .btn-glow::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.6), transparent );
+            transform: skewX(-25deg);
+        }
+
+        .btn-glow:hover::before {
+            animation: shine 0.8s ease;
+        }
+
+    @@keyframes shine {
+        100%
+
+    {
+        left: 125%;
+    }
+
+    }
+
+</style>
+
+
+
+
+<!-- Modal Tarjeta (se mantiene similar) -->
+<div class="modal fade" id="cardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pago con tarjeta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Código postal</label>
+                    <input type="text" id="postalCode" class="form-control" />
+                </div> 
+
+                <div class="mb-3">
+                    <label class="form-label">País</label>
+                    <select id="country" class="form-control">
+                        <option value="CR">Costa Rica</option>
+                        <option value="US">Estados Unidos</option>
+                        <option value="MX">México</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cardHolder" class="form-label">Nombre del titular</label>
+                    <input type="text" id="cardHolder" class="form-control" placeholder="Nombre como aparece en la tarjeta" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Datos de la tarjeta</label>
+                    <div id="card-element" class="form-control p-3"></div>
+                </div>
+                <div id="card-errors" class="text-danger small"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="confirmarPago" class="btn btn-primary">Pagar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+ <script src="https://js.stripe.com/v3/"></script> 
+ 
+ <script>
+              (() => {
+      const stripe = Stripe("@ViewBag.StripePublicKey");
+  
+      const monto='@Model.Total';
+            const elements = stripe.elements();
+
+            const card = elements.create("card", {
+                style: {
+                    base: {
+                        fontSize: "16px",
+                        color: "#32325d"
+                    }
+                }
+            });
+
+            card.mount("#card-element");
+
+            const btnConfirmar = document.getElementById("confirmarPago");
+
+            btnConfirmar.addEventListener("click", async () => {
+                const country= document.getElementById("country").value.trim();;
+                const codePostal= document.getElementById("postalCode").value.trim();
+
+                const holder = document.getElementById("cardHolder").value.trim();
+
+                if (!holder) {
+                    Swal.fire('Falta dato', 'Ingrese el nombre del titular.', 'warning');
+                    return;
+                }
+
+                try {
+
+                    // 🔥 1. PEDIR EL CLIENT SECRET AL BACKEND
+                    const resp = await fetch("/Pagos/ProcesarPago", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                                    ReservaId:'@Model.Id' // ⚠️ aquí deberías mandar tu total real
+                        })
+                    });
+
+                    const data = await resp.json();
+
+                    if (!data.clientSecret) {
+                        throw new Error("No se recibió clientSecret");
+                    }
+
+                    const clientSecret = data.clientSecret;
+
+                    // 🔥 2. CONFIRMAR EL PAGO (FLUJO MODERNO)
+                    const result = await stripe.confirmCardPayment(clientSecret, {
+                        payment_method: {
+                            card: card,
+                            billing_details: {
+                                name: holder,
+                                 address:{
+                                    country:country,
+                                       postal_code: postalCode
+
+
+
+                                     }                           
+                            }
+                            
+                        }
+                    });
+
+                    // 🔥 3. MANEJO DE RESPUESTA
+                    if (result.error) {
+                        Swal.fire('Error', result.error.message, 'error');
+                        return;
+                    }
+
+                    if (result.paymentIntent.status === "succeeded") {
+                        Swal.fire('Pago exitoso', 'Gracias por su compra.', 'success')
+                            .then(() => location.reload());
+                    }
+
+                } catch (error) {
+                    Swal.fire('Error', error.message, 'error');
+                }
+
+            });
+
+
+}
+)();
+
+    </script>
+}

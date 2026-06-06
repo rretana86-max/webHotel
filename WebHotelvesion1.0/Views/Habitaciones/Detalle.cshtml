@@ -73,6 +73,8 @@
                             <input type="hidden" name="Id" value="@Model.Id" />
                             <input type="hidden" id="ckeck_in" name="ckeck_in" />
                             <input type="hidden" id="ckeck_out" name="ckeck_out" />
+                            <input type="hidden" id="total" name="total" />
+
                         </form>
                     </section>
                 </div>
@@ -81,32 +83,7 @@
     </div>
 </div>
 
-<!-- Modal Tarjeta (se mantiene similar) -->
-<div class="modal fade" id="cardModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Pago con tarjeta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="cardHolder" class="form-label">Nombre del titular</label>
-                    <input type="text" id="cardHolder" class="form-control" placeholder="Nombre como aparece en la tarjeta" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Datos de la tarjeta</label>
-                    <div id="card-element" class="form-control p-3"></div>
-                </div>
-                <div id="card-errors" class="text-danger small"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" id="confirmarPago" class="btn btn-primary">Pagar</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <style>
     :root {
@@ -155,12 +132,21 @@
     <script src="https://js.stripe.com/v3/"></script>
 
     <script>
-        (() => {
+        (() => 
+        {
             const precio = parseFloat('@Model.PrecioPorNoche'.replace(',', '.')) || 0;
+
             const fpOptions = {
-                dateFormat: "Y-m-d",
-                minDate: "today",
-                onChange: calculateTotal
+           enableTime: true,  // Habilita la selección de hora
+          dateFormat: "Y-m-d H:i",     // Formato estándar para el input oculto (ej. 2026-05-20 14:30)
+        altInput: true,              // Habilita el input "amigable" para el usuario
+        altFormat: "d/m/Y H:i",      // Formato visual (ej. 20/05/2026 14:30)
+        time_24hr: true ,           // Usa formato de 24 horas
+                defaultDate: new Date(),
+                 minDate: "today",
+        minuteIncrement: 30,
+          allowInput: true,// habre el selector  por completo
+         onChange: calculateTotal
             };
 
             // Initialize flatpickr
@@ -172,6 +158,7 @@
             const totalEl = document.getElementById("totalPagar");
             const btnPagar = document.getElementById("btnPagar");
             const btnReservar = document.getElementById("btnReservar");
+            const monto= document.getElementById("total");
             const formReserva = document.getElementById("form-Reserva");
 
             function formatCurrency(value) {
@@ -192,6 +179,8 @@
                 const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
                 const total = precio * days;
                 totalEl.innerText = formatCurrency(total);
+             document.getElementById("total").value=total;
+              
                 btnPagar.style.display = 'inline-block';
                 btnReservar.disabled = false;
 
@@ -222,57 +211,9 @@
                 }, 600);
             });
 
-            // Stripe payment: keep existing flow but show polished errors/success
-            const stripeKey = "@ViewBag.StripePublicKey";
-            if (stripeKey && document.getElementById('card-element')) {
-                const stripe = Stripe(stripeKey);
-                const elements = stripe.elements();
-                const card = elements.create("card", {
-                    style: { base: { fontSize: "16px", color: "#32325d" } }
-                });
-                card.mount("#card-element");
-
-                document.getElementById('confirmarPago').addEventListener('click', async () => {
-                    const holder = document.getElementById('cardHolder').value.trim();
-                    if (!holder) {
-                        Swal.fire('Falta dato', 'Ingrese el nombre del titular.', 'warning');
-                        return;
-                    }
-
-                    const { paymentMethod, error } = await stripe.createPaymentMethod({
-                        type: "card",
-                        card,
-                        billing_details: { name: holder }
-                    });
-
-                    if (error) {
-                        Swal.fire('Error de tarjeta', error.message, 'error');
-                        return;
-                    }
-
-                    // call server endpoint
-                    try {
-                        if (window.AppAlerts) AppAlerts.showLoading('Procesando pago...');
-                        const resp = await fetch("/Pagos/ProcesarPago", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ paymentMethodId: paymentMethod.id, reservaId: 1 })
-                        });
-                        const data = await resp.json();
-                        if (data.success) {
-                            Swal.fire('Pago exitoso', 'Gracias por su compra.', 'success').then(() => location.reload());
-                        } else {
-                            Swal.fire('Error', data.message || 'No se pudo procesar el pago.', 'error');
-                        }
-                    } catch (ex) {
-                        Swal.fire('Error', 'Falla en la comunicación con el servidor.', 'error');
-                    } finally {
-                        if (window.AppAlerts) AppAlerts.hideLoading();
-                    }
-                });
-            }
-
-        })();
+           
+        })
+        ();
     </script>
 }
 

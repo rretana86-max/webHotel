@@ -76,6 +76,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb3NcQ2hlY2tvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/Pagos/Pagar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFnb3NcUGFnYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/Reservas/ConfirmaReservacion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXNcQ29uZmlybWFSZXNlcnZhY2lvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/Reservas/MisReservas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YXNcTWlzUmVzZXJ2YXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/ReservaVM/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YVZNXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/CursosWeb/webhotel/WebHotelvesion1.0/Views/Roles/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

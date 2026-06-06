@@ -18,17 +18,17 @@ namespace WebHotel_vesion1._0.Controllers
     [Authorize]
     public class HabitacionesController : Controller
     {
-        private readonly IConfiguration _iconfiguration;
+        
         private readonly IHabitacion _ihabitacion;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public HabitacionesController(IConfiguration iconfigiuration, IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion)
+        public HabitacionesController( IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion)
         {
 
 
 
             _hostingEnvironment = hostingEnvironment;
-            _iconfiguration = iconfigiuration;
+          
             _ihabitacion = ihabitacion;
 
 
@@ -221,11 +221,10 @@ namespace WebHotel_vesion1._0.Controllers
         }
 
         // metodo para ver mas informacion relacionada con la habitacion 
+        [Authorize(Roles="Cliente")]
         public async Task<IActionResult> Detalle(int id)
         {
-            var stripePublicKey = _iconfiguration["Stripe:PublicKey"];
-
-            ViewBag.StripePublicKey = stripePublicKey;
+          
 
             Habitacion habitacionDetalle = await _ihabitacion.getHabitacion(id);
             return View(habitacionDetalle);
@@ -248,7 +247,7 @@ namespace WebHotel_vesion1._0.Controllers
 
 
 
-        // POST: HabitacionesController/Delete/5
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteHabitacion(int id)
@@ -267,7 +266,7 @@ namespace WebHotel_vesion1._0.Controllers
 
 
         }
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> ReporteHabitaciones()
         {
             var habitaciones = await _ihabitacion.ListarHabitaciones();

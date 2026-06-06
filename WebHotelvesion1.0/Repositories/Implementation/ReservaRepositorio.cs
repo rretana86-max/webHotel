@@ -1,17 +1,21 @@
 ﻿using AppLogin.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using WebHotel_vesion1._0.Controllers;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.ViewModels;
 
 namespace WebHotel_vesion1._0.Repositories.Implementation
 {
     public class ReservaRepositorio : IReserva
-    {  private readonly  AppDbContext _context;
-        public ReservaRepositorio(AppDbContext context) {
-        
-        
-        _context = context; 
+    {
+        private readonly AppDbContext _context;
+        public ReservaRepositorio(AppDbContext context)
+        {
+
+
+            _context = context;
         }
         public async Task<bool> ActualizarReservacion(Reserva reserva)
         {
@@ -19,22 +23,54 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<Reserva> BuscarReservacion(int id)
+        public async Task<ReservaVM> BuscarReservacion(int id)
         {
-            throw new NotImplementedException();
-        }
+            ReservaVM reservavm = new ReservaVM();
+            try
+            {
+                reservavm = await _context.Tb_Reservas.Where(r => r.Id == id).Select(r => new ReservaVM
+                {
+                    Id = r.Id,
+                    FechaIngreso = r.FechadIngreso,
+                    FechaSalida = r.FechaSalida,
+                    NombreUsuario = r.Usuario.NombreCompleto,
+                    EmailUsuario = r.Usuario.Correo,
+                    HabitacionId = r.HabitacionId,
+                    NombreHabitacion = r.Habitacion.Descripcion,
+                    PrecioPorNoche = r.Habitacion.PrecioPorNoche,
+                    Total = r.Total,
+                    Estado= r.Estado.ToString()
+                }).FirstOrDefaultAsync();
 
-        public async Task<Reserva> CrearReserva(Reserva  nuevareserva){
-            try {
+                return reservavm;
+            }
+
+            catch (DbException ex)
+            {
+
+
+
+            }
+
+            return null;
+
+        }
+           // create  reservation 
+        public async Task<Reserva> CrearReserva(Reserva nuevareserva)
+        {
+            try
+            {
 
                 _context.Tb_Reservas.AddAsync(nuevareserva);
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-            } catch (DbException EX) {
-                Console.WriteLine("error al insertar registro");
-            
             }
-          
+            catch (DbException EX)
+            {
+                Console.WriteLine("error al insertar registro");
+
+            }
+
             return nuevareserva;
         }
 
@@ -43,14 +79,42 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<Habitacion> GetHabitacion(int id)
-        {
-            throw new NotImplementedException();
+        // search a book  by id 
+        public async Task<ReservaVM> GetReservaPay(int id)
+        {  var reserva = await _context.Tb_Reservas.Where(r => r.Id == id).Select(r => new ReservaVM
+            {
+                Id = r.Id,
+                FechaIngreso = r.FechadIngreso,
+                FechaSalida = r.FechaSalida,
+                NombreUsuario = r.Usuario.NombreCompleto,
+                EmailUsuario = r.Usuario.Correo,
+                HabitacionId = r.HabitacionId,
+                NombreHabitacion = r.Habitacion.Descripcion,
+                PrecioPorNoche = r.Habitacion.PrecioPorNoche,
+                Total = r.Total,
+                Estado=r.Estado.ToString()
+
+            }).FirstOrDefaultAsync();
+            return reserva; 
         }
 
-        public Task<List<Reserva>> GetReserva()
+        //Obtiene las reservas de un  cliente especifico
+        public async Task<List<ReservaVM>> GetReservas(string id)
         {
-            throw new NotImplementedException();
+            var user_reservas = await   _context.Tb_Reservas.Where(u => u.Usuario.IdUsuario == id).Select(u=> new ReservaVM {
+           Id=u.Id,
+             NombreHabitacion=u.Habitacion.Descripcion,
+             NombreUsuario=u.Usuario.NombreCompleto,
+             EmailUsuario=u.Usuario.Correo,
+             PrecioPorNoche=u.Habitacion.PrecioPorNoche,
+             
+             FechaIngreso=u.FechadIngreso,
+             FechaSalida=u.FechaSalida,
+             Total=u.Total,
+             Estado=u.Estado.ToString()
+
+            }).ToListAsync();
+            return  user_reservas;
         }
     }
 }

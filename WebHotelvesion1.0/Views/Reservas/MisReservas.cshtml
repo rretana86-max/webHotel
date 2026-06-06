@@ -1,0 +1,102 @@
+﻿@model IEnumerable<WebHotel_vesion1._0.ViewModels.ReservaVM>
+
+@{
+    ViewData["Title"] = "MisReservas";
+}
+
+<h1>MisReservas</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaIngreso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaSalida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreUsuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailUsuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HabitacionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreHabitacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioPorNoche)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadNoches)
+            </th>
+           
+            <th>
+                Estado
+       
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaIngreso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaSalida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HabitacionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreHabitacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioPorNoche)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadNoches)
+            </td>
+
+                <td> @Html.DisplayFor(ModelItem=>item.Estado)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+
+
+                    <a asp-controller="Pagos"
+                       asp-action="Pagar"
+                       asp-route-id="@item.Id"
+                       class="btn btn-outline-success">
+                        Pagar
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

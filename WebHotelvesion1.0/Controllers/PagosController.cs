@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 using Stripe;
 using WebHotel_vesion1._0.Models;
+using WebHotel_vesion1._0.Repositories.Interfaces;
 
 namespace WebHotel_vesion1._0.Controllers
 {
+    [Authorize]
     public class PagosController : Controller
 
 
@@ -14,78 +17,67 @@ namespace WebHotel_vesion1._0.Controllers
 
 
         private  readonly IConfiguration _iconfiguration;
+        private readonly IReserva _ireserva;
 
-        public PagosController(IConfiguration iconfiguration) {
+        public PagosController(IConfiguration iconfiguration,IReserva ireserva) {
             _iconfiguration = iconfiguration;
             StripeConfiguration.ApiKey = _iconfiguration["Stripe:Secretkey"];
+            _ireserva = ireserva;
  
     }
+        [Authorize(Roles ="Cliente")]
+        public async Task<ActionResult> Pagar(int id) {
+            var reservaVM = await _ireserva.BuscarReservacion(id);
 
+            var stripePublicKey = _iconfiguration["Stripe:PublicKey"];
+            var stripeSecretKey = _iconfiguration["Stripe:Secretkey"];
 
-            // GET: PagosController
+            ViewBag.StripePublicKey = stripePublicKey;
+            ViewBag.StripeSecretkey = stripeSecretKey;
+
+            return View(reservaVM);
+        
+        }
+        // GET: PagosController
+        [Authorize(Roles = "Cliente")]
         public async Task <IActionResult> ProcesarPago([FromBody]PagoRequest pago)
         {
-            int monto = 950;
+            // validamos ese usuario  si exista y no sea alguien se este pasando de listo 
+            string userSesion  = User?.FindFirst("IdUsuario")?.Value;
+            if (userSesion==null)
+                {
+                    return BadRequest(new { error = "Usuario no autorizado para realizar este pago." });
+            }
+            var reservavm= await _ireserva.BuscarReservacion(pago.ReservaId);   
+            pago.Monto = reservavm.Total  * 100; // Convertir a centavos
 
             try
             {
-                // Log the incoming payment request
-                Console.WriteLine("Processing payment with PaymentMethodId: " + pago.PaymentMethodId);
-
                 var options = new PaymentIntentCreateOptions
                 {
-
-                    Amount = monto,
+                    Amount = (long?)pago.Monto, // en centavos
                     Currency = "crc",
-                    PaymentMethod = pago.PaymentMethodId,
-                    Confirm = true,
+                    AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                    {
+                        Enabled = true
+                    }
                 };
 
                 var service = new PaymentIntentService();
                 var paymentIntent = await service.CreateAsync(options);
 
-                // Log the successful payment intent creation
-                Console.WriteLine("PaymentIntent created successfully: " + paymentIntent.Id);
-
-                return Json(new { success = true, paymentIntentId = paymentIntent.Id });
+                return Json(new { clientSecret = paymentIntent.ClientSecret });
             }
             catch (Exception ex)
             {
-                // Log the error details
-                Console.WriteLine("Error processing payment: " + ex.Message);
-
-                return Json(new { success = false, message = ex.Message });
+                return BadRequest(new { error = ex.Message });
             }
+
+
+        }
+
+        
       
-          
-        }
-
-        // GET: PagosController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: PagosController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PagosController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: PagosController/Edit/5
         public ActionResult Edit(int id)
@@ -108,25 +100,7 @@ namespace WebHotel_vesion1._0.Controllers
             }
         }
 
-        // GET: PagosController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PagosController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
+        
     }
 }

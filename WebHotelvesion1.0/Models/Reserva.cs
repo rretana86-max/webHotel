@@ -13,6 +13,8 @@ namespace WebHotel_vesion1._0.Models
         public int HabitacionId { get; set; } // Habitación reservada
         public Habitacion Habitacion { get; set; } // Relación con Habitación
         public string MetodoPago { get; set; } // Ejemplo: "Tarjeta" o "Físico"
+
+        public decimal Total { get; set; }// talmacena el total a pagar 
         public EstadoReserva  Estado { get; set; } // Estado de confirmación de la reserva
     }
 }
