@@ -40,8 +40,8 @@ namespace WebHotel_vesion1._0.Controllers
         public async Task<IActionResult> listarHabitaciones()
         {
 
-            var habitaciones = _ihabitacion.ListarHabitaciones();
-            return View(await habitaciones);
+            var habitaciones =await  _ihabitacion.ListarHabitaciones();
+            return View( habitaciones);
 
         }
 

@@ -8,7 +8,7 @@ using WebHotel_vesion1._0.ViewModels;
 
 namespace WebHotel_vesion1._0.Repositories.Implementation
 {
-    public class ReservaRepositorio : IReserva
+    public class ReservaRepositorio : IReservaRepository
     {
         private readonly AppDbContext _context;
         public ReservaRepositorio(AppDbContext context)
@@ -35,11 +35,11 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
                     FechaSalida = r.FechaSalida,
                     NombreUsuario = r.Usuario.NombreCompleto,
                     EmailUsuario = r.Usuario.Correo,
-                    HabitacionId = r.HabitacionId,
+                    HabitacionId = r.Habitacion.Id,
                     NombreHabitacion = r.Habitacion.Descripcion,
                     PrecioPorNoche = r.Habitacion.PrecioPorNoche,
                     Total = r.Total,
-                    Estado= r.Estado.ToString()
+                    Estado= r.Estado
                 }).FirstOrDefaultAsync();
 
                 return reservavm;
@@ -88,11 +88,11 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
                 FechaSalida = r.FechaSalida,
                 NombreUsuario = r.Usuario.NombreCompleto,
                 EmailUsuario = r.Usuario.Correo,
-                HabitacionId = r.HabitacionId,
+                HabitacionId = r.Habitacion.Id,
                 NombreHabitacion = r.Habitacion.Descripcion,
                 PrecioPorNoche = r.Habitacion.PrecioPorNoche,
                 Total = r.Total,
-                Estado=r.Estado.ToString()
+                Estado=r.Estado
 
             }).FirstOrDefaultAsync();
             return reserva; 
@@ -111,10 +111,10 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
              FechaIngreso=u.FechadIngreso,
              FechaSalida=u.FechaSalida,
              Total=u.Total,
-             Estado=u.Estado.ToString()
+             Estado=u.Estado
 
             }).ToListAsync();
-            return  user_reservas;
+           return  user_reservas;
         }
     }
 }

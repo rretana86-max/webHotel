@@ -7,7 +7,7 @@ namespace WebHotel_vesion1._0.Models
         public int Id { get; set; }
 
         public decimal Monto { get; set; }
-        public string Moneda { get; set; } = "crc";
+        public string Moneda { get; set; } = "CRC";
 
         public TipoPago TipoPago { get; set; }
         public EstadoPago Estado { get; set; }
@@ -24,6 +24,10 @@ namespace WebHotel_vesion1._0.Models
 
         public int ReservaId { get; set; }
         public Reserva Reserva { get; set; } = null!;
+     
+        public string? MetodoPago { get; set; }//TARJETA, SIMPE, DEPOSITO 
+        public string? Ultimos4 { get; set; }
+        public string? MarcaTarjeta { get; set; }
 
     }
 }

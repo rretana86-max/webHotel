@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>WebHotel_vesion1._0</RootNamespace>
+    <UserSecretsId>96003796-f7bf-4b94-8705-23e52045e303</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

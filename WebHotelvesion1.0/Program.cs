@@ -7,13 +7,17 @@ using Stripe;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Implementation;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using WebHotel_vesion1._0.Repositories.Service;
 using System.Linq;
 using System.Reflection;
 using QuestPDF.Infrastructure;
+using WebHotel_vesion1._0.Service;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
+
+//registrar el middware de ecepcion globalpara capturar errores no manejados en la aplicación 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -37,7 +41,8 @@ builder.Services.AddScoped<IUsuario, UsuarioRepositorio>();
 builder.Services.AddScoped<IRol,RolRepositorio>();
 builder.Services.AddScoped<IUsuarioRol,UsuarioRolRepositorio>();
 builder.Services.AddScoped<IHabitacion, HabitacionRepositorio>();
-builder.Services.AddScoped<IReserva,ReservaRepositorio>();
+builder.Services.AddScoped<IReservaRepository, ReservaRepositorio>();
+builder.Services.AddScoped<IReservaService,ReservaService>();
 builder.Services.AddScoped<IAuth, AuthService>();
 builder.Services.AddFastReport();
 
@@ -83,6 +88,7 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:Secretkey"
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

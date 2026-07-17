@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using WebHotel_vesion1._0.Repositories.Service;
+using WebHotel_vesion1._0.Service;
 
 namespace WebHotel_vesion1._0.Controllers
 {

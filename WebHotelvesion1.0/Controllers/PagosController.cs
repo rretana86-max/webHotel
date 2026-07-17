@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Stripe;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.Enums;
 
 namespace WebHotel_vesion1._0.Controllers
 {
@@ -17,9 +18,9 @@ namespace WebHotel_vesion1._0.Controllers
 
 
         private  readonly IConfiguration _iconfiguration;
-        private readonly IReserva _ireserva;
+        private readonly IReservaRepository _ireserva;
 
-        public PagosController(IConfiguration iconfiguration,IReserva ireserva) {
+        public PagosController(IConfiguration iconfiguration,IReservaRepository ireserva) {
             _iconfiguration = iconfiguration;
             StripeConfiguration.ApiKey = _iconfiguration["Stripe:Secretkey"];
             _ireserva = ireserva;
@@ -40,22 +41,23 @@ namespace WebHotel_vesion1._0.Controllers
         }
         // GET: PagosController
         [Authorize(Roles = "Cliente")]
-        public async Task <IActionResult> ProcesarPago([FromBody]PagoRequest pago)
+        public async Task <IActionResult> ProcesarPago([FromBody]PagoRequest pagorequest)
         {
+            
             // validamos ese usuario  si exista y no sea alguien se este pasando de listo 
             string userSesion  = User?.FindFirst("IdUsuario")?.Value;
             if (userSesion==null)
                 {
                     return BadRequest(new { error = "Usuario no autorizado para realizar este pago." });
             }
-            var reservavm= await _ireserva.BuscarReservacion(pago.ReservaId);   
-            pago.Monto = reservavm.Total  * 100; // Convertir a centavos
+            var reservavm= await _ireserva.BuscarReservacion(pagorequest.ReservaId);   
+            pagorequest.Monto = reservavm.Total  * 100; // Convertir a centavos
 
             try
             {
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = (long?)pago.Monto, // en centavos
+                    Amount = (long?)pagorequest.Monto, // en centavos
                     Currency = "crc",
                     AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
                     {
@@ -65,7 +67,7 @@ namespace WebHotel_vesion1._0.Controllers
 
                 var service = new PaymentIntentService();
                 var paymentIntent = await service.CreateAsync(options);
-
+                reservavm.Estado = EstadoPago.Pagado;
                 return Json(new { clientSecret = paymentIntent.ClientSecret });
             }
             catch (Exception ex)

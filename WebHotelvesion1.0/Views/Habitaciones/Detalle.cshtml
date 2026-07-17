@@ -63,17 +63,15 @@
                                 <button id="btnReservar" class="btn btn-primary btn-lg mb-2" type="button" disabled>
                                     <i class="fa-solid fa-bed me-2"></i>Reservar ahora
                                 </button>
-                                <button id="btnPagar" class="btn btn-outline-warning btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#cardModal" style="display:none">
-                                    <i class="fa-solid fa-credit-card me-2"></i>Pagar
-                                </button>
+                            
                             </div>
                         </div>
 
                         <form asp-action="EfectuarReservacion" asp-controller="Reservas" method="post" id="form-Reserva" class="d-none">
-                            <input type="hidden" name="Id" value="@Model.Id" />
+                            <input type="hidden" id="HabitacionId" name="HabitacionId" value="@Model.Id" />
                             <input type="hidden" id="ckeck_in" name="ckeck_in" />
-                            <input type="hidden" id="ckeck_out" name="ckeck_out" />
-                            <input type="hidden" id="total" name="total" />
+                            <input type="hidden" id="check_out" name="check_out" />
+                            <input type="hidden" id="Total" name="Total" />
 
                         </form>
                     </section>
@@ -129,7 +127,7 @@
 </style>
 
 @section Scripts {
-    <script src="https://js.stripe.com/v3/"></script>
+   
 
     <script>
         (() => 
@@ -156,7 +154,7 @@
             const inputInicio = document.getElementById("FechaInicio");
             const inputFin = document.getElementById("FechaFin");
             const totalEl = document.getElementById("totalPagar");
-            const btnPagar = document.getElementById("btnPagar");
+            // const btnPagar = document.getElementById("btnPagar");
             const btnReservar = document.getElementById("btnReservar");
             const monto= document.getElementById("total");
             const formReserva = document.getElementById("form-Reserva");
@@ -171,7 +169,7 @@
 
                 if (!start || !end || end <= start) {
                     totalEl.innerText = formatCurrency(0);
-                    btnPagar.style.display = 'none';
+                    // btnPagar.style.display = 'none';
                     btnReservar.disabled = true;
                     return;
                 }
@@ -179,14 +177,15 @@
                 const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
                 const total = precio * days;
                 totalEl.innerText = formatCurrency(total);
-             document.getElementById("total").value=total;
+             document.getElementById("Total").value=total;
               
-                btnPagar.style.display = 'inline-block';
+                // btnPagar.style.display = 'inline-block';
                 btnReservar.disabled = false;
 
                 // populate hidden form for non-AJAX submit
                 document.getElementById('ckeck_in').value = inputInicio.value;
-                document.getElementById('ckeck_out').value = inputFin.value;
+                document.getElementById('check_out').value = inputFin.value;
+                alert(inputFin.value);
             }
 
             // Reserva rápida: muestra processing y envía el form oculto (post)

@@ -7,6 +7,9 @@ using WebHotel_vesion1._0.Repositories.Interfaces;
 using WebHotel_vesion1._0.ViewModels;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
+using WebHotel_vesion1._0.Dto;
+using WebHotel_vesion1._0.Service;
+using WebHotel_vesion1._0.HandleErros.Exceptions;
 
 namespace WebHotel_vesion1._0.Controllers
 {
@@ -15,10 +18,10 @@ namespace WebHotel_vesion1._0.Controllers
     {
         // GET: ReservasController
 
-        private readonly IReserva _ireserva;
+        private readonly IReservaService _ireserva;
         private readonly ILogger<ReservasController> _logger;
 
-        public ReservasController(IReserva ireserva, ILogger<ReservasController> logger)
+        public ReservasController(IReservaService ireserva, ILogger<ReservasController> logger)
         {
             _ireserva = ireserva;
             _logger = logger;
@@ -38,89 +41,105 @@ namespace WebHotel_vesion1._0.Controllers
         [Authorize(Roles ="Cliente")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EfectuarReservacion(int Id, DateTime ckeck_in, DateTime ckeck_out, string total)
+        public async Task<ActionResult> EfectuarReservacion(ReservaDto reservadto)
         {
-            if (Id == 0 || ckeck_in == default || ckeck_out == default || ckeck_out <= ckeck_in)
+
+            string usuarioId = "";
+            int reservaid = 0;
+            if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Fechas o habitación inválidas.";
-                return RedirectToAction("Detalle", "Habitaciones", new { id = Id });
+                return RedirectToAction("Detalle", "Habitaciones", new { id = reservadto.HabitacionId });   
             }
 
-            var usuarioId = User?.FindFirst("IdUsuario")?.Value;
+           usuarioId = User?.FindFirst("IdUsuario")?.Value;
             if (string.IsNullOrWhiteSpace(usuarioId))
             {
                 TempData["Error"] = "Debe iniciar sesión.";
                 return RedirectToAction("Login", "Acceso");
             }
+                try {
+                    reservaid = await _ireserva.CrearReserva(usuarioId, reservadto);
 
-            if (!decimal.TryParse(total?.Trim().Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out var totalDecimal))
-            {
-                TempData["Error"] = "Importe inválido.";
-                return RedirectToAction("Detalle", "Habitaciones", new { id = Id });
-            }
 
-            try
-            {
-                var reserva = new Reserva()
-                {
-                    HabitacionId = Id,
-                    UsuarioId = usuarioId,
-                    FechadIngreso = ckeck_in,
-                    FechaSalida = ckeck_out,
-                    MetodoPago = "TARJETA",
-                    Estado = EstadoReserva.Pendiente,
-                    Total = totalDecimal
-                };
-                var reservaCreada = await _ireserva.CrearReserva(reserva);
 
-                if (reservaCreada == null)
-                {
-                    _logger.LogWarning("CrearReserva devolvió null. Usuario:{User} Habitacion:{Room}", usuarioId, Id);
-                    TempData["Error"] = "No se pudo crear la reserva. Intente más tarde.";
-                    return RedirectToAction("Detalle", "Habitaciones", new { id = Id });
+                    return RedirectToAction("ConfirmaReservacion", new { id = 21 });
+
                 }
+                catch (NotFoundException ex) {
 
-                return RedirectToAction("ConfirmaReservacion", new { id = reservaCreada.Id });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error creando reserva. Usuario:{User} Habitacion:{Room}", usuarioId, Id);
-                TempData["Error"] = "Ocurrió un error inesperado.";
-                return RedirectToAction("Detalle", "Habitaciones", new { id = Id });
-            }
+                    TempData["Mensaje"] = ex.Message;
+                
+                
+                }
+            return RedirectToAction("index", "home");
         }
+           
+        
 
 
         [Authorize(Roles ="Cliente")]
         public async Task<ActionResult> ConfirmaReservacion(int id) {
-            ReservaVM reservacreada = await _ireserva.BuscarReservacion(id);
+
+            if (id == 0) {
+
+                return NotFound("id debe ser difrente de 0");
+            
+            }
+
+            ReservaVM reservacreada= new ReservaVM ();
+            try { reservacreada = await _ireserva.BuscarReservacion(id);
 
 
-            return View(reservacreada);
+            }
+
+            catch (NotFoundException ex ) {
+                TempData["Mensaje"] = ex.Message.ToString();
+
+                return RedirectToAction("Detalle", "Habitaciones");
+
+            }
+            catch (NullReferenceException ex) {
+
+                Console.WriteLine(ex.ToString);
+            }
+                
+             
+
+
+            return View (reservacreada);
 
 
 
         }
         [Authorize(Roles = "Cliente")]
         public async Task<ActionResult> MisReservas() {
-            string usuarioId = User?.FindFirst("IdUsuario")?.Value;
+            string usuarioId = User?.FindFirst("IdUsuario")?.Value;// nobtenemos el id del usuario con sesion activa
+            List<ReservaVM> misreservas;
+
+            if (String.IsNullOrEmpty(usuarioId.Trim())) {
+
+
+                return BadRequest("Id inválido");
+            }
             try {
+              
 
-                List<ReservaVM> misreservas = await _ireserva.GetReservas(usuarioId);
 
+                misreservas = await _ireserva.GetReservas(usuarioId);
 
-                return View(misreservas);
-            }
-
-            catch (Exception Ex) {
-
-                Console.WriteLine(Ex.ToString());
 
 
             }
+            catch (NotFoundException ex) {
+
+                return NotFound(ex.Message);
+            
+            }
+              
 
 
-            return View();
+            return View(misreservas);
 
 
         }

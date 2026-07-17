@@ -143,12 +143,12 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
             try {
 
-                var userdelete =  _context.Usuarios.FirstOrDefault(e => e.IdUsuario == id);
+                var userdelete = await _context.Usuarios.FirstOrDefaultAsync(e => e.IdUsuario == id);
                 if (userdelete!=null) {
 
 
                    _context.Usuarios.Remove(userdelete);
-                   _context.SaveChanges();
+                   await _context.SaveChangesAsync();
                 }
               
             
