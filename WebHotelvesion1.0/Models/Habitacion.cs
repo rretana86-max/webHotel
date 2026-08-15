@@ -11,7 +11,7 @@
      
         public string Descripcion { get; set; } // Descripción adicional de la habitación
         public string imageUrl { get; set; }// campo que guarda la ruta de la imagen 
-
+        public bool EstaDisponible { get; set; }//campo para configurar la disponibilidad de la habitacion 
         public ICollection<Reserva> Reservas { get; set; }
 
     }

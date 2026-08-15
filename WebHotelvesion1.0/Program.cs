@@ -17,7 +17,7 @@ using WebHotel_vesion1._0.Service;
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
 
-//registrar el middware de ecepcion globalpara capturar errores no manejados en la aplicación 
+//registrar el middware de ecepcion global para capturar errores no manejados en la aplicación 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
  );
 // inyeccion del contexto de la base de datos 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionPorDefecto")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Inyeccion de dependencias de las interfaces y sus clases
 builder.Services.AddScoped<IUsuario, UsuarioRepositorio>();
