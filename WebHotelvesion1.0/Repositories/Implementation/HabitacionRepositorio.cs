@@ -29,6 +29,9 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
             catch { }   
         }
+
+
+        // update entire room entity , including all properties, even if they are not modified  
         public async Task<bool> ActualizarHabitacion(Habitacion habitacionExistente)
         {
             try
@@ -56,6 +59,30 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
             }
 
+            return true;
+        }
+
+        public async Task<bool> UpdateAvailabilityRoom(int id, bool disponibilidad)
+        {
+            try
+            {
+                var habitacion = _context.Habitacion.FirstOrDefault(e => e.Id == id);
+                if (habitacion != null)
+                {
+                    habitacion.EstaDisponible= disponibilidad;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error al establecer conexion con el servidor ");
+                return false;
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine("Error en actualizar la base de datos " + ex.ToString());
+                return false;
+            }
             return true;
         }
         public async  Task<bool> DeleteHabitacion(int id)

@@ -10,6 +10,7 @@ using System.IO;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Models.ViewModel;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.Dto;
 
 
 namespace WebHotel_vesion1._0.Controllers
@@ -118,6 +119,7 @@ namespace WebHotel_vesion1._0.Controllers
 
                         Numero = habitacion.Numero,
                         Descripcion = habitacion.Descripcion,
+                        EstaDisponible= habitacion.EstaDisponible,
                         Tipo = habitacion.Tipo,
                         PrecioPorNoche = habitacion.PrecioPorNoche,
                         imageUrl = Path.Combine("uploads", filename).Replace("\\", "/").Trim()
@@ -179,7 +181,7 @@ namespace WebHotel_vesion1._0.Controllers
                     {
                         var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, habitacionExistente.imageUrl);
 
-                        oldImagePath = oldImagePath.Replace("\\", "/");
+                        //oldImagePath = oldImagePath.Replace("\\", "/");
                         if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
@@ -204,9 +206,10 @@ namespace WebHotel_vesion1._0.Controllers
 
                 habitacionExistente.Numero = habitacion.Numero;
                 habitacionExistente.Descripcion = habitacion.Descripcion;
+                habitacionExistente.EstaDisponible = habitacion.EstaDisponible;
                 habitacionExistente.Tipo = habitacion.Tipo;
                 habitacionExistente.PrecioPorNoche = habitacion.PrecioPorNoche;
-            
+              
 
 
                 await _ihabitacion.ActualizarHabitacion(habitacionExistente);
@@ -274,7 +277,22 @@ namespace WebHotel_vesion1._0.Controllers
         }
 
 
-//  crear exportar  reporte  pdf con QuestPDF
+
+        //Update  status Room   
+        public async Task<IActionResult> UpdateStatus([FromBody]UpdateAvailabilityRequest request)
+        {
+            var habitacion = await _ihabitacion.getHabitacion(request.Id);
+            if (habitacion == null)
+            {
+                return NotFound();
+            }
+              
+            await _ihabitacion.UpdateAvailabilityRoom(request.Id,request.EstaDisponible);  
+            return RedirectToAction(nameof(listarHabitaciones));
+        }   
+
+
+        //  crear exportar  reporte  pdf con QuestPDF
         public async Task<IActionResult> ExportarPDF()
         {
             var habitaciones = await _ihabitacion.ListarHabitaciones();

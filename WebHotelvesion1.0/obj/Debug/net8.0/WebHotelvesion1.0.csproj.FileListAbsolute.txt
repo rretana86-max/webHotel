@@ -917,7 +917,6 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.j
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.development.json
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotel.FFE7DCED.Up2Date
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.dll
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\refint\WebHotelvesion1.0.dll
@@ -926,3 +925,4 @@ C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\WebHotelvesion1.0.deps.
 C:\CursosWeb\webhotel\WebHotelvesion1.0\bin\Debug\net8.0\WebHotelvesion1.0.runtimeconfig.json
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\WebHotelvesion1.0.genruntimeconfig.cache
 C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\ref\WebHotelvesion1.0.dll
+C:\CursosWeb\webhotel\WebHotelvesion1.0\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

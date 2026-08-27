@@ -69,7 +69,15 @@
                             </div>
                         </div>
 
-                       
+                       @* IsAvalibity *@
+
+                        <div class="form-check">
+                            <!-- The Tag Helper auto-generates the id, name, and underlying hidden input -->
+                            <input asp-for="EstaDisponible" class="form-check-input" type="checkbox" />
+                            <label asp-for="EstaDisponible" class="form-check-label">
+                                Esta disponible
+                            </label>
+                        </div>
 
                         <div class="col-12 col-md-3">
                             <div class="form-group ">
