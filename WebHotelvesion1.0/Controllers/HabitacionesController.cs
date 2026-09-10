@@ -11,6 +11,7 @@ using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Models.ViewModel;
 using WebHotel_vesion1._0.Repositories.Interfaces;
 using WebHotel_vesion1._0.Dto;
+using WebHotel_vesion1._0.Service;
 
 
 namespace WebHotel_vesion1._0.Controllers
@@ -20,15 +21,15 @@ namespace WebHotel_vesion1._0.Controllers
     public class HabitacionesController : Controller
     {
         
-        private readonly IHabitacion _ihabitacion;
-        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IHabitacionService _ihabitacion;
+      
 
-        public HabitacionesController( IWebHostEnvironment hostingEnvironment, IHabitacion ihabitacion)
+        public HabitacionesController( IHabitacionService ihabitacion)
         {
 
 
 
-            _hostingEnvironment = hostingEnvironment;
+          
           
             _ihabitacion = ihabitacion;
 
@@ -71,71 +72,28 @@ namespace WebHotel_vesion1._0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(HabitacionViewModel habitacion, IFormFile Imagen)
         {
-            IFormFile file = null;
+            if (!ModelState.IsValid)
+            {
+                return View(habitacion);
+            }
+
+            if (Imagen == null || Imagen.Length == 0)
+            {
+                ModelState.AddModelError("Imagen", "Debe seleccionar una imagen para la habitación.");
+                return View(habitacion);
+            }
 
             try
             {
-                if (habitacion != null && Imagen != null)
-                {
-
-
-
-
-
-
-                    file = Imagen;
-
-                    var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-
-
-                    if (!Directory.Exists(uploads))
-                    {
-
-
-                        Directory.CreateDirectory(uploads);
-
-                    }
-                    int cont = Directory.GetFiles(uploads).Length;
-                    // cambiamos el nombre de la imagen 
-                    String filename = $"{cont:D2}.jpeg";
-
-
-                    //var filePath = Path.Combine(uploads, file.FileName);
-                    //combinamos la ruta con el nuevo nombre
-                    var filePath = Path.Combine(uploads, filename);
-
-
-                    //guardamos el archivo
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-
-                    Habitacion _habitacion = new Habitacion()
-                    {
-
-
-                        Id = habitacion.Id,
-
-                        Numero = habitacion.Numero,
-                        Descripcion = habitacion.Descripcion,
-                        EstaDisponible= habitacion.EstaDisponible,
-                        Tipo = habitacion.Tipo,
-                        PrecioPorNoche = habitacion.PrecioPorNoche,
-                        imageUrl = Path.Combine("uploads", filename).Replace("\\", "/").Trim()
-
-                    };
-                    _ihabitacion.CrearHabitacion(_habitacion);
-
-                }
+                await _ihabitacion.CrearHabitacion(habitacion, Imagen);
+                TempData["Success"] = "La habitación se registró correctamente.";
+                return RedirectToAction(nameof(Create));
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "No se pudo registrar la habitación. Revise los datos e inténtelo nuevamente.");
+                return View(habitacion);
             }
-
-
-            return RedirectToAction("Create");
         }
 
 
@@ -152,77 +110,17 @@ namespace WebHotel_vesion1._0.Controllers
         // POST: HabitacionesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Habitacion habitacion, IFormFile Imagen)
+       public async Task<ActionResult> Edit(Habitacion habitacion, IFormFile Imagen)
         {
             if (habitacion == null)
             {
                 return BadRequest("Datos inválidos");
             }
-
-            var habitacionExistente = await _ihabitacion.getHabitacion(habitacion.Id);
-
-            if (habitacionExistente == null)
-            {
-                return NotFound("Habitación no encontrada");
-            }
-
-            try
-            {
-                if (Imagen != null)
-                {
-                    string FileNameExtension = Path.GetExtension(Imagen.FileName);// obtenemos la extension del archivo
-
-                    string NewImageName = Guid.NewGuid().ToString() + FileNameExtension;//creamos un nuevo nombre 
-
-                    var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");  //obtiene la  Ruta completa de la carpeta uploads
-
-
-                    if (!string.IsNullOrEmpty(habitacionExistente.imageUrl))    // Eliminar imagen anterior si existe
-                    {
-                        var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, habitacionExistente.imageUrl);
-
-                        //oldImagePath = oldImagePath.Replace("\\", "/");
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-
-                        }
-                    }
-
-
-                    var filePath = Path.Combine(uploads, NewImageName);
-
-                    // Guardar la nueva imagen
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await Imagen.CopyToAsync(fileStream);
-                    }
-
-                    // Guardar la nueva ruta relativa en la base de datos
-                    habitacionExistente.imageUrl = Path.Combine("uploads", NewImageName).Replace("\\", "/");
-                }
-
-                // Actualizar otros datos de la habitación
-
-                habitacionExistente.Numero = habitacion.Numero;
-                habitacionExistente.Descripcion = habitacion.Descripcion;
-                habitacionExistente.EstaDisponible = habitacion.EstaDisponible;
-                habitacionExistente.Tipo = habitacion.Tipo;
-                habitacionExistente.PrecioPorNoche = habitacion.PrecioPorNoche;
-              
-
-
-                await _ihabitacion.ActualizarHabitacion(habitacionExistente);
-
-                return RedirectToAction("listarHabitaciones"); // Redirigir al listado de habitaciones
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Error al actualizar la habitación: " + ex.Message);
-                return View(habitacion);
-            }
+           await _ihabitacion.ActualizarHabitacion(habitacion,Imagen);
+          // viewData["Success"] = "La habitación se actualizó correctamente.";   
+           return RedirectToAction(nameof(listarHabitaciones));
         }
-
+        
         // metodo para ver mas informacion relacionada con la habitacion 
         [Authorize(Roles="Cliente")]
         public async Task<IActionResult> Detalle(int id)
