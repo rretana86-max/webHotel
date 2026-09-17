@@ -44,6 +44,8 @@ builder.Services.AddScoped<IHabitacion, HabitacionRepositorio>();
 builder.Services.AddScoped<IReservaRepository, ReservaRepositorio>();
 builder.Services.AddScoped<IReservaService,ReservaService>();
 builder.Services.AddScoped<IAuth, AuthService>();
+
+builder.Services.AddScoped<IHabitacionService,HabitacionService>();
 builder.Services.AddFastReport();
 
 // Registrar proveedores de conexión de FastReport de forma robusta:
