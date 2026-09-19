@@ -27,7 +27,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
 
 
-            catch { }   
+            catch (Exception ex ) { }   
         }
 
 
@@ -62,48 +62,45 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             return true;
         }
 
-        public async Task<bool> UpdateAvailabilityRoom(int id, bool disponibilidad)
+        public async Task<bool> UpdateAvailabilityRoom()
         {
-            try
-            {
-                var habitacion = _context.Habitacion.FirstOrDefault(e => e.Id == id);
-                if (habitacion != null)
-                {
-                    habitacion.EstaDisponible= disponibilidad;
-                    await _context.SaveChangesAsync();
-                }
-            }
-            catch (SqlException ex)
+           try{await _context.SaveChangesAsync();
+           
+           
+           }
+           catch (SqlException ex)
             {
                 Console.WriteLine("Error al establecer conexion con el servidor ");
                 return false;
             }
             catch (DbUpdateException ex)
             {
-                Console.WriteLine("Error en actualizar la base de datos " + ex.ToString());
-                return false;
+
+                Console.WriteLine("Error en actualizar la base de datos " + ex.ToString()); 
             }
+            
             return true;
+
         }
-        public async  Task<bool> DeleteHabitacion(int id)
+        public async  Task<bool> DeleteHabitacion(Habitacion habitacion)
         {
             try {
-               
-                var habitaciondelete =  _context.Habitacion.FirstOrDefault(e => e.Id== id);
+               _context.Habitacion.Remove(habitacion);
+                await _context.SaveChangesAsync();
 
 
-                if (habitaciondelete != null) { 
-
-                    _context.Remove(habitaciondelete);
-
-                    _context.SaveChanges();
-           
                 
-                }
              
 
             }
-            catch (SqlException ex ) { }
+            catch (SqlException ex ) {
+
+
+
+
+                Console.WriteLine("Error al establecer conexion con el servidor ");
+                return false;
+             }
 
 
             return true;
@@ -111,10 +108,13 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
         public async  Task<Habitacion> getHabitacion(int id)
 
-        {   Habitacion  habitacion = _context.Habitacion.FirstOrDefault(e => e.Id == id);
+        {
+            //  return await _context.Habitaciones.FindAsync(id);
+
+       Habitacion habitacion = _context.Habitacion.FirstOrDefault(e => e.Id == id);
             return   habitacion;
         }
-
+//get all rooms from database 
         public async Task<List<Habitacion>> ListarHabitaciones()
         {
             var habitaciones =await  _context.Habitacion.ToListAsync();  
