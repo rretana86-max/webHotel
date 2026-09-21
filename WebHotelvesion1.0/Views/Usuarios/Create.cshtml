@@ -1,63 +1,118 @@
 ﻿@model WebHotel_vesion1._0.Models.ViewModel.UsuarioViewModel;
 
-@using WebHotel_vesion1._0.Enums
-
 @{
     ViewData["Title"] = "Crear Usuario";
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center" style="margin-top:2rem">
-        <div class="col-12 col-md-6">
-            <div class="card shadow-lg border-0">
-                <h4 class="card-header text-center bg-success text-white">Registro de Usuarios</h4>
-                <div class="card-body">
+<div class="container-fluid user-page py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
+                <div>
+                    <p class="text-uppercase text-success font-weight-bold small mb-1">Administración</p>
+                    <h1 class="h2 font-weight-bold text-dark mb-1">Crear usuario</h1>
+                    <p class="text-muted mb-0">Registra los datos de acceso y el perfil del nuevo usuario.</p>
+                </div>
+                <a asp-action="listar_Empleados" class="btn btn-outline-secondary mt-3 mt-md-0">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver al listado
+                </a>
+            </div>
+
+            <div class="card user-card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom px-4 py-3">
+                    <div class="d-flex align-items-center">
+                        <span class="user-card-icon mr-3"><i class="fas fa-user-plus"></i></span>
+                        <div>
+                            <h2 class="h5 font-weight-bold mb-1">Información del usuario</h2>
+                            <p class="text-muted small mb-0">Completa los campos requeridos para crear la cuenta.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-lg-5">
                     <form asp-controller="Usuarios" asp-action="Create" method="post" id="form-usuario" enctype="multipart/form-data" novalidate>
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                        <div class="mb-2">
-                            <label asp-for="IdUsuario" class="form-label"></label>
-                            <input asp-for="IdUsuario" class="form-control" required />
-                            <span asp-validation-for="IdUsuario" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-lg-7 pr-lg-4">
+                                <div class="form-group">
+                                    <label asp-for="IdUsuario" class="font-weight-bold text-dark">Identificación</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-id-card text-success"></i></span></div>
+                                        <input asp-for="IdUsuario" class="form-control" placeholder="Ej. 0#-####-####" required />
+                                    </div>
+                                    <span asp-validation-for="IdUsuario" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="NombreCompleto" class="font-weight-bold text-dark">Nombre completo</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-user text-success"></i></span></div>
+                                        <input asp-for="NombreCompleto" class="form-control" placeholder="Nombre y apellidos" required />
+                                    </div>
+                                    <span asp-validation-for="NombreCompleto" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Correo" class="font-weight-bold text-dark">Correo electrónico</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-envelope text-success"></i></span></div>
+                                        <input asp-for="Correo" class="form-control" type="email" placeholder="usuario@ejemplo.com" required />
+                                    </div>
+                                    <span asp-validation-for="Correo" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Clave" class="font-weight-bold text-dark">Contraseña</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-lock text-success"></i></span></div>
+                                        <input asp-for="Clave" class="form-control" type="password" placeholder="Contraseña segura" required />
+                                    </div>
+                                    <span asp-validation-for="Clave" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-0">
+                                    <label for="IdRol" class="font-weight-bold text-dark">Rol</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-user-shield text-success"></i></span></div>
+                                        <select id="IdRol" name="IdRol" class="form-control" required>
+                                            <option value="" disabled selected>Seleccione un rol</option>
+                                            @foreach (var rol in Model.Roles)
+                                            {
+                                                <option value="@rol.IdRol">@rol.Nombre</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5 pl-lg-4 mt-4 mt-lg-0">
+                                <div class="image-panel h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <label for="Imagen" class="font-weight-bold text-dark mb-0">Foto de perfil</label>
+                                        <span class="badge badge-light text-muted">JPG, PNG</span>
+                                    </div>
+                                    <div class="image-preview mb-3" id="imagePreview">
+                                        <img id="imagenPrevisualizacion" alt="Vista previa de la foto de perfil" />
+                                        <div id="imagePlaceholder" class="text-center text-muted">
+                                            <i class="fas fa-user-circle fa-3x mb-2"></i>
+                                            <p class="small mb-0">La vista previa aparecerá aquí</p>
+                                        </div>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input id="Imagen" name="Imagen" type="file" class="custom-file-input" accept="image/*" required onchange="CargarImagen(event)" />
+                                        <label class="custom-file-label" for="Imagen">Seleccionar imagen</label>
+                                    </div>
+                                    <small class="form-text text-muted">Selecciona una imagen para identificar al usuario.</small>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-2">
-                            <label asp-for="NombreCompleto" class="form-label"></label>
-                            <input asp-for="NombreCompleto" class="form-control" required />
-                            <span asp-validation-for="NombreCompleto" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-2">
-                            <label asp-for="Correo" class="form-label"></label>
-                            <input asp-for="Correo" class="form-control" type="email" required />
-                            <span asp-validation-for="Correo" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-2">
-                            <label asp-for="Clave" class="form-label"></label>
-                            <input asp-for="Clave" class="form-control" type="password" required />
-                            <span asp-validation-for="Clave" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="IdRol">Rol</label>
-                            <select id="IdRol" name="IdRol" class="form-control" required>
-                                <option value="" disabled selected>Seleccione un rol</option>
-                                @foreach (var rol in Model.Roles)
-                                {
-                                    <option value="@rol.IdRol">@rol.Nombre</option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="mb-3 d-flex gap-2 align-items-center">
-                            <img id="imagenPrevisualizacion" class="card-image" style="width:80px;height:80px;border-radius:50%;object-fit:cover;background:#f5f5f5;" />
-                            <input id="Imagen" name="Imagen" type="file" accept="image/*" onchange="CargarImagen(event)" />
-                        </div>
-
-                        <div class="d-flex gap-2">
-                            <a asp-action="listar_Empleados" class="btn btn-outline-secondary">Volver</a>
-                            <input type="submit" value="Agregar registro" class="btn btn-success ms-auto" id="btn-submit-usuario" />
+                        <div class="d-flex flex-column flex-sm-row justify-content-end border-top pt-4 mt-4">
+                            <a class="btn btn-light border mr-sm-2 mb-2 mb-sm-0" asp-action="listar_Empleados">Cancelar</a>
+                            <button type="submit" class="btn btn-success px-4" id="btn-submit-usuario">
+                                <i class="fas fa-user-plus mr-2"></i>Agregar usuario
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -72,6 +127,22 @@
         Console.WriteLine("Estatus :",status);
     }
 </div>
+
+@section Styles {
+    <style>
+        .user-page { background: #f4f7f6; min-height: calc(100vh - 120px); }
+        .user-card { border-radius: 10px; overflow: hidden; }
+        .user-card-icon { align-items: center; background: #e7f5ed; border-radius: 8px; color: #28a745; display: inline-flex; height: 42px; justify-content: center; width: 42px; }
+        .form-control, .input-group-text, .custom-file-label { border-color: #dfe7e2; }
+        .form-control:focus { border-color: #65bd7b; box-shadow: 0 0 0 .2rem rgba(40, 167, 69, .12); }
+        .image-panel { background: #fafcfb; border: 1px solid #e2ebe5; border-radius: 8px; padding: 20px; }
+        .image-preview { align-items: center; background: #eef4f0; border: 2px dashed #c7d9cc; border-radius: 8px; display: flex; height: 245px; justify-content: center; overflow: hidden; }
+        .image-preview img { display: none; height: 100%; object-fit: cover; width: 100%; }
+        .image-preview.has-image img { display: block; }
+        .image-preview.has-image #imagePlaceholder { display: none; }
+        .custom-file-label::after { content: "Buscar"; background: #e7f5ed; color: #218838; }
+    </style>
+}
 
 @section Scripts {
     <script>

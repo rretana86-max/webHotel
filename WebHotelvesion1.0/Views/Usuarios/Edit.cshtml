@@ -1,216 +1,155 @@
 ﻿@model WebHotel_vesion1._0.Models.ViewModel.UsuarioViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar usuario";
 }
 
-
-<hr />
-<div class="row  justify-content-center " style="margin-top:50px">
-    <div class="col-12 col-md-6">
-        
-
-        <div class="card  shadow-lg  border-0 card-warning">
-            <div class="card-header  text-center">
-                <h3 class="card-text text-white text-center">Edicion </h3>
-               
-            </div>
-            <div class="card-body">
-
-               
-
-                <form asp-action="Edit" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
-                    <div class="row">
-                        <div class="col-12"></div>
-                        <div class="form-group">
-                          
-
-
-
-
-                            <input asp-for="IdUsuario" class="form-control" hidden />
-                            <span asp-validation-for="IdUsuario" class="text-danger"></span>
-
-
-
-
-                        </div>
-
-                    </div>
-                  
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label asp-for="NombreCompleto" class="control-label"></label>
-
-                                <div class="input-group bg-white">
-
-                                    <div class="input-group-prepend w-100">
-                                        <span><i class="fa-solid fa-user"></i></span>
-                                        <input asp-for="NombreCompleto" class="form-control" />
-                                        <span asp-validation-for="NombreCompleto" class="text-danger"></span>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-              
-                    <div class="row">
-                        <div class="col-12">
-
-                            <div class="form-group">
-                                <label asp-for="Correo" class="control-label"></label>
-                                <div class="input-group bg-white">
-                                    <div class="input-group-prepend w-100">
-                                        <span><i class="fa-solid fa-envelope "></i></span>
-                                        <input asp-for="Correo" class="form-control" />
-                                        <span asp-validation-for="Correo" class="text-danger"></span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                    </div>
-                       
-                        
-
-
-                    <div class="row">
-                        <div class="col-7">
-
-                            <div class="form-group">
-                                <label asp-for="Clave" class="control-label"></label>
-                                <div class="input-group bg-white">
-                                    <div class="input-group-prepend w-100">
-                                        <span><i class="fa-solid fa-key"></i></span>
-                                        <input asp-for="Clave" class="form-control" />
-                                        <span asp-validation-for="Clave" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-4">
-
-                            <div class="form-group">
-
-                                <label for="IdRol"> Rol</label>
-                                <span></span>
-                                <select name="IdRol" class="form-control bg-primary text-dark" required>
-                                    <option value="" disabled selected>Seleccione un rol</option>  @*obliga selecionar una opcion  *@
-
-
-
-                                    @foreach (var rol in Model.Roles)
-                                    {
-
-
-                                        <option value="@rol.IdRol" style="cursor:crosshair">@rol.Nombre</option>
-
-                                    }
-
-                                </select>
-
-
-
-                            </div>
-                            
-
-
-                        </div>
-
-
-                    </div>
-
-
-                   <div class="row">
-
-                       <div class="col-md-4">
-                           <label>Foto</label>
-                            <div class="form-group ">
-                                <img id="imagenPrevisualizacion" src="@Url.Content("~/"+Model.imageUrl)" class="card-image " style="width:200px;height:200px; ">
-                                <input id="Imagen" name="Imagen" type="file" accept="image/*" required="solo imagenes " onchange="CargarImagen(event)" />
-                            </div>
-
-
-
-                       </div>
-
-
-                   </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12 col-md-4" style="margin-bottom:2px">
-                            <a asp-action="listar_Empleados" class="btn   bg-dark btn-outline">Atras</a>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-
-                            <input type="submit" value="Salvar cambios" class="btn btn-warning" />
-
-                        </div>
-
-
-
-                    </div>
-                </form>
-
-
+<div class="container-fluid user-page py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5 pt-6">
+                <div>
+                    <p class="text-uppercase text-warning font-weight-bold small mb-1">Administración</p>
+                    <h1 class="h2 font-weight-bold text-dark mb-1">Editar usuario</h1>
+                    <p class="text-muted mb-0">Actualiza la información del usuario y su perfil profesional.</p>
+                </div>
+                <a asp-action="listar_Empleados" class="btn btn-outline-secondary mt-3 mt-md-0">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver al listado
+                </a>
             </div>
 
+            <div class="card user-card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom px-4 py-3">
+                    <div class="d-flex align-items-center">
+                        <span class="user-card-icon mr-3"><i class="fas fa-user-edit"></i></span>
+                        <div>
+                            <h2 class="h5 font-weight-bold mb-1">Datos del usuario</h2>
+                            <p class="text-muted small mb-0">Modifica el perfil y los accesos del usuario relacionado.</p>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="card-body p-4 p-lg-5">
+                    <form asp-controller="Usuarios" asp-action="Edit" method="post" id="form-usuario" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <input asp-for="IdUsuario" type="hidden" />
+
+                        <div class="row">
+                            <div class="col-lg-7 pr-lg-4">
+                                <div class="form-group">
+                                    <label asp-for="NombreCompleto" class="font-weight-bold text-dark">Nombre completo</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-user text-warning"></i></span></div>
+                                        <input asp-for="NombreCompleto" class="form-control" placeholder="Nombre y apellidos" required />
+                                    </div>
+                                    <span asp-validation-for="NombreCompleto" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Correo" class="font-weight-bold text-dark">Correo electrónico</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-envelope text-warning"></i></span></div>
+                                        <input asp-for="Correo" class="form-control" type="email" placeholder="usuario@ejemplo.com" required />
+                                    </div>
+                                    <span asp-validation-for="Correo" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Clave" class="font-weight-bold text-dark">Contraseña</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-lock text-warning"></i></span></div>
+                                        <input asp-for="Clave" class="form-control" type="password" placeholder="Ingrese una nueva contraseña" />
+                                    </div>
+                                    <small class="form-text text-muted">Deja este campo vacío si no quieres cambiar la contraseña actual.</small>
+                                    <span asp-validation-for="Clave" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group mb-0">
+                                    <label for="IdRol" class="font-weight-bold text-dark">Rol</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-user-shield text-warning"></i></span></div>
+                                        <select id="IdRol" name="IdRol" class="form-control" required>
+                                            <option value="" disabled>Seleccione un rol</option>
+                                            @foreach (var rol in Model.Roles)
+                                            {
+                                                <option value="@rol.IdRol" selected="@(rol.IdRol == Model.IdRol ? "selected" : null)">@rol.Nombre</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5 pl-lg-4 mt-4 mt-lg-0">
+                                <div class="image-panel h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <label for="Imagen" class="font-weight-bold text-dark mb-0">Foto de perfil</label>
+                                        <span class="badge badge-light text-muted">JPG, PNG</span>
+                                    </div>
+
+                                    <div class="image-preview @(string.IsNullOrWhiteSpace(Model.imageUrl) ? "" : "has-image")" id="imagePreview">
+                                        @if (!string.IsNullOrWhiteSpace(Model.imageUrl))
+                                        {
+                                            <img id="imagenPrevisualizacion" src="@Url.Content("~/" + Model.imageUrl)" alt="Foto de perfil actual" />
+                                        }
+                                        else
+                                        {
+                                            <img id="imagenPrevisualizacion" alt="Vista previa de la foto de perfil" />
+                                        }
+                                        <div id="imagePlaceholder" class="text-center text-muted">
+                                            <i class="fas fa-user-circle fa-3x mb-2"></i>
+                                            <p class="small mb-0">La vista previa aparecerá aquí</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="custom-file mt-3">
+                                        <input id="Imagen" name="Imagen" type="file" class="custom-file-input" accept="image/*" onchange="CargarImagen(event)" />
+                                        <label class="custom-file-label" for="Imagen">Seleccionar nueva imagen</label>
+                                    </div>
+                                    <small class="form-text text-muted">Si no eliges una imagen, se conservará la actual.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-end border-top pt-4 mt-4">
+                            <a class="btn btn-light border mr-sm-2 mb-2 mb-sm-0" asp-action="listar_Empleados">Cancelar</a>
+                            <button type="submit" class="btn btn-warning px-4" id="btn-submit-usuario">
+                                <i class="fas fa-save mr-2"></i>Guardar cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      
     </div>
-
-
-
 </div>
 
+@section Styles {
+    <style>
+        .user-page { background: #f4f7f6; min-height: calc(100vh - 120px); }
+        .user-card { border-radius: 10px; overflow: hidden; }
+        .user-card-icon { align-items: center; background: #fff4dc; border-radius: 8px; color: #f39c12; display: inline-flex; height: 42px; justify-content: center; width: 42px; }
+        .form-control, .input-group-text, .custom-file-label { border-color: #dfe7e2; }
+        .form-control:focus { border-color: #f0ad4e; box-shadow: 0 0 0 .2rem rgba(243, 156, 18, .12); }
+        .image-panel { background: #fafcfb; border: 1px solid #e2ebe5; border-radius: 8px; padding: 20px; }
+        .image-preview { align-items: center; background: #f8f9fa; border: 2px dashed #d7dfe6; border-radius: 8px; display: flex; height: 245px; justify-content: center; overflow: hidden; }
+        .image-preview img { display: none; height: 100%; object-fit: cover; width: 100%; }
+        .image-preview.has-image img { display: block; }
+        .image-preview.has-image #imagePlaceholder { display: none; }
+        .custom-file-label::after { content: "Buscar"; background: #fff4dc; color: #d08c00; }
+    </style>
+}
 
+@section Scripts {
+    <script>
+        var CargarImagen = function (event) {
+            var result = document.getElementById("imagenPrevisualizacion");
+            var preview = document.getElementById("imagePreview");
 
-<script>
-
-
-    var CargarImagen = function (event) {
-
-        var result = document.getElementById("imagenPrevisualizacion");
-        result.src = URL.createObjectURL(event.target.files[0]);
-
-    }
-
-</script>
-<style>
-
-
-
-    .input-group{
-    border:2px solid whiteSmoke;
-     border-radius:12px;
-    
-    }
-                 #NombreCompleto , #Correo, #Clave {
-        border: none !important
-         }
-
-
-    .input-group {
-        color: crimson !important;
-        /* margin-left:4px !important; */
-        /* width:99% */
-    }
-
-
-                          </style>
+            if (event.target.files && event.target.files[0]) {
+                result.src = URL.createObjectURL(event.target.files[0]);
+                preview.classList.add("has-image");
+            }
+        }
+    </script>
+}

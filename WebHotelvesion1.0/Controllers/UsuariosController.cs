@@ -126,6 +126,11 @@ namespace WebHotel_vesion1._0.Controllers
         {
             var id_ = id;
             var user = await _iusuario.getUser(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             List<Rol> listroles = await _irol.GetRols();
             var usuariorol = new UsuarioViewModel
             {
@@ -134,6 +139,7 @@ namespace WebHotel_vesion1._0.Controllers
                 Correo = user.Correo,
                 Clave = "",
                 imageUrl = user.ImageUrl,
+                IdRol = user.UsuarioRoles != null && user.UsuarioRoles.Any() ? user.UsuarioRoles.First().IdRol : 0,
                 Roles = listroles
 
             };
@@ -143,18 +149,11 @@ namespace WebHotel_vesion1._0.Controllers
         // POST: EmpleadosController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  async Task<IActionResult> Edit( UsuarioViewModel userviewmodel, IFormFile Imagen)
+        public  async Task<IActionResult> Edit( UsuarioViewModel userviewmodel, IFormFile? Imagen)
         {
-
-            if (Imagen == null) {
-                return Content("Se debe    seleccionar una imagen ");
-            }
-             
-            if (userviewmodel == null) {
-
-
+            if (userviewmodel == null)
+            {
                 return Content("El modelo no puede ser nulo");
-
             }
 
            Usuario olduser = await _iusuario.getUser(userviewmodel.IdUsuario);
@@ -172,62 +171,55 @@ namespace WebHotel_vesion1._0.Controllers
 
             try
             {
-                string fileExtension = Path.GetExtension(Imagen.FileName);//obtenemos el nombre de la imagen 
-                string newFileName = Guid.NewGuid().ToString() + fileExtension;// creamos un nombre unico 
+                string? imagePath = olduser.ImageUrl;
 
-              
-                var profile = Path.Combine(_hostingEnvironment.WebRootPath, "profile");  // obtenemos la ruta de la carpeta profile
-              
-                var oldImagePath = Path.Combine(_hostingEnvironment.WebRootPath, olduser.ImageUrl);  // obtenemos la ruta de la vieja imagen 
+                if (Imagen != null && Imagen.Length > 0)
+                {
+                    string fileExtension = Path.GetExtension(Imagen.FileName);
+                    string newFileName = Guid.NewGuid().ToString() + fileExtension;
 
-                if (System.IO.File.Exists(oldImagePath)) { 
-                
-                System.IO.File.Delete(oldImagePath); 
+                    var profile = Path.Combine(_hostingEnvironment.WebRootPath, "profile");
+                    if (!Directory.Exists(profile))
+                    {
+                        Directory.CreateDirectory(profile);
+                    }
+
+                    var oldImagePath = !string.IsNullOrWhiteSpace(olduser.ImageUrl)
+                        ? Path.Combine(_hostingEnvironment.WebRootPath, olduser.ImageUrl)
+                        : null;
+
+                    if (!string.IsNullOrWhiteSpace(oldImagePath) && System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+
+                    var filePath = Path.Combine(profile, newFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Imagen.CopyToAsync(fileStream);
+                    }
+
+                    imagePath = Path.Combine("profile", newFileName).Replace("\\", "/");
                 }
 
-                oldImagePath = oldImagePath.Replace("\\", "/");
-
-                int cont =Directory.GetFiles(profile).Length; 
-              
-                //asignamos el nombre al nuevo archivo
-              
-
-                var filePath = Path.Combine(profile, newFileName);
-
-                // Guardar la nueva imagen
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                var user = new Usuario
                 {
-                    await Imagen.CopyToAsync(fileStream);
-                }
-
-
-              olduser.ImageUrl=  Path.Combine("profile", newFileName).Replace("\\", "/");
-                //  carga de las propiedades con los datos del modelo 
-                Usuario user = new Usuario
-                {
-
                   IdUsuario = userviewmodel.IdUsuario,
                     NombreCompleto = userviewmodel.NombreCompleto,
                     Correo = userviewmodel.Correo,
-                    Clave =  BC.HashPassword( userviewmodel.Clave),// se encripta la clave
-                    ImageUrl = olduser.ImageUrl
+                    Clave = string.IsNullOrWhiteSpace(userviewmodel.Clave) ? olduser.Clave : BC.HashPassword(userviewmodel.Clave),
+                    ImageUrl = imagePath
 
                 };
-                //llamada para el metodo de actualizar usuario
                 bool result = await _iusuario.UserUpdate(user);
                 if (result) { 
-
-                    // llamada al metodo para almacenar el IdUsuario y el IdRol 
                     UsuarioRol usuariorol = new UsuarioRol
                     {
-
                         IdUsuario = userviewmodel.IdUsuario,
                         IdRol = userviewmodel.IdRol,
                     };
-
-                
                   await   _usuarioRol.UpdateUserRol(usuariorol);
-            }
+                }
             }
             catch
             {
@@ -236,7 +228,6 @@ namespace WebHotel_vesion1._0.Controllers
             }
             
            
-           // return View();
             return RedirectToAction("listar_Empleados");
         }
 
