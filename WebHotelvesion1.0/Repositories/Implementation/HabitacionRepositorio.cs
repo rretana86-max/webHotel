@@ -64,7 +64,8 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
         public async Task<bool> UpdateAvailabilityRoom()
         {
-           try{await _context.SaveChangesAsync();
+           try{
+                await _context.SaveChangesAsync();
            
            
            }
