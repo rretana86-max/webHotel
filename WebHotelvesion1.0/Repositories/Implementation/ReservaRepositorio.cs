@@ -102,7 +102,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
         public async Task<List<ReservaVM>> GetReservas(string id)
         {
             var user_reservas = await   _context.Tb_Reservas.Where(u => u.Usuario.IdUsuario == id).Select(u=> new ReservaVM {
-           Id=u.Id,
+            Id=u.Id,
              NombreHabitacion=u.Habitacion.Descripcion,
              NombreUsuario=u.Usuario.NombreCompleto,
              EmailUsuario=u.Usuario.Correo,

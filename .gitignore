@@ -6,3 +6,6 @@ bin/
 obj/
 
 *.txt
+*.jpeg
+*.jpg
+*.PNG

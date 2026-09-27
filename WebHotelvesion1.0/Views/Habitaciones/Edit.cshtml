@@ -1,8 +1,6 @@
 ﻿@model WebHotel_vesion1._0.Models.Habitacion
 
-@{
-    ViewData["Title"] = "Edit";
-}
+
 
 <h1>Edit</h1>
 
@@ -13,7 +11,7 @@
        
 
         <div class="card  shadow-lg border-0"style="overflow:hidden">
-            <h3 class="card-header  bg-warning ">Editar </h3>
+            <h3 class="card-header  bg-warning ">Editar habitacion </h3>
             <div class="card-body">
 
                 <form asp-action="Edit" enctype="multipart/form-data">
@@ -138,7 +136,7 @@
 
 <script>
 
-
+ //function  allows the user to preview the selected image before uploading it
     var CargarImagen = function (event) {
 
         var result = document.getElementById("imagenPrevisualizacion");

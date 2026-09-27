@@ -10,6 +10,7 @@
 
         // Datos del usuario (solo lo necesario)
         public string NombreUsuario { get; set; }
+        public string UsuarioId { get; set; }   
         public string EmailUsuario { get; set; }
 
         // Datos de la habitación

@@ -1,133 +1,198 @@
 ﻿@model WebHotel_vesion1._0.Models.ViewModel.HabitacionViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Modulo de Registro de habitación  ";
 }
 
+<div class="container-fluid room-page py-4 py-lg-5">
+    <div class="row justify-content-center mx-9">
+        <div class="col-12 col-xl-10">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 pt-2">
+                <div>
+                    <p class="text-uppercase text-success font-weight-bold small mb-1">Administración</p>
+                    <h1 class="h2 font-weight-bold text-dark mb-1">Registrar habitación</h1>
+                    <p class="text-muted mb-0">Agrega una nueva habitación al inventario del hotel.</p>
+                </div>
+                <a asp-action="listarHabitaciones" class="btn btn-outline-secondary mt-3 mt-md-0">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver al listado
+                </a>
+            </div>
 
-<h4>Habitacion</h4>
-<div class="row justify-content-center" style="margin-top:8%">
-    <div class="col-12 col-md-6">
-        <div class="card shadow-lg border-0 "style="overflow:hidden">
-
-            <h4 class="card-header text-dark text-center bg-success">Registro habitaciones</h4>
-            <div class="card-body">
-
-                <form asp-action="Create" enctype="multipart/form-data" id="form-create-room">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="row justify-content-center mb-2">
-                        <div class="col-12">
-
-                            <div class="form-group">
-                                <label asp-for="Numero" class="control-label"></label>
-                                <input asp-for="Numero" class="form-control" required/>
-                                <span asp-validation-for="Numero" class="text-danger"></span>
-                            </div>
-
+            <div class="card room-card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom px-4 py-3">
+                    <div class="d-flex align-items-center">
+                        <span class="room-card-icon mr-3"><i class="fas fa-door-open"></i></span>
+                        <div>
+                            <h2 class="h5 font-weight-bold mb-1">Datos de la habitación</h2>
+                            <p class="text-muted small mb-0">Completa la información para registrar el espacio.</p>
                         </div>
-
-
                     </div>
-                    <div class="row">
+                </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label asp-for="Tipo" class="control-label"></label>
-                                <input asp-for="Tipo" class="form-control" required/>
-                                <span asp-validation-for="Tipo" class="text-danger"></span>
-                            </div>
-                        </div>
+                <div class="card-body p-4 p-lg-5">
 
+                @if (TempData["Success"] is string successMessage)
+                {
+                    <div class="alert alert-success border-0 shadow-sm" role="alert">
+                        <i class="fas fa-check-circle mr-2"></i>@successMessage
                     </div>
-                    
-                    <div class="row">
+                }
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label asp-for="PrecioPorNoche" class="control-label"></label>
-                                <input asp-for="PrecioPorNoche" class="form-control" required/>
-                                <span asp-validation-for="PrecioPorNoche" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                    </div>
-                  
+                <form asp-action="Create" method="post" enctype="multipart/form-data" id="form-create-room">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    }
 
                     <div class="row">
+                        <div class="col-lg-7 pr-lg-4">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="Numero" class="font-weight-bold text-dark">Número de habitación</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-hashtag text-success"></i></span></div>
+                                        <input asp-for="Numero" class="form-control" placeholder="Ej. 101" required />
+                                    </div>
+                                    <span asp-validation-for="Numero" class="text-danger small"></span>
+                                </div>
 
-                        
+                                <div class="form-group col-md-6">
+                                    <label asp-for="Tipo" class="font-weight-bold text-dark">Tipo de habitación</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-bed text-success"></i></span></div>
+                                        <input asp-for="Tipo" class="form-control" placeholder="Ej. Suite" required />
+                                    </div>
+                                    <span asp-validation-for="Tipo" class="text-danger small"></span>
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                <label asp-for="PrecioPorNoche" class="font-weight-bold text-dark">Precio por noche</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text bg-light">₡</span></div>
+                                    <input asp-for="PrecioPorNoche" class="form-control" type="number" min="0" step="0.01" placeholder="0.00" required />
+                                </div>
+                                <span asp-validation-for="PrecioPorNoche" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Descripcion" class="font-weight-bold text-dark">Descripción</label>
+                                <textarea asp-for="Descripcion" class="form-control" rows="6" placeholder="Describe las características de la habitación..." required></textarea>
+                                <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                            </div>
+
+                            <div class="availability-box custom-control custom-checkbox">
+                                <input asp-for="EstaDisponible" class="custom-control-input" type="checkbox" id="EstaDisponible" />
+                                <label asp-for="EstaDisponible" class="custom-control-label font-weight-bold">Disponible para reservar</label>
+                                <small class="d-block text-muted ml-4">Activa esta opción si la habitación puede reservarse ahora.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 pl-lg-4 mt-4 mt-lg-0">
+                            <div class="image-panel h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <label for="Imagen" class="font-weight-bold text-dark mb-0">Imagen de la habitación</label>
+                                    <span class="badge badge-light text-muted">JPG, PNG</span>
+                                </div>
+                                <div class="image-preview mb-3" id="imagePreview">
+                                    <img id="imagenPrevisualizacion" alt="Vista previa de la habitación" />
+                                    <div id="imagePlaceholder" class="text-center text-muted">
+                                        <i class="fas fa-image fa-2x mb-2"></i>
+                                        <p class="small mb-0">La vista previa aparecerá aquí</p>
+                                    </div>
+                                </div>
+                                <div class="custom-file">
+                                    <input id="Imagen" name="Imagen" type="file" class="custom-file-input" accept="image/*" required onchange="CargarImagen(event)" />
+                                    <label class="custom-file-label" for="Imagen">Seleccionar imagen</label>
+                                </div>
+                                <small class="form-text text-muted">Selecciona una imagen clara de la habitación.</small>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Descripcion" class="control-label"></label>
-                                <textarea asp-for="Descripcion" class="form-control" rows="5" required></textarea>
-                                <span asp-validation-for="Descripcion" class="text-danger"></span>
-                            </div>
-                        </div>
 
-                       @* IsAvalibity *@
-
-                        <div class="form-check">
-                            <!-- The Tag Helper auto-generates the id, name, and underlying hidden input -->
-                            <input asp-for="EstaDisponible" class="form-check-input" type="checkbox" />
-                            <label asp-for="EstaDisponible" class="form-check-label">
-                                Esta disponible
-                            </label>
-                        </div>
-
-                        <div class="col-12 col-md-3">
-                            <div class="form-group ">
-                                
-                                <img id="imagenPrevisualizacion" class="card-image " style="width:200px;height:200px; border:1px solid whiteSmoke; border-radius:50%; background-color:whitesmoke">
-                                <input id="Imagen" name="Imagen" type="file" accept="image/*" required="solo imagenes" onchange="CargarImagen(event)"/>
-                            </div>
-                        </div>
-                        </div>
-
-
-                    
-                       <div class="row justify-content-center">
-                           <div class="col-md-4">
-
-                            <div>
-                                <a class="btn btn-warning rounded-3"asp-action="listarHabitaciones">Cancelar</a>
-                            </div>
-
-                           </div>
-                           <div class="col-md-4">
-
-                            <div class="form-group">
-                                <input type="submit" value="Registrar" class="btn btn-success" />
-                            </div>
-
-
-                           </div>
-
-                       </div>
-
-                  
+                    <div class="d-flex flex-column flex-sm-row justify-content-end border-top pt-4 mt-4">
+                        <a class="btn btn-light border mr-sm-2 mb-2 mb-sm-0" asp-action="listarHabitaciones">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="fas fa-save mr-2"></i>Registrar habitación
+                        </button>
+                    </div>
                 </form>
-
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 
-                            <style>
-                                 body {
-                                     background-color: whiteSmoke
-                                 }</style>
+@section Styles {
+    <style>
+        .room-page { background: #f4f7f6; min-height: calc(100vh - 120px); }
+        .room-card { border-radius: 10px; overflow: hidden; }
+        .room-card-icon { align-items: center; background: #e7f5ed; border-radius: 8px; color: #28a745; display: inline-flex; height: 42px; justify-content: center; width: 42px; }
+        .form-control, .input-group-text, .custom-file-label { border-color: #dfe7e2; }
+        .form-control:focus { border-color: #65bd7b; box-shadow: 0 0 0 .2rem rgba(40, 167, 69, .12); }
+        .availability-box { background: #f7fbf8; border: 1px solid #dcefe1; border-radius: 6px; padding: 14px 16px; }
+        .image-panel { background: #fafcfb; border: 1px solid #e2ebe5; border-radius: 8px; padding: 20px; }
+        .image-preview { align-items: center; background: #eef4f0; border: 2px dashed #c7d9cc; border-radius: 8px; display: flex; height: 245px; justify-content: center; overflow: hidden; }
+        .image-preview img { display: none; height: 100%; object-fit: cover; width: 100%; }
+        .image-preview.has-image img { display: block; }
+        .image-preview.has-image #imagePlaceholder { display: none; }
+        .custom-file-label::after { content: "Buscar"; background: #e7f5ed; color: #218838; }
+        .text-danger.field-validation-error { display: block; margin-top: 4px; }
+
+        /* Encabezado y acentos */
+        .room-card { border-radius: 10px; overflow: hidden; }
+        .room-card .room-card-icon {
+            background: linear-gradient(135deg,#e7f5ed,#d0efd8);
+            color: #1b7a3a;
+            box-shadow: 0 6px 18px rgba(27,122,58,0.06);
+        }
+
+        /* Botones primarios (crear/guardar) */
+        .btn-success {
+            background: linear-gradient(90deg,#28a745 0%, #43c06f 100%);
+            border: none;
+            box-shadow: 0 8px 20px rgba(39,174,96,0.12);
+        }
+        .btn-success:hover { filter: brightness(0.98); transform: translateY(-1px); }
+
+        /* Inputs focus */
+        .form-control:focus {
+            border-color: #65bd7b;
+            box-shadow: 0 0 0 .2rem rgba(101,189,123,.12);
+        }
+
+        /* Image panel */
+        .image-panel {
+            background: linear-gradient(180deg,#fbfffb,#f4fcf6);
+            border: 1px solid #e6f3ea;
+        }
+        .image-preview {
+            border: 2px dashed #cfead7;
+        }
+
+        /* Danger actions (edit with delete) */
+        .btn-danger {
+            background: linear-gradient(90deg,#e55353,#dd3e3e);
+            border: none;
+        }
+    </style>
+}
 
 <script>
     // permite visualizar la imagen
     var CargarImagen = function (event) {
+        var file = event.target.files[0];
         var result = document.getElementById("imagenPrevisualizacion");
-        result.src = URL.createObjectURL(event.target.files[0]);
+        var preview = document.getElementById("imagePreview");
+        var label = document.querySelector('label[for="Imagen"]');
+
+        if (!file) return;
+
+        result.src = URL.createObjectURL(file);
+        preview.classList.add("has-image");
+        label.textContent = file.name;
     }
 </script>
 
@@ -136,6 +201,18 @@
     <script src="~/js/alerts.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var successMessage = document.querySelector('.alert-success');
+            if (successMessage && window.Swal) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro exitoso',
+                    text: successMessage.textContent.trim(),
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+
         // Integración de alerts.js en la vista:
         // - Previene doble envío
         // - Muestra un modal "Procesando..." al hacer submit

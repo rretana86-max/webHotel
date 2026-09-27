@@ -1,53 +1,183 @@
 ﻿@model WebHotel_vesion1._0.Models.Habitacion
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar habitación";
 }
 
-<h1>Delete</h1>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0 room-delete-card">
+                <!-- Header: título y acciones rápidas -->
+                <div class="card-header d-flex align-items-center justify-content-between bg-gradient-delete text-white">
+                    <div>
+                        <p class="text-uppercase small mb-1 opacity-75">Habitaciones</p>
+                        <h2 class="h5 mb-0">Confirmar eliminación</h2>
+                        <p class="small mb-0 opacity-75">Verifique los detalles antes de eliminar esta habitación.</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-sm btn-outline-light me-2" aria-label="Ir al inicio">
+                            <i class="fas fa-home"></i>
+                        </a>
+                        <a asp-action="listarHabitaciones" class="btn btn-sm btn-outline-light" aria-label="Volver al listado de habitaciones">
+                            <i class="fas fa-arrow-left me-1"></i>Volver al listado
+                        </a>
+                    </div>
+                </div>
 
-<
-    
+                <!-- Body: imagen + datos -->
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <!-- Imagen -->
+                        <div class="col-12 col-sm-5">
+                            @* Usar la propiedad correcta (imageUrl) y resolver ruta relativa *@
+                            @if (!string.IsNullOrWhiteSpace(Model.imageUrl))
+                            {
+                                <img src="@Url.Content("~/" + Model.imageUrl)" alt="Imagen habitación #@Model.Id" class="img-fluid room-image rounded shadow-sm" />
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center room-image rounded bg-light text-muted">
+                                    <i class="fas fa-image fa-2x"></i>
+                                </div>
+                            }
+                        </div>
 
+                        <!-- Datos y advertencia -->
+                        <div class="col-12 col-sm-7">
+                            <dl class="row mb-3">
+                                <dt class="col-4 text-muted">ID</dt>
+                                <dd class="col-8 mb-2 font-weight-bold">#@Model.Id</dd>
 
-<div class="row justify-content-center mt-4">
-    <div class="col-12 col-md-6">
+                                <dt class="col-4 text-muted">Precio</dt>
+                                <dd class="col-8 mb-2">₡ @Model.PrecioPorNoche</dd>
 
-        <div class="card shadow-lg">
+                                <dt class="col-4 text-muted">Descripción</dt>
+                                <dd class="col-8 mb-2">@Model.Descripcion</dd>
+                            </dl>
 
-            <div class="card-body">
-                <div class="row bg-green">
-                   <div class="col-12">
+                            <div class="alert alert-danger d-flex align-items-start" role="alert" aria-live="polite">
+                                <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                                <div>
+                                    <strong>Atención:</strong>
+                                    <div>Esta acción eliminará permanentemente la habitación. No se puede deshacer.</div>
+                                </div>
+                            </div>
 
+                            <p class="text-muted small mb-0">Si necesitas conservar información, exporta los datos antes de proceder.</p>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Footer: formulario POST con token antiforgery y botones -->
+                <div class="card-footer bg-transparent border-top d-flex flex-column flex-sm-row justify-content-end gap-2">
+                    <form asp-action="DeleteHabitacion" method="post" class="d-flex w-100 w-sm-auto justify-content-end" id="form-delete-room">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="Id" type="hidden" />
+                        <a asp-action="listarHabitaciones" class="btn btn-light border me-2 d-sm-inline-block" role="button" aria-label="Cancelar y volver al listado">
+                            Cancelar
+                        </a>
 
-                        <label>Descripcion </label>
-                        <p>@Model.Descripcion</p>
-
-                   </div>
-               
-
-            </div>
-            <div class="row ">
-                <div class="col-12">
-
-                        <label for="PrecioPorNoche ">Precio por noche</label>
-                        <p>@Model.PrecioPorNoche</p>
-
-
+                        <button id="btnDelete" type="submit" class="btn btn-danger btn-delete-gradient" aria-label="Confirmar eliminación de la habitación" data-submitting="false">
+                            <i class="fas fa-trash-alt me-2" aria-hidden="true"></i>Eliminar habitación
+                        </button>
+                    </form>
                 </div>
             </div>
-
-
-                <form asp-action="DeleteHabitacion">
-
-                    <input asp-for="Id"hidden />
-                    <input type="submit" value="Delete" class="btn btn-danger" /> |
-                    <a asp-action="Index">Back to List</a>
-                </form>
         </div>
-
     </div>
 </div>
-   
-</div>
+
+@section Styles {
+    <style>
+        /* Paleta y estilos para módulo eliminar (atractivos pero sobrios) */
+        .bg-gradient-delete {
+            background: linear-gradient(90deg, #c62828 0%, #ef5350 50%, #ff8a65 100%);
+            padding: 1rem 1.25rem;
+        }
+
+        .room-delete-card {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .room-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .btn-delete-gradient {
+            background: linear-gradient(90deg, #e53935 0%, #d32f2f 60%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 6px 18px rgba(209, 45, 45, 0.18);
+        }
+        .btn-delete-gradient:hover {
+            filter: brightness(0.95);
+            transform: translateY(-1px);
+        }
+
+        /* Ajustes responsive: apilar botones en móvil */
+        @@media (max-width: 575.98px) {
+            .card-footer form { flex-direction: column; gap: .5rem; align-items: stretch; }
+            .card-footer .btn { width: 100%; }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            const form = document.getElementById('form-delete-room');
+            const btn = document.getElementById('btnDelete');
+            if (!form || !btn) return;
+
+            let submitting = false;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (submitting) return;
+
+                if (window.Swal) {
+                    Swal.fire({
+                        title: '¿Eliminar habitación?',
+                        text: 'Esta acción es irreversible. ¿Desea continuar?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar',
+                        reverseButtons: true,
+                        focusCancel: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            submitting = true;
+                            btn.setAttribute('disabled', 'disabled');
+                            btn.setAttribute('aria-disabled', 'true');
+                            btn.dataset.submitting = "true";
+                            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Enviando...';
+                            form.submit();
+                        }
+                    });
+                } else {
+                    if (confirm('Eliminar habitación: esta acción no se puede deshacer. ¿Desea continuar?')) {
+                        submitting = true;
+                        btn.setAttribute('disabled', 'disabled');
+                        btn.setAttribute('aria-disabled', 'true');
+                        btn.dataset.submitting = "true";
+                        form.submit();
+                    }
+                }
+            });
+
+            btn.addEventListener('click', function (ev) {
+                if (submitting) {
+                    ev.preventDefault();
+                    ev.stopImmediatePropagation();
+                }
+            });
+        })();
+    </script>
+}

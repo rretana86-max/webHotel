@@ -14,9 +14,9 @@ namespace WebHotel_vesion1._0.Repositories.Interfaces
         public Task<List<Habitacion>> ListarHabitaciones();
         public Task<Habitacion> getHabitacion(int id);
         public Task <bool>ActualizarHabitacion(Habitacion habitacion );
-        public Task<bool> DeleteHabitacion(int id);
+        public Task<bool> DeleteHabitacion(Habitacion habitacion );
 
-        public Task<bool> UpdateAvailabilityRoom(int id, bool estaDisponible);
+        public Task<bool> UpdateAvailabilityRoom();
 
     }
 }
