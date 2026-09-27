@@ -10,7 +10,7 @@
         public decimal PrecioPorNoche { get; set; } // Precio por noche
         public bool EstaDisponible { get; set; } // Estado de disponibilidad
         public string Descripcion { get; set; } // Descripción adicional de la habitación
-        public string imageUrl { get; set; }// campo que guarda la ruta de la imagen 
+        public string? imageUrl { get; set; }// campo que guarda la ruta de la imagen 
 
     }
 }

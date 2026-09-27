@@ -1,207 +1,314 @@
 ﻿@{
-    ViewData["Title"] = "ModuloMaestro";
+    ViewData["Title"] = "Dashboard";
 }
 
-<body>
-
-<center><h1 class="  text-white">Hotel  Admind </h1></center>
-
-
-        
-
-        <div class="row justify-content-center mt-2"style="margin-left:15%">
-
-            <div class=" col-12   col-md-3 text-white">   
-               
-                <div class="card  bg-success shadow-lg border-0">
-                   
-                    <h5 class="card-header"> Total de usuarios</h5>
-
-                    <div class="card-body">
-                      <label>@((int)ViewBag.totalUsuarios)</label>
-
-                    </div>
-
-                </div>
-
-
+<div class="dashboard-shell">
+    <div class="container-fluid py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+            <div>
+                <p class="text-uppercase text-primary font-weight-bold mb-1 letter-space">Panel administrativo</p>
+                <h1 class="h2 font-weight-bold mb-1 text-dark">Dashboard Hotel</h1>
+                <p class="text-muted mb-0">Resumen general del rendimiento operativo del hotel.</p>
             </div>
-            <div class="col-12 col-md-3  text-white ">
-            <div class="card  bg-warning shadow-lg border-0">
-                   
-                    <h5 class="card-header">Habitaciones disponible</h5>
+            <div class="mt-3 mt-md-0">
+                <span class="badge badge-light border px-3 py-2 text-muted">
+                    <i class="far fa-calendar-alt mr-2"></i>@DateTime.Now.ToString("dd MMM yyyy")
+                </span>
+            </div>
+        </div>
 
-                    <div class="card-body">
-                <label> @((int)ViewBag.habitacionesDisponibles)</label>
-
-                       
-
+        <div class="row">
+            <div class="col-12 col-sm-6 col-xl-3 mb-4">
+                <div class="small-box bg-gradient-success shadow-sm elevation-1">
+                    <div class="inner">
+                        <h3>@((int)ViewBag.totalUsuarios)</h3>
+                        <p>Usuarios activos</p>
                     </div>
-
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <a href="/Usuarios/listar_Empleados" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-
-
             </div>
 
-            <div class="col-12  col-md-3 text-white">
-                <div class="card bg-danger">
-                
+            <div class="col-12 col-sm-6 col-xl-3 mb-4">
+                <div class="small-box bg-gradient-info shadow-sm elevation-1">
+                    <div class="inner">
+                        <h3>@((int)ViewBag.habitacionesDisponibles)</h3>
+                        <p>Habitaciones disponibles</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <a href="/Habitaciones" class="small-box-footer">Ver disponibilidad <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
 
-                    <h5 class="card-header">Habitaciones Ocupadas </h5>
+            <div class="col-12 col-sm-6 col-xl-3 mb-4">
+                <div class="small-box bg-gradient-warning shadow-sm elevation-1">
+                    <div class="inner">
+                        <h3>@((int)ViewBag.habitacionesOcupadas)</h3>
+                        <p>Habitaciones ocupadas</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-door-closed"></i>
+                    </div>
+                    <a href="/Reservas" class="small-box-footer">Revisar reservas <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
 
-                    <div class="card-body ">
+            <div class="col-12 col-sm-6 col-xl-3 mb-4">
+                <div class="small-box bg-gradient-danger shadow-sm elevation-1">
+                    <div class="inner">
+                        <h3>24</h3>
+                        <p>Reservas hoy</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <a href="/Reservas" class="small-box-footer">Ir al calendario <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
 
-                        <div class="card-text">
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4">
+                <div class="card card-dashboard shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-bottom-0 px-4 py-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <h3 class="card-title font-weight-bold text-dark mb-0">Indicadores del hotel</h3>
+                        </div>
+                        <span class="badge badge-soft-primary px-2 py-1">Tiempo real</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="chart-wrapper">
+                            <canvas id="graficoDashboard"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                        <label> @((int)ViewBag.habitacionesOcupadas)</label>
-
-
+            <div class="col-12 col-xl-4 mb-4">
+                <div class="card card-dashboard shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-bottom-0 px-4 py-3">
+                        <h3 class="card-title font-weight-bold text-dark mb-0">Estado operativo</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Ocupación</span>
+                                <strong class="text-dark">68%</strong>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 68%"></div>
+                            </div>
                         </div>
 
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Disponibilidad</span>
+                                <strong class="text-dark">32%</strong>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 32%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">Atención / servicio</span>
+                                <strong class="text-dark">91%</strong>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 91%"></div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info border-0 mb-0">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            La operación se encuentra estable con buen nivel de ocupación y servicio.
+                        </div>
                     </div>
-
                 </div>
-
-
             </div>
-
-
         </div>
+    </div>
+</div>
 
-
-      
-       
-
-        <div class="row justify-content-center mt-4">
-
-
-        <div class="col-12 col-md-6 ">
-
-            <div class="card shadow-lg border-0">
-
-                <div class="card-body">
-
-                    
-                    <canvas id="graficoDashboard"></canvas>
-                   
-
-
-                </div>
-
-
-            </div>
-
-
-
-        </div>
-
-
-        </div>
-     
-    
-</body>
-
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var ctx = document.getElementById("graficoDashboard").getContext("2d");
-
-        function actualizarGrafico() {
-            fetch('/Home/ObtenerDatos')
-                .then(response => response.json())
-                .then(data => {
-                    if (window.miGrafico) {
-                        window.miGrafico.data.labels = data.etiquetas;
-                        window.miGrafico.data.datasets[0].data = data.valores;
-                        window.miGrafico.update(); // Actualizamos el grafico
-                    } else {
-                        window.miGrafico = new Chart(ctx, {
-                            type: 'bar', // Puedes cambiarlo a 'line', 'pie',bar etc.
-                            data: {
-                                labels: data.etiquetas,
-                                datasets: [{
-                                    label: 'Datos del Hotel',
-                                    data: data.valores,
-                                    backgroundColor: ['#28a745', '#ffc107', '#dc3545']
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                animation: {
-                                    duration: 2000
-                                }
-                            }
-                        });
-                    }
-                });
+@section Styles {
+    <style>
+        .dashboard-shell {
+            background: linear-gradient(180deg, #f4f7fb 0%, #eef3f8 100%);
+            min-height: calc(100vh - 120px);
         }
 
-        actualizarGrafico(); // Llamar al cargar la página
-        setInterval(actualizarGrafico, 5000); // Refrescar cada 5 segundos
-    });
-</script>
+        .letter-space {
+            letter-spacing: 0.12rem;
+        }
 
+        .small-box {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 12px 32px rgba(13, 44, 80, 0.08) !important;
+        }
 
-<style>
+        .small-box .inner {
+            padding: 22px 20px 15px 20px;
+        }
 
-  
-    body{
-        background-color:black;
-        padding-top:6%
-    
-  }
-       
+        .small-box h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            white-space: nowrap;
+        }
 
-   #create:hover {
-    cursor:pointer;
-    color:green !important;
-   background-color:orangered !important
+        .small-box p {
+            margin: 8px 0 0;
+            font-size: 0.88rem;
+            opacity: 0.95;
+        }
 
-   }
+        .small-box .icon {
+            top: 18px;
+            right: 18px;
+            font-size: 3.1rem;
+            opacity: 0.18;
+        }
 
-</style>
+        .small-box-footer {
+            background: rgba(0, 0, 0, 0.08);
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            color: rgba(255,255,255,0.95);
+        }
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        .card-dashboard {
+            border-radius: 18px;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06) !important;
+        }
 
-@* SweetAlert2: mostrar TempData["WelcomeMessage"] con una barra de progreso más llamativa *@
+        .card-dashboard .card-header {
+            background: #fff !important;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            min-height: 360px;
+        }
+
+        .badge-soft-primary {
+            background: rgba(0, 123, 255, 0.08);
+            color: #0056b3;
+            border-radius: 999px;
+        }
+
+        .progress-sm {
+            height: 0.7rem;
+            border-radius: 999px;
+            background: #eef2f7;
+        }
+
+        .alert-info {
+            background: #e9f5ff;
+            color: #0056b3;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var ctx = document.getElementById("graficoDashboard").getContext("2d");
+
+            function actualizarGrafico() {
+                fetch('/Home/ObtenerDatos')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (window.miGrafico) {
+                            window.miGrafico.data.labels = data.etiquetas;
+                            window.miGrafico.data.datasets[0].data = data.valores;
+                            window.miGrafico.update();
+                        } else {
+                            window.miGrafico = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: data.etiquetas,
+                                    datasets: [{
+                                        label: 'Datos del Hotel',
+                                        data: data.valores,
+                                        backgroundColor: ['#28a745', '#17a2b8', '#ffc107', '#dc3545'],
+                                        borderRadius: 8,
+                                        borderSkipped: false
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: {
+                                                color: 'rgba(148, 163, 184, 0.12)'
+                                            }
+                                        },
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            }
+                                        }
+                                    },
+                                    animation: {
+                                        duration: 1500
+                                    }
+                                }
+                            });
+                        }
+                    });
+            }
+
+            actualizarGrafico();
+            setInterval(actualizarGrafico, 5000);
+        });
+    </script>
+}
+
 @if (TempData["WelcomeMessage"] != null)
 {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* Color llamativo (gradiente) para la barra de progreso del temporizador */
         .swal2-popup {
-            /* variable soportada por SweetAlert2 para personalizar la barra */
-            --swal2-timer-progress-bar-background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd56b 100%);
+            --swal2-timer-progress-bar-background: linear-gradient(90deg, #0d6efd 0%, #20c997 50%, #ffc107 100%);
             --swal2-timer-progress-bar-height: 6px;
         }
 
-        /* Compatibilidad por si la clase directa de la barra existe en tu versión */
         .swal2-timer-progress-bar {
-            background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 50%, #ffd56b 100%) !important;
+            background: linear-gradient(90deg, #0d6efd 0%, #20c997 50%, #ffc107 100%) !important;
             height: 6px !important;
             border-radius: 4px !important;
-        }
-
-        /* Mejor contraste del icono success en la alerta */
-        .swal2-icon.swal2-success .swal2-success-ring,
-        .swal2-icon.swal2-success .swal2-success-line-tip,
-        .swal2-icon.swal2-success .swal2-success-line-long {
-            stroke: #ffffff;
         }
     </style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Serializamos el mensaje en el servidor para evitar problemas de comillas/escape
             var message = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["WelcomeMessage"]));
             Swal.fire({
                 title: 'Bienvenido',
                 text: message,
                 icon: 'success',
                 iconColor: '#ffffff',
-                background: '#141420', // opcional: fondo oscuro para destacar el gradiente
+                background: '#0f172a',
                 color: '#fff',
                 timer: 4000,
                 timerProgressBar: true,

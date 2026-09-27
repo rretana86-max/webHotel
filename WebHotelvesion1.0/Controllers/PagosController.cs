@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Stripe;
-using WebHotel_vesion1._0.Models;
+using WebHotel_vesion1._0.ViewModels;   
 using WebHotel_vesion1._0.Repositories.Interfaces;
 using WebHotel_vesion1._0.Enums;
+using WebHotel_vesion1._0.Models;
 
 namespace WebHotel_vesion1._0.Controllers
 {
@@ -44,13 +45,18 @@ namespace WebHotel_vesion1._0.Controllers
         public async Task <IActionResult> ProcesarPago([FromBody]PagoRequest pagorequest)
         {
             
-            // validamos ese usuario  si exista y no sea alguien se este pasando de listo 
+            // validated user exist with  active session 
             string userSesion  = User?.FindFirst("IdUsuario")?.Value;
             if (userSesion==null)
                 {
                     return BadRequest(new { error = "Usuario no autorizado para realizar este pago." });
             }
             var reservavm= await _ireserva.BuscarReservacion(pagorequest.ReservaId);   
+
+            if(reservavm.UsuarioId != userSesion)
+            {
+                return BadRequest(new { error = "Usuario no autorizado para realizar este pago." });
+            }   
             pagorequest.Monto = reservavm.Total  * 100; // Convertir a centavos
 
             try
