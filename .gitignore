@@ -1,11 +1,9 @@
 
-appsettings.json
 appsettings.Development.json
 .vs/
 bin/
 obj/
-
-*.txt
-*.jpeg
-*.jpg
-*.PNG
+wwwroot/uploads/*.jpg
+wwwroot/uploads/*.jpeg
+wwwroot/uploads/*.png
+wwwroot/profile/*.jpg
