@@ -27,44 +27,31 @@ namespace WebHotel_vesion1._0.Controllers
             _iusuario = usuario;
         }
 
-
-
-
         [Authorize(Roles = "Administrador,Empleado")]
-        public async Task<ActionResult> Dasboard() {
-            List<Usuario> listusuarios =await  _iusuario.getAll();
-            List<Habitacion> listhabitaciones = await _habitacion.ListarHabitaciones();
+        public async Task<ActionResult> Dasboard()
+        {
+            var listusuarios = await _iusuario.getAll();
+            var listhabitaciones = await _habitacion.ListarHabitaciones();
 
-            totalUsuarios_ = listusuarios.Count;
-            habitacionesDisponibles_ = listhabitaciones.Count(h => h.EstaDisponible == true);
-            habitacionesOcupadas_ = listhabitaciones.Count(h => h.EstaDisponible == false);
-            ViewBag.totalUsuarios = totalUsuarios_;
-            ViewBag.habitacionesOcupadas = habitacionesOcupadas_;
-            ViewBag.habitacionesDisponibles = habitacionesDisponibles_;
+            var model = new DashboardViewModel
+            {
+                TotalUsuarios = listusuarios?.Count ?? 0,
+                HabitacionesDisponibles = listhabitaciones?.Count(h => h.EstaDisponible) ?? 0,
+                HabitacionesOcupadas = listhabitaciones?.Count(h => !h.EstaDisponible) ?? 0,
+                ReservasHoy = 0
+            };
 
-            return View();
-
-            
-        
-        
-        
+            return View(model);
         }
-        public  async Task<IActionResult> ObtenerDatos() {
 
+        public async Task<IActionResult> ObtenerDatos()
+        {
+            var listusuarios = await _iusuario.getAll();
+            var listhabitaciones = await _habitacion.ListarHabitaciones();
 
-            List<Usuario> listusuarios = await _iusuario.getAll();
-            List<Habitacion> listhabitaciones = await _habitacion.ListarHabitaciones();
-         
-            var totalUsuarios = listusuarios.Count;
-           
-            var habitacionesDisponibles = listhabitaciones.Count(h => h.EstaDisponible == true);
-            var habitacionesOcupadas = listhabitaciones.Count(h => h.EstaDisponible == false);
-            //*********************************************************************************
-             totalUsuarios_ = listusuarios.Count;
-            // habitacionesDisponibles_= listhabitaciones.Count(h => h.EstaDisponible == true);
-            //habitacionesOcupadas_  = listhabitaciones.Count(h => h.EstaDisponible == false);
-            //*********************************************************************************
-          
+            var totalUsuarios = listusuarios?.Count ?? 0;
+            var habitacionesDisponibles = listhabitaciones?.Count(h => h.EstaDisponible) ?? 0;
+            var habitacionesOcupadas = listhabitaciones?.Count(h => !h.EstaDisponible) ?? 0;
 
             var datos = new
             {
