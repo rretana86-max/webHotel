@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Linq;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
 
@@ -15,15 +16,11 @@ namespace WebHotel_vesion1._0.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IUsuario _iusuario;
         private readonly IHabitacion _habitacion;
-        //
 
-       private static int totalUsuarios_=0;
-        private static int habitacionesDisponibles_ = 0;
-        private static int habitacionesOcupadas_ = 0;
-        public HomeController(ILogger<HomeController> logger, IHabitacion habitacion,IUsuario usuario)
+        public HomeController(ILogger<HomeController> logger, IHabitacion habitacion, IUsuario usuario)
         {
             _logger = logger;
-            _habitacion = habitacion; 
+            _habitacion = habitacion;
             _iusuario = usuario;
         }
 
@@ -33,15 +30,15 @@ namespace WebHotel_vesion1._0.Controllers
             var listusuarios = await _iusuario.getAll();
             var listhabitaciones = await _habitacion.ListarHabitaciones();
 
-            var model = new DashboardViewModel
-            {
-                TotalUsuarios = listusuarios?.Count ?? 0,
-                HabitacionesDisponibles = listhabitaciones?.Count(h => h.EstaDisponible) ?? 0,
-                HabitacionesOcupadas = listhabitaciones?.Count(h => !h.EstaDisponible) ?? 0,
-                ReservasHoy = 0
-            };
+            var totalUsuarios = listusuarios?.Count ?? 0;
+            var habitacionesDisponibles = listhabitaciones?.Count(h => h.EstaDisponible) ?? 0;
+            var habitacionesOcupadas = listhabitaciones?.Count(h => !h.EstaDisponible) ?? 0;
 
-            return View(model);
+            ViewBag.totalUsuarios = totalUsuarios;
+            ViewBag.habitacionesDisponibles = habitacionesDisponibles;
+            ViewBag.habitacionesOcupadas = habitacionesOcupadas;
+
+            return View();
         }
 
         public async Task<IActionResult> ObtenerDatos()
@@ -58,13 +55,11 @@ namespace WebHotel_vesion1._0.Controllers
                 etiquetas = new[] { "Usuarios", "Hab. Disponibles", "Hab. Ocupadas" },
                 valores = new[] { totalUsuarios, habitacionesDisponibles, habitacionesOcupadas }
             };
-            return  Json(datos);
-
+            return Json(datos);
         }
 
-
         [AllowAnonymous]
-        public   async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             List<Habitacion> listhabitaciones = await _habitacion.ListarHabitaciones();
 
