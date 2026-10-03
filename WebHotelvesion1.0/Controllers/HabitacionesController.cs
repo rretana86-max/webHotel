@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using System.IO;
 using WebHotel_vesion1._0.Models;
-using WebHotel_vesion1._0.Models.ViewModel;
+
 using WebHotel_vesion1._0.Repositories.Interfaces;
 using WebHotel_vesion1._0.Dto;
 using WebHotel_vesion1._0.Service;
+using WebHotel_vesion1._0.ViewModel;
 
 
 namespace WebHotel_vesion1._0.Controllers
@@ -167,6 +168,15 @@ namespace WebHotel_vesion1._0.Controllers
 
 
         }
+        [Authorize(Roles = "Administrador,Empleado")]
+        public async Task<IActionResult> HabitacionesDisponibles() {
+
+
+            var habitaciones_disponibles = await _ihabitacion.getHabitacionDisponible();
+            return View();
+        
+        }
+
         [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> ReporteHabitaciones()
         {

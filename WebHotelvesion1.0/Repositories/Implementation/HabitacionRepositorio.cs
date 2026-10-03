@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.ViewModel;
 
 namespace WebHotel_vesion1._0.Repositories.Implementation
 {
@@ -27,7 +28,11 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
 
 
 
-            catch (Exception ex ) { }   
+            catch (SqlException ex ) {
+
+                Console.WriteLine("Error al establecer conexion con el servidor ");
+
+            }   
         }
 
 
@@ -121,5 +126,24 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             var habitaciones =await  _context.Habitacion.ToListAsync();  
             return habitaciones;    
         }
+
+        //functionality to obtain  is aivalable rooms
+
+        public async Task<List<HabitacionViewModel>> getHabitacionDisponible() {
+
+
+            var disponibles = await _context.Habitacion.Where(d => d.EstaDisponible == true).Select(h => new HabitacionViewModel { 
+        Id=h.Id,
+        Descripcion=h.Descripcion,  
+        PrecioPorNoche=h.PrecioPorNoche,   
+        imageUrl=h.imageUrl
+            
+            
+            }).ToListAsync();
+
+            return disponibles;
+        
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿using WebHotel_vesion1._0.Models;
-using WebHotel_vesion1._0.Models.ViewModel;
 using WebHotel_vesion1._0.Repositories.Interfaces;
+using WebHotel_vesion1._0.ViewModel;
 
 namespace WebHotel_vesion1._0.Service
 {
@@ -82,10 +82,6 @@ namespace WebHotel_vesion1._0.Service
 
         }
 
-         
-
-
-      
 
         public async  Task<Habitacion> getHabitacion(int id)
         {
@@ -216,5 +212,16 @@ namespace WebHotel_vesion1._0.Service
               return true;
         }
 
+        public async Task<List<HabitacionViewModel>> getHabitacionDisponible() {
+            List<HabitacionViewModel> disponible= new List<HabitacionViewModel>();
+
+            disponible = await _habitacionRepository.getHabitacionDisponible();
+
+            return disponible;
+        
+        
+        }
+
+       
     }
 }
