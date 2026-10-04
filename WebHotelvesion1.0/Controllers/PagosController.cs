@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Stripe;
-using WebHotel_vesion1._0.ViewModels;   
+using WebHotel_vesion1._0.ViewModel;   
 using WebHotel_vesion1._0.Repositories.Interfaces;
 using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
