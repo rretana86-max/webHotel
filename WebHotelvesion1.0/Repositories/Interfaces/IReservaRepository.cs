@@ -2,7 +2,7 @@
 
 
 using WebHotel_vesion1._0.Models;
-using WebHotel_vesion1._0.ViewModels;
+using WebHotel_vesion1._0.ViewModel;
 
 namespace WebHotel_vesion1._0.Repositories.Interfaces
 
