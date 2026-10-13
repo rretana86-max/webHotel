@@ -129,6 +129,7 @@ namespace WebHotel_vesion1._0.Controllers
           
 
             Habitacion habitacionDetalle = await _ihabitacion.getHabitacion(id);
+            if (habitacionDetalle == null) return RedirectToAction("Index","Home");
             return View(habitacionDetalle);
 
         }
