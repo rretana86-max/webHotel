@@ -172,8 +172,8 @@ namespace WebHotel_vesion1._0.Controllers
         public async Task<IActionResult> HabitacionesDisponibles() {
 
 
-            var habitaciones_disponibles = await _ihabitacion.getHabitacionDisponible();
-            return View();
+            var habitacionesViewModel = await _ihabitacion.getHabitacionDisponible();
+            return View(habitacionesViewModel);
         
         }
 
