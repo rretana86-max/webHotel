@@ -202,13 +202,24 @@
         });
 
         // preview imagen (preservado)
-        var CargarImagen = function (event) {
+              var CargarImagen = function (event) {
             var result = document.getElementById("imagenPrevisualizacion");
-            if (event.target.files && event.target.files[0]) {
-                result.src = URL.createObjectURL(event.target.files[0]);
-            } else {
-                result.src = '';
+            var preview = document.getElementById("imagePreview");
+            var archivo = event.target.files && event.target.files[0];
+
+            if (result.src.startsWith("blob:")) {
+                URL.revokeObjectURL(result.src); // libera la URL anterior
             }
-        }
+
+            if (archivo) {
+                result.src = URL.createObjectURL(archivo);
+                preview.classList.add("has-image");
+                event.target.nextElementSibling.textContent = archivo.name; // muestra el nombre
+            } else {
+                result.removeAttribute("src");
+                preview.classList.remove("has-image");
+                event.target.nextElementSibling.textContent = "Seleccionar imagen";
+            }
+        };
     </script>
 }
