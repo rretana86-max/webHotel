@@ -61,7 +61,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             try
             {
 
-                _context.Tb_Reservas.AddAsync(nuevareserva);
+                await _context.Tb_Reservas.AddAsync(nuevareserva);
                 await _context.SaveChangesAsync();
 
             }
