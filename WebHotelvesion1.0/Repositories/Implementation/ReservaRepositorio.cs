@@ -111,7 +111,8 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
              FechaIngreso=u.FechadIngreso,
              FechaSalida=u.FechaSalida,
              Total=u.Total,
-             Estado=u.Estado
+             Estado=u.Estado,
+             CantidadNoches=(u.FechaSalida-u.FechadIngreso).Days
 
             }).ToListAsync();
            return  user_reservas;

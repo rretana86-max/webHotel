@@ -63,7 +63,7 @@ namespace WebHotel_vesion1._0.Controllers
 
 
 
-                    return RedirectToAction("ConfirmaReservacion", new { id = 21 });
+                    return RedirectToAction("ConfirmaReservacion", new { id = reservaid });
 
                 }
                 catch (NotFoundException ex) {
@@ -72,7 +72,7 @@ namespace WebHotel_vesion1._0.Controllers
                 
                 
                 }
-            return RedirectToAction("index", "home");
+            return RedirectToAction("Index", "home");
         }
            
         
