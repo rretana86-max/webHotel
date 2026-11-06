@@ -60,7 +60,7 @@ namespace WebHotel_vesion1._0.Controllers
                 return Forbid();
 
             // 4. Que se pueda pagar (no pagada ni cancelada)
-            if (reserva.Estado)
+            if (reserva.EstadoPago!=)
                 return BadRequest(new { error = "La reserva no está disponible para pago." });
 
             try
