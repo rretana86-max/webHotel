@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using WebHotel_vesion1._0.Controllers;
 using WebHotel_vesion1._0.Models;
+using WebHotel_vesion1._0.ViewModel;
 
 namespace WebHotel_vesion1._0.Repositories.Interfaces
 {
@@ -15,7 +16,7 @@ namespace WebHotel_vesion1._0.Repositories.Interfaces
         public Task<Habitacion> getHabitacion(int id);
         public Task <bool>ActualizarHabitacion(Habitacion habitacion );
         public Task<bool> DeleteHabitacion(Habitacion habitacion );
-
+        public Task<List<HabitacionViewModel>> getHabitacionDisponible();
         public Task<bool> UpdateAvailabilityRoom();
 
     }

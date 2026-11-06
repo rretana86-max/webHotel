@@ -4,7 +4,7 @@ using System.Data.Common;
 using WebHotel_vesion1._0.Controllers;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using WebHotel_vesion1._0.ViewModels;
+using WebHotel_vesion1._0.ViewModel;
 
 namespace WebHotel_vesion1._0.Repositories.Implementation
 {
@@ -61,7 +61,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             try
             {
 
-                _context.Tb_Reservas.AddAsync(nuevareserva);
+                await _context.Tb_Reservas.AddAsync(nuevareserva);
                 await _context.SaveChangesAsync();
 
             }
@@ -111,7 +111,8 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
              FechaIngreso=u.FechadIngreso,
              FechaSalida=u.FechaSalida,
              Total=u.Total,
-             Estado=u.Estado
+             Estado=u.Estado,
+             CantidadNoches=(u.FechaSalida-u.FechadIngreso).Days
 
             }).ToListAsync();
            return  user_reservas;
