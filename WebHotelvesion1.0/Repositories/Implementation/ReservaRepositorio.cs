@@ -33,6 +33,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
                     Id = r.Id,
                     FechaIngreso = r.FechadIngreso,
                     FechaSalida = r.FechaSalida,
+                    UsuarioId=r.UsuarioId,
                     NombreUsuario = r.Usuario.NombreCompleto,
                     EmailUsuario = r.Usuario.Correo,
                     HabitacionId = r.Habitacion.Id,

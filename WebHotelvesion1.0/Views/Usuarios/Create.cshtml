@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="card-body p-4 p-lg-5">
-                    <form asp-controller="Usuarios" asp-action="Create" method="post" id="form-usuario" enctype="multipart/form-data" novalidate>
+                    <form asp-controller="Usuarios" asp-action="Create" method="post" id="form-usuario" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                         <div class="row">
@@ -123,9 +123,10 @@
 
 
     @{
-        int status = Convert.ToInt32(TempData["Status"]);
-
-        Console.WriteLine("Estatus :",status);
+        var statusValue = TempData["Status"];
+        int? status = statusValue == null
+            ? null
+            : Convert.ToInt32(statusValue);
     }
 </div>
 
@@ -148,78 +149,124 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var form = document.getElementById('form-usuario');
-            var btnSubmit = document.getElementById('btn-submit-usuario');
+            const form = document.getElementById('form-usuario');
+            const btnSubmit = document.getElementById('btn-submit-usuario');
+            const status = @(status.HasValue ? status.Value.ToString() : "null");
 
-            if (!form) return;
+            if (status !== null && window.Swal) {
+                const alertOptions = {
+                    confirmButtonText: 'Aceptar',
+                    buttonsStyling: true,
+                    allowOutsideClick: false
+                };
 
-            // No usar attachFormSubmitPreventDouble aquí antes del submit diferido
-            form.addEventListener('submit', function (e) {
-                e.preventDefault(); // prevenimos el submit inmediato
+                switch (status) {
+                    case 1:
+                        Swal.fire({
+                            ...alertOptions,
+                            icon: 'success',
+                            title: 'Usuario creado',
+                            text: 'El usuario se registró correctamente.',
+                            confirmButtonColor: '#28a745'
+                        });
+                        break;
 
-                // mostrar modal/overlay profesional
+                    case 2:
+                        Swal.fire({
+                            ...alertOptions,
+                            icon: 'warning',
+                            title: 'Usuario ya existente',
+                            text: 'La identificación o el correo electrónico ya están registrados.',
+                            confirmButtonColor: '#f0ad4e'
+                        });
+                        break;
+
+                    case 3:
+                        Swal.fire({
+                            ...alertOptions,
+                            icon: 'error',
+                            title: 'No se pudo crear el usuario',
+                            text: 'Ocurrió un error al guardar la información. Inténtelo nuevamente.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                        break;
+
+                    default:
+                        Swal.fire({
+                            ...alertOptions,
+                            icon: 'error',
+                            title: 'Datos incompletos',
+                            text: 'Debe completar todos los campos requeridos, incluida la imagen.',
+                            confirmButtonColor: '#dc3545'
+                        });
+                        break;
+                }
+            }
+
+            if (!form) {
+                return;
+            }
+
+            form.addEventListener('submit', function (event) {
+                if (form.dataset.submitting === 'true') {
+                    event.preventDefault();
+                    return;
+                }
+
+                form.dataset.submitting = 'true';
+
+                if (btnSubmit) {
+                    btnSubmit.disabled = true;
+                    btnSubmit.innerHTML =
+                        '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>' +
+                        'Procesando...';
+                }
+
                 if (window.Swal) {
                     Swal.fire({
                         title: 'Procesando datos',
-                        html: '<div style="display:flex;flex-direction:column;align-items:center;gap:10px;">' +
-                              '<div class="spinner-border text-light" role="status" style="width:3rem;height:3rem"><span class="visually-hidden">Loading...</span></div>' +
-                              '<div style="font-size:0.95rem;color:#e6e6e6">Por favor espere...</div>' +
-                              '</div>',
-                        background: '#141420',
-                        color: '#fff',
+                        text: 'Por favor, espere...',
+                        icon: 'info',
                         showConfirmButton: false,
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         didOpen: function () {
-                            try { Swal.showLoading(); } catch (err) { /* ignore */ }
+                            Swal.showLoading();
                         }
                     });
-                } else if (window.AppAlerts && typeof AppAlerts.showLoading === 'function') {
-                    AppAlerts.showLoading('Procesando datos...');
-                } else {
-                    if (btnSubmit) {
-                        btnSubmit.disabled = true;
-                        if (btnSubmit.tagName.toLowerCase() === 'input') btnSubmit.value = 'Procesando...';
-                        else btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
-                    }
                 }
+            });
 
-                // pequeña pausa para que el usuario pueda ver la animación
-                var delayMs = 900; // ajustar si quieres más/menos tiempo
-                setTimeout(function () {
-                    // prevenir doble envío a partir de ahora
-                    if (window.AppAlerts && typeof AppAlerts.attachFormSubmitPreventDouble === 'function') {
-                        AppAlerts.attachFormSubmitPreventDouble(form);
-                    } else {
-                        // fallback: desactivar botón permanentemente
-                        if (btnSubmit) btnSubmit.disabled = true;
+            const imageInput = document.getElementById('Imagen');
+            const imagePreview = document.getElementById('imagePreview');
+            const imageElement = document.getElementById('imagenPrevisualizacion');
+
+            if (imageInput) {
+                imageInput.addEventListener('change', function (event) {
+                    const file = event.target.files && event.target.files[0];
+
+                    if (imageElement.src.startsWith('blob:')) {
+                        URL.revokeObjectURL(imageElement.src);
                     }
 
-                    // realizar submit real
-                    form.submit();
-                }, delayMs);
-            });
+                    if (file) {
+                        imageElement.src = URL.createObjectURL(file);
+                        imagePreview.classList.add('has-image');
+
+                        if (event.target.nextElementSibling) {
+                            event.target.nextElementSibling.textContent = file.name;
+                        }
+                    } else {
+                        imageElement.removeAttribute('src');
+                        imagePreview.classList.remove('has-image');
+
+                        if (event.target.nextElementSibling) {
+                            event.target.nextElementSibling.textContent =
+                                'Seleccionar imagen';
+                        }
+                    }
+                });
+            }
         });
-
-        // preview imagen (preservado)
-              var CargarImagen = function (event) {
-            var result = document.getElementById("imagenPrevisualizacion");
-            var preview = document.getElementById("imagePreview");
-            var archivo = event.target.files && event.target.files[0];
-
-            if (result.src.startsWith("blob:")) {
-                URL.revokeObjectURL(result.src); // libera la URL anterior
-            }
-
-            if (archivo) {
-                result.src = URL.createObjectURL(archivo);
-                preview.classList.add("has-image");
-                event.target.nextElementSibling.textContent = archivo.name; // muestra el nombre
-            } else {
-                result.removeAttribute("src");
-                preview.classList.remove("has-image");
-                event.target.nextElementSibling.textContent = "Seleccionar imagen";
-            }
-        };
     </script>
 }

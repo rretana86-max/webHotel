@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebHotel_vesion1._0.Models;
 
-namespace WebHotel_vesion1._0.Models.ViewModel
+namespace WebHotel_vesion1._0.ViewModel
 {
     public class UsuarioViewModel
     {

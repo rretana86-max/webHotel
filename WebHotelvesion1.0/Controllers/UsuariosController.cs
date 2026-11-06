@@ -68,7 +68,7 @@ namespace WebHotel_vesion1._0.Controllers
 
         // POST: EmpleadosController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UsuarioViewModel user, IFormFile Imagen)
         {
             if (user == null || Imagen == null)

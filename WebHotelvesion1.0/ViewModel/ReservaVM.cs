@@ -1,8 +1,10 @@
-﻿namespace WebHotel_vesion1._0.ViewModels
+﻿using WebHotel_vesion1._0.Enums;
+
+namespace WebHotel_vesion1._0.ViewModel
 {
- 
     public class ReservaVM
     {
+
         public int Id { get; set; }
 
         public DateTime FechaIngreso { get; set; }
@@ -10,7 +12,7 @@
 
         // Datos del usuario (solo lo necesario)
         public string NombreUsuario { get; set; }
-        public string UsuarioId { get; set; }   
+        public string UsuarioId { get; set; }
         public string EmailUsuario { get; set; }
 
         // Datos de la habitación
@@ -21,6 +23,7 @@
         // Extras útiles
         public int CantidadNoches { get; set; }
         public decimal Total { get; set; }
-       public  Enum Estado { get; set; }
+        public EstadoPago Estado  { get; set; }
+
     }
 }
