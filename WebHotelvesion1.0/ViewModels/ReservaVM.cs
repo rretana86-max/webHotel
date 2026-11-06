@@ -1,4 +1,6 @@
-﻿namespace WebHotel_vesion1._0.ViewModels
+﻿using WebHotel_vesion1._0.Enums;
+
+namespace WebHotel_vesion1._0.ViewModels
 {
  
     public class ReservaVM
@@ -21,6 +23,6 @@
         // Extras útiles
         public int CantidadNoches { get; set; }
         public decimal Total { get; set; }
-       public  Enum Estado { get; set; }
+       public  EstadoPago Estado { get; set; }
     }
 }
