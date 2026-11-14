@@ -7,27 +7,31 @@ namespace WebHotel_vesion1._0.Models
         public int Id { get; set; }
 
         public decimal Monto { get; set; }
+
         public string Moneda { get; set; } = "CRC";
 
-        public TipoPago TipoPago { get; set; }
+        public TipoPago TipoPago { get; set; } = TipoPago.Tarjeta;
+
         public EstadoPago Estado { get; set; }
 
-        // Stripe
         public string StripePaymentIntentId { get; set; } = null!;
 
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+
         public DateTime? FechaPago { get; set; }
 
-        // Relaciones
-        public int ClienteId { get; set; }
-        public Cliente Cliente { get; set; } = null!;
+        public string UsuarioId { get; set; } = null!;
+
+        public Usuario Usuario { get; set; } = null!;
 
         public int ReservaId { get; set; }
-        public Reserva Reserva { get; set; } = null!;
-     
-        public string? MetodoPago { get; set; }//TARJETA, SIMPE, DEPOSITO 
-        public string? Ultimos4 { get; set; }
-        public string? MarcaTarjeta { get; set; }
 
+        public Reserva Reserva { get; set; } = null!;
+
+        public string? MetodoPago { get; set; }
+
+        public string? Ultimos4 { get; set; }
+
+        public string? MarcaTarjeta { get; set; }
     }
 }

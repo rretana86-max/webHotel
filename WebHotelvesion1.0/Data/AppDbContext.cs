@@ -15,6 +15,7 @@ namespace AppLogin.Data
         public DbSet<Habitacion> Habitacion { get; set; }
         public DbSet<UsuarioRol> UsuarioRols { get; set; }  
         public DbSet<Reserva> Tb_Reservas { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -110,6 +111,54 @@ namespace AppLogin.Data
                 tb.ToTable("tb_Habitaciones");
             });
 
+
+
+
+            modelBuilder.Entity<Pago>(tb =>
+{
+    tb.HasKey(p => p.Id);
+
+    tb.Property(p => p.Monto)
+        .HasColumnType("decimal(18, 2)")
+        .IsRequired();
+
+    tb.Property(p => p.Moneda)
+        .HasMaxLength(3)
+        .IsRequired();
+
+    tb.Property(p => p.StripePaymentIntentId)
+        .HasMaxLength(100)
+        .IsRequired();
+
+    tb.Property(p => p.MarcaTarjeta)
+        .HasMaxLength(50)
+        .IsRequired(false);
+
+    tb.Property(p => p.Ultimos4)
+        .HasMaxLength(4)
+        .IsRequired(false);
+
+    tb.Property(p => p.FechaCreacion)
+        .IsRequired();
+
+    tb.Property(p => p.FechaPago)
+        .IsRequired(false);
+
+    tb.HasIndex(p => p.StripePaymentIntentId)
+        .IsUnique();
+
+    tb.HasOne(p => p.Reserva)
+        .WithMany()
+        .HasForeignKey(p => p.ReservaId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    tb.HasOne(p => p.Usuario)
+        .WithMany()
+        .HasForeignKey(p => p.UsuarioId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    tb.ToTable("Pagos");
+});
         }
         public override int SaveChanges()   
         {

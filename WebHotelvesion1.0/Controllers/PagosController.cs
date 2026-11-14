@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppLogin.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +22,20 @@ namespace WebHotel_vesion1._0.Controllers
         private readonly ILogger<PagosController> _logger;  
         private  readonly IConfiguration _iconfiguration;
         private readonly IReservaRepository _ireserva;
+        private readonly AppDbContext _context;
 
-        public PagosController(IConfiguration iconfiguration,IReservaRepository ireserva, ILogger<PagosController> logger) {
-            _iconfiguration = iconfiguration;
-            StripeConfiguration.ApiKey = _iconfiguration["Stripe:Secretkey"];
-            _ireserva = ireserva;
-            _logger = logger;
-    }
+        public PagosController(
+    IConfiguration iconfiguration,
+    IReservaRepository ireserva,
+    ILogger<PagosController> logger,
+    AppDbContext context)
+{
+    _iconfiguration = iconfiguration;
+    StripeConfiguration.ApiKey = _iconfiguration["Stripe:Secretkey"];
+    _ireserva = ireserva;
+    _logger = logger;
+    _context = context;
+}
         [Authorize(Roles ="Cliente")]
         public async Task<ActionResult> Pagar(int id) {
             var reservaVM = await _ireserva.BuscarReservacion(id);
@@ -60,25 +69,30 @@ namespace WebHotel_vesion1._0.Controllers
                 return Forbid();
 
             // 4. Que se pueda pagar (no pagada ni cancelada)
-            if (reserva.EstadoPago!=)
-                return BadRequest(new { error = "La reserva no está disponible para pago." });
+            if (reserva.Estado != EstadoReserva.Pendiente)
+            {
+                return BadRequest(new
+                {
+                    error = "La reserva no está disponible para pago."
+                });
+            }
 
             try
             {
                 // 5. El monto SIEMPRE lo calcula el servidor, nunca el cliente
                 var options = new PaymentIntentCreateOptions
                 {
-                    Amount = (long)Math.Round(reserva.Total * 100),
+                    Amount = (long)Math.Round(reserva.Total * 100m),
                     Currency = "crc",
                     AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
                     {
                         Enabled = true
                     },
                     // 6. La "nota pegada al paquete": el webhook la recibe de vuelta
-                    Metadata = new Dictionary<string, string>
+                    Metadata = new Dictionary<string, string>   
                 {
-                    { "ReservaId", reserva.Id.ToString() },
-                    { "UsuarioId", userSesion }
+                    ["ReservaId"] = reserva.Id.ToString(),
+                    ["UsuarioId"] = userSesion
                 }
                 };
 
@@ -130,90 +144,109 @@ namespace WebHotel_vesion1._0.Controllers
             {
                 var pi = (PaymentIntent)stripeEvent.Data.Object;
 
-                if (!pi.Metadata.TryGetValue("ReservaId", out var reservaIdStr)
-                    || !int.TryParse(reservaIdStr, out var reservaId))
-                    return Ok();
-
-                var reserva = await _ireserva.BuscarReservacion(reservaId);
-                if (reserva == null) return Ok();
-
-                if (reserva.Estado!=EstadoPago.Pendiente) return Ok(); // ya procesado
-
-                var esperado = (long)Math.Round(reserva.Total * 100);
-                if (pi.AmountReceived != esperado)
+                if (!pi.Metadata.TryGetValue("ReservaId", out var reservaIdValue) ||
+                    !int.TryParse(reservaIdValue, out var reservaId))
                 {
-                    _logger.LogError("Monto no coincide en reserva {Id}", reservaId);
                     return Ok();
                 }
 
-                reserva.Estado = EstadoPago.Pagado;
-                reserva.PaymentIntentId = pi.Id;
-                await _ireserva.ActualizarReservacion(reserva); // ajustá al nombre real
+                if (!pi.Metadata.TryGetValue("UsuarioId", out var usuarioId))
+                {
+                    return Ok();
+                }
+
+                var reserva = await _context.Tb_Reservas
+                    .FirstOrDefaultAsync(r => r.Id == reservaId);
+
+                if (reserva == null)
+                {
+                    _logger.LogWarning(
+                        "No se encontró la reserva {ReservaId} para el PaymentIntent {PaymentIntentId}",
+                        reservaId,
+                        pi.Id);
+
+                    return Ok();
+                }
+
+                if (reserva.UsuarioId != usuarioId)
+                {
+                    _logger.LogWarning(
+                        "El usuario del PaymentIntent {PaymentIntentId} no coincide con la reserva {ReservaId}",
+                        pi.Id,
+                        reservaId);
+
+                    return Ok();
+                }
+
+                var pagoExistente = await _context.Pagos
+                    .AnyAsync(p => p.StripePaymentIntentId == pi.Id);
+
+                if (pagoExistente)
+                {
+                    return Ok();
+                }
+
+                var montoEsperado = (long)Math.Round(reserva.Total * 100m);
+
+                if (pi.AmountReceived != montoEsperado)
+                {
+                    _logger.LogError(
+                        "El monto del PaymentIntent {PaymentIntentId} no coincide con la reserva {ReservaId}",
+                        pi.Id,
+                        reservaId);
+
+                    return Ok();
+                }
+
+                string? marcaTarjeta = null;
+                string? ultimos4 = null;
+
+                if (!string.IsNullOrWhiteSpace(pi.LatestChargeId))
+                {
+                    var chargeService = new ChargeService();
+
+                    var charge = await chargeService.GetAsync(
+                        pi.LatestChargeId,
+                        new ChargeGetOptions
+                        {
+                            Expand = new List<string>
+                            {
+                                "payment_method_details"
+                            }
+                        });
+
+                    marcaTarjeta = charge.PaymentMethodDetails?.Card?.Brand;
+                    ultimos4 = charge.PaymentMethodDetails?.Card?.Last4;
+                }
+
+                var pago = new Pago
+                {
+                    StripePaymentIntentId = pi.Id,
+                    ReservaId = reserva.Id,
+                    UsuarioId = reserva.UsuarioId,
+                    Monto = pi.AmountReceived / 100m,
+                    Moneda = pi.Currency.ToUpperInvariant(),
+                    TipoPago = TipoPago.Tarjeta,
+                    Estado = EstadoPago.Pagado,
+                    MetodoPago = "Tarjeta",
+                    MarcaTarjeta = marcaTarjeta,
+                    Ultimos4 = ultimos4,
+                    FechaCreacion = DateTime.UtcNow,
+                    FechaPago = DateTime.UtcNow
+                };
+
+                reserva.Estado = EstadoReserva.Confirmada;
+
+                _context.Pagos.Add(pago);
+
+                await _context.SaveChangesAsync();
             }
 
             return Ok();
         }
-        userSesion  = User?.FindFirst("IdUsuario")?.Value;
-            if (userSesion==null)
-                {
-                    return BadRequest(new { error = "Usuario no autorizado para realizar este pago." });
-            }
-            var reservavm= await _ireserva.BuscarReservacion(pagorequest.ReservaId);   
-
-            if(reservavm.UsuarioId != userSesion)
-            {
-                return BadRequest(new { error = "Usuario no autorizado para realizar este pago." });
-            }   
-            pagorequest.Monto = reservavm.Total  * 100; // Convertir a centavos
-
-            try
-            {
-                var options = new PaymentIntentCreateOptions
-                {
-                    Amount = (long?)pagorequest.Monto, // en centavos
-                    Currency = "crc",
-                    AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
-                    {
-                        Enabled = true
-                    }
-                };
-
-                var service = new PaymentIntentService();
-                var paymentIntent = await service.CreateAsync(options);
-
-
-                if(paymentIntent.Status == "succeeded"  )
-                {
-                    reservavm.Estado = EstadoPago.Pagado;
-                }
-                return Json(new { clientSecret = paymentIntent.ClientSecret });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
-
-
-        }
       
 
 
-        // POST: PagosController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-       
-        
+     
     }
 }
