@@ -4,26 +4,28 @@ namespace WebHotel_vesion1._0.ViewModel
 {
     public class ReservaVM
     {
-
         public int Id { get; set; }
 
         public DateTime FechaIngreso { get; set; }
+
         public DateTime FechaSalida { get; set; }
 
-        // Datos del usuario (solo lo necesario)
-        public string NombreUsuario { get; set; }
-        public string UsuarioId { get; set; }
-        public string EmailUsuario { get; set; }
+        public string NombreUsuario { get; set; } = null!;
 
-        // Datos de la habitación
+        public string UsuarioId { get; set; } = null!;
+
+        public string EmailUsuario { get; set; } = null!;
+
         public int HabitacionId { get; set; }
-        public string NombreHabitacion { get; set; }
+
+        public string NombreHabitacion { get; set; } = null!;
+
         public decimal PrecioPorNoche { get; set; }
 
-        // Extras útiles
         public int CantidadNoches { get; set; }
-        public decimal Total { get; set; }
-        public EstadoPago Estado  { get; set; }
 
+        public decimal Total { get; set; }
+
+        public EstadoReserva Estado { get; set; }
     }
 }
