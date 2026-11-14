@@ -32,9 +32,11 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
       
 
             try {
-                //valida que el usuario o correo no exista en la base de datos antes de guardar el usuario 
+                    //valida que el usuario o correo no exista en la base de datos antes de guardar el usuario 
 
-                if (_context.Usuarios.Any(x => x.IdUsuario.Equals(usuario.IdUsuario) || x.Correo == usuario.Correo))
+                if (_context.Usuarios.Any(x =>
+                    x.IdUsuario.Equals(usuario.IdUsuario) ||
+                    x.Correo == usuario.Correo))
                 {
                     return UserCreationStatus.DuplicateEmailOrPassword;
                 }

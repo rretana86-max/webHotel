@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using WebHotel_vesion1._0.Models;
-using WebHotel_vesion1._0.Models.ViewModel;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using   BC =BCrypt.Net.BCrypt;
+using WebHotel_vesion1._0.ViewModel;
+using BC = BCrypt.Net.BCrypt;
 namespace WebHotel_vesion1._0.Controllers
 {
     [Authorize]
@@ -68,7 +68,7 @@ namespace WebHotel_vesion1._0.Controllers
 
         // POST: EmpleadosController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UsuarioViewModel user, IFormFile Imagen)
         {
             if (user == null || Imagen == null)

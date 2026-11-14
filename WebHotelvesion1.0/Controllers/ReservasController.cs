@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using WebHotel_vesion1._0.Enums;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using WebHotel_vesion1._0.ViewModels;
+using WebHotel_vesion1._0.ViewModel;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using WebHotel_vesion1._0.Dto;
@@ -63,7 +63,7 @@ namespace WebHotel_vesion1._0.Controllers
 
 
 
-                    return RedirectToAction("ConfirmaReservacion", new { id = 21 });
+                    return RedirectToAction("ConfirmaReservacion", new { id = reservaid });
 
                 }
                 catch (NotFoundException ex) {
@@ -72,7 +72,7 @@ namespace WebHotel_vesion1._0.Controllers
                 
                 
                 }
-            return RedirectToAction("index", "home");
+            return RedirectToAction("Index", "home");
         }
            
         

@@ -60,6 +60,69 @@ namespace WebHotel_vesion1._0.Migrations
                     b.ToTable("tb_Habitaciones", (string)null);
                 });
 
+            modelBuilder.Entity("WebHotel_vesion1._0.Models.Pago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaPago")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MarcaTarjeta")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("MetodoPago")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Moneda")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("ReservaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("TipoPago")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ultimos4")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservaId");
+
+                    b.HasIndex("StripePaymentIntentId")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Pagos", (string)null);
+                });
+
             modelBuilder.Entity("WebHotel_vesion1._0.Models.Reserva", b =>
                 {
                     b.Property<int>("Id")
@@ -84,6 +147,10 @@ namespace WebHotel_vesion1._0.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -174,6 +241,25 @@ namespace WebHotel_vesion1._0.Migrations
                     b.HasIndex("IdRol");
 
                     b.ToTable("UsuarioRol", (string)null);
+                });
+
+            modelBuilder.Entity("WebHotel_vesion1._0.Models.Pago", b =>
+                {
+                    b.HasOne("WebHotel_vesion1._0.Models.Reserva", "Reserva")
+                        .WithMany()
+                        .HasForeignKey("ReservaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebHotel_vesion1._0.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Reserva");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("WebHotel_vesion1._0.Models.Reserva", b =>

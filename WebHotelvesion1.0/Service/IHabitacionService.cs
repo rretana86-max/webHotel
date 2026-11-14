@@ -1,5 +1,5 @@
 ﻿using WebHotel_vesion1._0.Models;
-using WebHotel_vesion1._0.Models.ViewModel;
+using WebHotel_vesion1._0.ViewModel;
 
 namespace WebHotel_vesion1._0.Service
 {
@@ -13,7 +13,7 @@ namespace WebHotel_vesion1._0.Service
         public Task<Habitacion> getHabitacion(int id);
         public Task<Habitacion> ActualizarHabitacion(Habitacion habitacion,IFormFile imageFile);
         public Task<bool> DeleteHabitacion(int id);
-
+        public Task<List<HabitacionViewModel>> getHabitacionDisponible();
         public Task<bool> UpdateAvailabilityRoom(int id, bool estaDisponible);
 
 

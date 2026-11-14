@@ -4,7 +4,8 @@ using System.Data.Common;
 using WebHotel_vesion1._0.Controllers;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using WebHotel_vesion1._0.ViewModels;
+using WebHotel_vesion1._0.ViewModel;
+using WebHotel_vesion1._0.Enums;
 
 namespace WebHotel_vesion1._0.Repositories.Implementation
 {
@@ -23,37 +24,30 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             throw new NotImplementedException();
         }
 
+        public Task<bool> ActualizarReservacion(ReservaVM reserva)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ReservaVM> BuscarReservacion(int id)
         {
-            ReservaVM reservavm = new ReservaVM();
-            try
-            {
-                reservavm = await _context.Tb_Reservas.Where(r => r.Id == id).Select(r => new ReservaVM
+            return await _context.Tb_Reservas
+                .Where(r => r.Id == id)
+                .Select(r => new ReservaVM
                 {
                     Id = r.Id,
                     FechaIngreso = r.FechadIngreso,
                     FechaSalida = r.FechaSalida,
+                    UsuarioId = r.UsuarioId,
                     NombreUsuario = r.Usuario.NombreCompleto,
                     EmailUsuario = r.Usuario.Correo,
                     HabitacionId = r.Habitacion.Id,
                     NombreHabitacion = r.Habitacion.Descripcion,
                     PrecioPorNoche = r.Habitacion.PrecioPorNoche,
                     Total = r.Total,
-                    Estado= r.Estado
-                }).FirstOrDefaultAsync();
-
-                return reservavm;
-            }
-
-            catch (DbException ex)
-            {
-
-
-
-            }
-
-            return null;
-
+                    Estado = r.Estado
+                })
+                .FirstOrDefaultAsync();
         }
            // create  reservation 
         public async Task<Reserva> CrearReserva(Reserva nuevareserva)
@@ -61,7 +55,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             try
             {
 
-                _context.Tb_Reservas.AddAsync(nuevareserva);
+                await _context.Tb_Reservas.AddAsync(nuevareserva);
                 await _context.SaveChangesAsync();
 
             }
@@ -92,7 +86,7 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
                 NombreHabitacion = r.Habitacion.Descripcion,
                 PrecioPorNoche = r.Habitacion.PrecioPorNoche,
                 Total = r.Total,
-                Estado=r.Estado
+                Estado= r.Estado
 
             }).FirstOrDefaultAsync();
             return reserva; 
@@ -111,10 +105,28 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
              FechaIngreso=u.FechadIngreso,
              FechaSalida=u.FechaSalida,
              Total=u.Total,
-             Estado=u.Estado
+             Estado= u.Estado,
+             CantidadNoches=(u.FechaSalida-u.FechadIngreso).Days
 
             }).ToListAsync();
            return  user_reservas;
+        }
+
+        public async Task<bool> MarcarReservaComoConfirmada(int reservaId)
+        {
+            var reserva = await _context.Tb_Reservas
+                .FirstOrDefaultAsync(r => r.Id == reservaId);
+
+            if (reserva == null)
+            {
+                return false;
+            }
+
+            reserva.Estado = EstadoReserva.Confirmada;
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

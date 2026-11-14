@@ -1,4 +1,4 @@
-﻿@model WebHotel_vesion1._0.ViewModels.ReservaVM
+﻿@model WebHotel_vesion1._0.ViewModel.ReservaVM
 
 @{
     ViewData["Title"] = "Confirmación de reservación";
@@ -76,7 +76,7 @@
         (function () {
 
             const reserva = {
-                id: @Model.Id,
+                id: "@Model.Id",
                 nombreUsuario: "@Model.NombreUsuario",
                 nombreHabitacion: "@Model.NombreHabitacion",
                 fechaIngreso: "@Model.FechaIngreso.ToString("dd/MM/yyyy HH:mm")",
