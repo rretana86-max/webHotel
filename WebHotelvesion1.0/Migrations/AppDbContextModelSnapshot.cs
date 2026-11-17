@@ -148,10 +148,6 @@ namespace WebHotel_vesion1._0.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("PaymentIntentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 

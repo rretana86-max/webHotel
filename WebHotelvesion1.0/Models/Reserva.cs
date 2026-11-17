@@ -16,6 +16,6 @@ namespace WebHotel_vesion1._0.Models
 
         public decimal Total { get; set; }// talmacena el total a pagar 
         public EstadoReserva  Estado { get; set; } // Estado de confirmación de la reserva
-        public string PaymentIntentId { get; set; } // Para integraciones de pago como Stripe   
-    }
+      
+}
 }
