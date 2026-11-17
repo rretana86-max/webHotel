@@ -193,7 +193,9 @@
 
                     if (result.paymentIntent.status === "succeeded") {
                         Swal.fire('Pago exitoso', 'Gracias por su compra.', 'success')
-                            .then(() => location.reload());
+                            .then(() => {
+                                window.location.href = '@Url.Action("Index", "Home")';
+                            });
                     }
 
                 } catch (error) {
