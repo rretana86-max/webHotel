@@ -19,6 +19,10 @@ jobs:
         dotnet-version: 10.0.x
     - name: Restore dependencies
       run: dotnet restore WebHotelvesion1.0/WebHotelvesion1.0.csproj
+      
     - name: Build
-      run: dotnet build WebHotelvesion1.0/WebHotelvesion1.0.csproj --no-restore
+      run: dotnet build WebHotelvesion1.0/WebHotelvesion1.0.csproj --no-restore 
+      
+    - name: Publish
+      run: dotnet publish WebHotelvesion1.0/WebHotelvesion1.0.csproj --configuration Release --no-build --output ./publish
      
