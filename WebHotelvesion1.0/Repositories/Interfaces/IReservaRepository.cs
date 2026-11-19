@@ -15,6 +15,8 @@ namespace WebHotel_vesion1._0.Repositories.Interfaces
 
         Task<bool> EliminarReservacion(int id);
 
+        Task<bool> CancelarReservacion(int id, string usuarioId);
+
         Task<ReservaVM> GetReservaPay(int id);
     }
 }

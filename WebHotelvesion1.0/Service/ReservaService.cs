@@ -73,6 +73,21 @@ namespace WebHotel_vesion1._0.Service
             throw new NotImplementedException();
         }
 
+        public Task<bool> CancelarReservacion(int id, string usuarioId)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("El id debe ser mayor a 0", nameof(id));
+            }
+
+            if (string.IsNullOrWhiteSpace(usuarioId))
+            {
+                throw new ArgumentException("El usuario es obligatorio", nameof(usuarioId));
+            }
+
+            return _ireserva.CancelarReservacion(id, usuarioId);
+        }
+
         public Task<ReservaVM> GetReservaPay(int id)
         {
             throw new NotImplementedException();

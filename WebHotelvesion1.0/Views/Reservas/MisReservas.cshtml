@@ -1,102 +1,152 @@
-﻿@model IEnumerable<WebHotel_vesion1._0.ViewModel.ReservaVM>
+﻿@using WebHotel_vesion1._0.Enums
+@model IEnumerable<WebHotel_vesion1._0.ViewModel.ReservaVM>
 
 @{
-    ViewData["Title"] = "MisReservas";
+    ViewData["Title"] = "Mis reservas";
 }
 
-<h1>MisReservas</h1>
+<style>
+    .mis-reservas-page .table {
+        vertical-align: middle;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaIngreso)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaSalida)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreUsuario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailUsuario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HabitacionId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NombreHabitacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrecioPorNoche)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CantidadNoches)
-            </th>
-           
-            <th>
-                Estado
-       
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaIngreso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaSalida)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreUsuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailUsuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HabitacionId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreHabitacion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecioPorNoche)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantidadNoches)
-            </td>
+    .mis-reservas-page .btn-pagar {
+        position: relative;
+        overflow: hidden;
+        border: 0;
+        color: #fff;
+        background: linear-gradient(120deg, #087f5b, #20c997, #087f5b);
+        background-size: 200% 100%;
+        box-shadow: 0 4px 12px rgba(8, 127, 91, .2);
+        transition: background-position .35s ease, box-shadow .25s ease, transform .25s ease;
+    }
 
-                <td> @Html.DisplayFor(ModelItem=>item.Estado)
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
+    .mis-reservas-page .btn-pagar::after {
+        position: absolute;
+        top: -50%;
+        left: -75%;
+        width: 45%;
+        height: 200%;
+        content: "";
+        background: rgba(255, 255, 255, .25);
+        transform: rotate(25deg);
+        transition: left .5s ease;
+    }
 
+    .mis-reservas-page .btn-pagar:hover {
+        color: #fff;
+        background-position: 100% 0;
+        box-shadow: 0 7px 18px rgba(8, 127, 91, .32);
+        transform: translateY(-2px);
+    }
 
-                    <a asp-controller="Pagos"
-                       asp-action="Pagar"
-                       asp-route-id="@item.Id"
-                       class="btn btn-outline-success">
-                        Pagar
-                    </a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .mis-reservas-page .btn-pagar:hover::after {
+        left: 130%;
+    }
+
+    .mis-reservas-page .btn-pagar:focus-visible,
+    .mis-reservas-page .btn-cancelar:focus-visible {
+        outline: 3px solid rgba(13, 110, 253, .45);
+        outline-offset: 2px;
+    }
+
+    .mis-reservas-page .btn-cancelar {
+        transition: color .2s ease, background-color .2s ease, transform .2s ease;
+    }
+
+    .mis-reservas-page .btn-cancelar:hover {
+        transform: translateY(-1px);
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .mis-reservas-page .btn-pagar,
+        .mis-reservas-page .btn-pagar::after,
+        .mis-reservas-page .btn-cancelar {
+            transition: none;
+        }
+    }
+</style>
+
+<main class="container py-4 mis-reservas-page">
+    <div class="mb-4">
+        <h1 class="h2 mb-1">Mis reservas</h1>
+        <p class="text-muted mb-0">Consulta el estado de tus reservaciones y administra las pendientes.</p>
+    </div>
+
+    @if (TempData["Mensaje"] is string mensaje)
+    {
+        <div class="alert alert-success" role="status">@mensaje</div>
+    }
+    @if (TempData["Error"] is string error)
+    {
+        <div class="alert alert-warning" role="alert">@error</div>
+    }
+
+    @if (Model?.Any() == true)
+    {
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Reserva</th>
+                        <th scope="col">Habitación</th>
+                        <th scope="col">Ingreso</th>
+                        <th scope="col">Salida</th>
+                        <th scope="col">Noches</th>
+                        <th scope="col">Precio por noche</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>#@item.Id</td>
+                            <td>@item.NombreHabitacion</td>
+                            <td>@item.FechaIngreso.ToString("d")</td>
+                            <td>@item.FechaSalida.ToString("d")</td>
+                            <td>@item.CantidadNoches</td>
+                            <td>@item.PrecioPorNoche.ToString("C")</td>
+                            <td>
+                                <span class="badge rounded-pill @(item.Estado == EstadoReserva.Pendiente ? "text-bg-warning" : item.Estado == EstadoReserva.Confirmada ? "text-bg-success" : "text-bg-secondary")">
+                                    @item.Estado
+                                </span>
+                            </td>
+                            <td class="fw-semibold">@item.Total.ToString("C")</td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @if (item.Estado == EstadoReserva.Pendiente)
+                                    {
+                                        <a asp-controller="Pagos"
+                                           asp-action="Pagar"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-pagar">
+                                            Pagar
+                                        </a>
+                                        <form asp-controller="Reservas"
+                                              asp-action="Cancelar"
+                                              asp-route-id="@item.Id"
+                                              method="post"
+                                              onsubmit="return confirm('¿Deseas cancelar esta reserva? Esta acción no se puede deshacer.');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger btn-cancelar">
+                                                Cancelar
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="status">
+            Aún no tienes reservas registradas.
+        </div>
+    }
+</main>

@@ -140,12 +140,25 @@ namespace WebHotel_vesion1._0.Controllers
 
 
             return View(misreservas);
-
-
         }
 
-     
-        
-        
+        [Authorize(Roles = "Cliente")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancelar(int id)
+        {
+            var usuarioId = User.FindFirst("IdUsuario")?.Value;
+            if (string.IsNullOrWhiteSpace(usuarioId))
+            {
+                return Unauthorized();
+            }
+
+            var cancelada = await _ireserva.CancelarReservacion(id, usuarioId);
+            TempData[cancelada ? "Mensaje" : "Error"] = cancelada
+                ? "La reserva fue cancelada."
+                : "No se pudo cancelar: verifica que la reserva esté pendiente y te pertenezca.";
+
+            return RedirectToAction(nameof(MisReservas));
+        }
     }
 }

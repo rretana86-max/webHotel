@@ -12,6 +12,7 @@ namespace WebHotel_vesion1._0.Service
         public Task<ReservaVM> BuscarReservacion(int id);
         public Task<bool> ActualizarReservacion(Reserva reserva);
         public Task<bool> EliminarReservacion(int id);
+        public Task<bool> CancelarReservacion(int id, string usuarioId);
         public Task<ReservaVM> GetReservaPay(int id);
     }
 }

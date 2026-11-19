@@ -73,6 +73,23 @@ namespace WebHotel_vesion1._0.Repositories.Implementation
             throw new NotImplementedException();
         }
 
+        public async Task<bool> CancelarReservacion(int id, string usuarioId)
+        {
+            var reserva = await _context.Tb_Reservas.FirstOrDefaultAsync(r =>
+                r.Id == id &&
+                r.UsuarioId == usuarioId &&
+                r.Estado == EstadoReserva.Pendiente);
+
+            if (reserva == null)
+            {
+                return false;
+            }
+
+            reserva.Estado = EstadoReserva.Cancelada;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         // search a book  by id 
         public async Task<ReservaVM> GetReservaPay(int id)
         {  var reserva = await _context.Tb_Reservas.Where(r => r.Id == id).Select(r => new ReservaVM
