@@ -1,15 +1,17 @@
 using AppLogin.Data;
-using FastReport.Utils;
 using FastReport;
+using FastReport.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 using Stripe;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using WebHotel_vesion1._0.Models;
 using WebHotel_vesion1._0.Repositories.Implementation;
 using WebHotel_vesion1._0.Repositories.Interfaces;
-using System.Linq;
-using System.Reflection;
-using QuestPDF.Infrastructure;
 using WebHotel_vesion1._0.Service;
 
 
@@ -74,6 +76,20 @@ else
 }
 
 var app = builder.Build();
+
+
+// Configurar cultura Costa Rica
+var defaultCulture = new CultureInfo("es-CR");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(defaultCulture),
+    SupportedCultures = new List<CultureInfo> { defaultCulture },
+    SupportedUICultures = new List<CultureInfo> { defaultCulture }
+};
+
+app.UseRequestLocalization(localizationOptions);
+
+
 app.UseFastReport();
 
 // Configure the HTTP request pipeline.
